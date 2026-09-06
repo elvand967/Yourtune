@@ -21,10 +21,31 @@ python manage.py migrate
 python.exe -m pip install --upgrade pip
 
 =========================
+Генерация отчёта по структуре каталогов
+GUI через Django:
+python manage.py generate_folder_structure --mode gui
+
+Другие команды запуска см. 3.1.3.7 Генерация отчёта по структуре каталогов
+
+=========================
 
 🎉 Компиляция SCSS → CSS
-(.venv) D:\PythonProject\routeMaster_v2\routemaster>
-python manage.py compilescss
+-Обычный запуск
+(.venv) D:\PythonProject\Yourtune\yourtune>python manage.py compile_scss
+-Подробный запуск
+python manage.py compile_scss --verbose
+-Только core
+python manage.py compile_scss --only core
+-Только одно приложение
+python manage.py compile_scss --app catalog
+-Режим слежения
+python manage.py compile_scss --watch
+-С явным BASE_DIR
+python manage.py compile_scss --base-dir D:\PythonProject\yourtune\yourtune
+-С явным BASE_DIR и verbose
+python manage.py compile_scss --base-dir D:\PythonProject\yourtune\yourtune --verbose
+-С явным BASE_DIR и watch
+python manage.py compile_scss --base-dir D:\PythonProject\yourtune\yourtune --watch
 =========================
 
 список всех зависимостей в виртуальном окружении:

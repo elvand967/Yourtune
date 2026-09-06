@@ -1,0 +1,109 @@
+└── Yourtune
+    ├── .gitignore
+    ├── development_teams.txt
+    ├── requirements.txt
+    ├── .git [содержимое скрыто]
+    ├── .idea [содержимое скрыто]
+    ├── .venv [содержимое скрыто]
+    └── yourtune
+        ├── .env
+        ├── .env.example
+        ├── db.sqlite3
+        ├── manage.py
+        ├── apps
+        │   ├── __init__.py
+        │   ├── __pycache__ [содержимое скрыто]
+        │   ├── core
+        │   │   ├── __init__.py
+        │   │   ├── admin.py
+        │   │   ├── apps.py
+        │   │   ├── tests.py
+        │   │   ├── views.py
+        │   │   ├── __pycache__ [содержимое скрыто]
+        │   │   ├── management
+        │   │   │   ├── __init__.py
+        │   │   │   ├── __pycache__ [содержимое скрыто]
+        │   │   │   └── commands
+        │   │   │       ├── __init__.py
+        │   │   │       ├── compile_scss.py
+        │   │   │       ├── generate_folder_structure.py
+        │   │   │       ├── load_seo_data.py
+        │   │   │       └── __pycache__ [содержимое скрыто]
+        │   │   ├── migrations [содержимое скрыто]
+        │   │   ├── models
+        │   │   │   ├── __init__.py
+        │   │   │   ├── abstract.py
+        │   │   │   ├── seo.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── static
+        │   │   │   └── core
+        │   │   │       ├── css
+        │   │   │       │   └── core.css
+        │   │   │       └── scss
+        │   │   │           └── core.scss
+        │   │   └── utils
+        │   │       ├── compiler_scss.py
+        │   │       ├── generate_folder_structure.py
+        │   │       ├── seo_replacements.json
+        │   │       ├── slugify_seo.py
+        │   │       ├── stop_words.json
+        │   │       └── __pycache__ [содержимое скрыто]
+        │   └── users
+        │       ├── __init__.py
+        │       ├── adapters.py
+        │       ├── apps.py
+        │       ├── signals.py
+        │       ├── tests.py
+        │       ├── views.py
+        │       ├── __pycache__ [содержимое скрыто]
+        │       ├── admin
+        │       │   ├── __init__.py
+        │       │   ├── custom_user.py
+        │       │   ├── profile.py
+        │       │   ├── social_account.py
+        │       │   └── __pycache__ [содержимое скрыто]
+        │       ├── forms
+        │       │   ├── __init__.py
+        │       │   ├── custom_user.py
+        │       │   ├── profile.py
+        │       │   ├── social_account.py
+        │       │   └── __pycache__ [содержимое скрыто]
+        │       ├── migrations [содержимое скрыто]
+        │       ├── models
+        │       │   ├── __init__.py
+        │       │   ├── custom_user.py
+        │       │   ├── profile.py
+        │       │   ├── social_account.py
+        │       │   └── __pycache__ [содержимое скрыто]
+        │       ├── static
+        │       │   └── users
+        │       │       ├── css
+        │       │       │   └── users.css
+        │       │       └── scss
+        │       │           └── users.scss
+        │       └── utils
+        │           ├── __init__.py
+        │           ├── adapters.py
+        │           ├── avatar.py
+        │           ├── email_utils.py
+        │           ├── managers.py
+        │           ├── storages.py
+        │           └── __pycache__ [содержимое скрыто]
+        ├── config
+        │   ├── __init__.py
+        │   ├── asgi.py
+        │   ├── settings.py
+        │   ├── urls.py
+        │   ├── wsgi.py
+        │   ├── __pycache__ [содержимое скрыто]
+        │   └── settings
+        │       ├── __init__.py
+        │       ├── base.py
+        │       ├── dev.py
+        │       ├── prod.py
+        │       └── __pycache__ [содержимое скрыто]
+        ├── logs
+        │   ├── scss_compile
+        │   │   └── scss_compile_20260906_204118.log
+        │   └── scss_errors
+        └── media [содержимое скрыто]

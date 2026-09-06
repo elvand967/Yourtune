@@ -1,0 +1,12 @@
+[
+  {"source_word": "айфон", "replacement": "iphone"},
+  {"source_word": "айпад", "replacement": "ipad"},
+  {"source_word": "гугл", "replacement": "google"},
+  {"source_word": "ютуб", "replacement": "youtube"},
+  {"source_word": "фейсбук", "replacement": "facebook"},
+  {"source_word": "инстаграм", "replacement": "instagram"},
+  {"source_word": "одноклассники", "replacement": "odnoklassniki"},
+  {"source_word": "телефон", "replacement": "phone"},
+  {"source_word": "компьютер", "replacement": "computer"},
+  {"source_word": "ноутбук", "replacement": "laptop"}
+]

@@ -1,0 +1,60 @@
+
+Запуск сервера:
+python manage.py runserver
+=========================
+
+Создание миграций новых моделей:
+python manage.py makemigrations
+
+Миграции:
+python manage.py migrate
+=========================
+
+Список всех зависимостей в виртуальном окружении
+Создать:
+(.venv) D:\PythonProject\yourtune> pip freeze > requirements.txt
++++
+Установить (Обеспечить наличие D:\PythonProject\Yourtune\requirements.txt):
+(.venv) D:\PythonProject\yourtune> pip install -r requirements.txt
++++
+Обновление pip:
+python.exe -m pip install --upgrade pip
+
+=========================
+
+🎉 Компиляция SCSS → CSS
+(.venv) D:\PythonProject\routeMaster_v2\routemaster>
+python manage.py compilescss
+=========================
+
+список всех зависимостей в виртуальном окружении:
+    создать:
+pip freeze > requirements.txt
+    установить:
+pip install -r requirements.txt
+=========================
+
+`python manage.py makemigrations`
+Запускай после изменения моделей: добавил поле, поменял constraint, удалил модель, изменил `Meta`. Команда готовит файл миграции, но саму БД ещё не меняет.
+
+`python manage.py migrate`
+Запускай после `makemigrations`, чтобы применить изменения к базе данных. Также используешь при первом поднятии проекта на новом окружении.
+
+`python manage.py createsuperuser`
+Запускай один раз на каждом новом окружении, когда нужно создать администратора для входа в Django admin.
+
+`python manage.py check`
+Запускай после изменений в настройках, urls, apps, middleware, моделях и перед первым запуском проекта. Это быстрый контроль, что базовая конфигурация не сломана.
+
+`python manage.py runserver`
+Запускай только для локальной разработки. Это команда для проверки интерфейса, views, шаблонов, админки и маршрутов в dev-среде.
+
+`python manage.py load_seo_data`
+Запускай после `migrate`, когда уже созданы таблицы `StopWord` и `SEOReplacement`. Используется для первичного заполнения SEO-справочников или после очистки базы.
+
+`python manage.py collectstatic`
+Запускай перед production-деплоем. Команда собирает все static-файлы в `STATIC_ROOT`, чтобы их мог раздавать веб-сервер.
+
+`python manage.py shell`
+Запускай, когда нужно быстро проверить модели, данные, slug-логику, кеш или выполнить разовую проверку вручную.
+=========================

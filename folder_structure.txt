@@ -1,6 +1,7 @@
 └── Yourtune
     ├── .gitignore
     ├── development_teams.txt
+    ├── folder_structure.txt
     ├── requirements.txt
     ├── .git [содержимое скрыто]
     ├── .idea [содержимое скрыто]
@@ -40,7 +41,28 @@
         │   │   │       ├── css
         │   │   │       │   └── core.css
         │   │   │       └── scss
-        │   │   │           └── core.scss
+        │   │   │           ├── core.scss
+        │   │   │           ├── abstracts
+        │   │   │           │   ├── _mixins.scss
+        │   │   │           │   ├── _themes.scss
+        │   │   │           │   └── _variables.scss
+        │   │   │           ├── base
+        │   │   │           │   ├── _base.scss
+        │   │   │           │   ├── _reset.scss
+        │   │   │           │   └── _typography.scss
+        │   │   │           ├── components
+        │   │   │           │   ├── _buttons.scss
+        │   │   │           │   ├── _cards.scss
+        │   │   │           │   └── _theme-switcher.scss
+        │   │   │           ├── layout
+        │   │   │           │   ├── _container.scss
+        │   │   │           │   ├── _footer.scss
+        │   │   │           │   ├── _header.scss
+        │   │   │           │   └── _navigation.scss
+        │   │   │           └── themes
+        │   │   │               ├── _cream.scss
+        │   │   │               ├── _dark.scss
+        │   │   │               └── _light.scss
         │   │   └── utils
         │   │       ├── compiler_scss.py
         │   │       ├── generate_folder_structure.py

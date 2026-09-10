@@ -1,0 +1,91 @@
+// apps/core/static/core/scss/layout/_footer.scss
+// ==========================================================================
+// Footer
+// Нижняя часть сайта: навигация, копирайт, вспомогательные ссылки.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Site footer
+// ==========================================================================
+
+.site-footer {
+  margin-top: auto;
+  background: var(--yt-surface);
+  border-top: 1px solid var(--yt-line);
+  color: var(--yt-text-muted);
+  @include theme-transition;
+}
+
+.site-footer__inner {
+  @include stack($space-6);
+  padding-top: $space-8;
+  padding-bottom: $space-8;
+}
+
+.site-footer__top {
+  @include grid(12, $space-6);
+  align-items: start;
+}
+
+.site-footer__brand {
+  grid-column: span 12;
+  @include stack($space-3);
+}
+
+.site-footer__title {
+  color: var(--yt-text);
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  line-height: 1.2;
+}
+
+.site-footer__description {
+  max-width: 40rem;
+  color: var(--yt-text-muted);
+}
+
+.site-footer__links {
+  grid-column: span 12;
+  @include cluster($space-4, wrap, flex-start);
+}
+
+.site-footer__link {
+  color: var(--yt-text-muted);
+  text-decoration: none;
+  @include theme-transition;
+
+  &:hover {
+    color: var(--yt-text);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.site-footer__bottom {
+  @include cluster($space-3, wrap, center);
+  justify-content: space-between;
+  padding-top: $space-4;
+  border-top: 1px solid var(--yt-line);
+  font-size: $font-size-sm;
+}
+
+// ==========================================================================
+// Responsive layout
+// ==========================================================================
+
+@include above(md) {
+  .site-footer__brand {
+    grid-column: span 6;
+  }
+
+  .site-footer__links {
+    grid-column: span 6;
+    justify-content: flex-end;
+  }
+}

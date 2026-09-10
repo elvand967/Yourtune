@@ -1,0 +1,52 @@
+// apps/core/static/core/scss/core.scss
+// ==========================================================================
+// Core stylesheet entry point
+// Главная точка сборки всех стилей приложения core.
+// Этот файл компилируется в core.css.
+// ==========================================================================
+
+// ==========================================================================
+// Abstracts
+// Переменные, миксины, тема.
+// Сначала подключаем всё, что нужно другим partial-файлам.
+// ==========================================================================
+
+@import "abstracts/index";
+
+// ==========================================================================
+// Base
+// Базовые правила, reset и типографика.
+// ==========================================================================
+
+@import "base/reset";
+@import "base/base";
+@import "base/typography";
+
+// ==========================================================================
+// Components
+// Переиспользуемые UI-элементы.
+// ==========================================================================
+
+@import "components/buttons";
+@import "components/cards";
+@import "components/theme-switcher";
+@import "components/modal";
+@import "components/dropdown";
+@import "components/empty-state";
+
+// ==========================================================================
+// Layout
+// Каркас страницы: контейнер, шапка, навигация, подвал...
+// ==========================================================================
+
+@import "layout/container";
+@import "layout/header";
+@import "layout/navigation";
+@import "layout/footer";
+@import "layout/sidebar";
+@import "layout/grid";
+@import "layout/forms";
+@import "layout/alerts";
+@import "layout/breadcrumbs";
+@import "layout/pagination";
+@import "layout/tabs";

@@ -21,6 +21,7 @@ python manage.py migrate
 python.exe -m pip install --upgrade pip
 
 =========================
+
 Генерация отчёта по структуре каталогов
 GUI через Django:
 python manage.py generate_folder_structure --mode gui

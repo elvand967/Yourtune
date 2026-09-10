@@ -1,0 +1,153 @@
+// apps/core/static/core/scss/layout/_forms.scss
+// ==========================================================================
+// Forms
+// Унифицированные стили для форм, полей и состояний валидации.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Form wrapper
+// ==========================================================================
+
+.form {
+  @include stack($space-5);
+}
+
+.form__row {
+  @include stack($space-2);
+}
+
+.form__group {
+  @include stack($space-3);
+}
+
+.form__actions {
+  @include cluster($space-3, wrap, center);
+  justify-content: flex-start;
+  margin-top: $space-2;
+}
+
+// ==========================================================================
+// Labels and help text
+// ==========================================================================
+
+.form__label {
+  display: inline-block;
+  color: var(--yt-text);
+  font-weight: $font-weight-medium;
+}
+
+.form__hint {
+  color: var(--yt-text-muted);
+  font-size: $font-size-sm;
+}
+
+.form__error {
+  color: var(--yt-danger);
+  font-size: $font-size-sm;
+}
+
+// ==========================================================================
+// Controls
+// ==========================================================================
+
+.form__control,
+.form__select,
+.form__textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: $space-3 $space-4;
+  border: 1px solid var(--yt-line);
+  border-radius: $radius-lg;
+  background: var(--yt-surface);
+  color: var(--yt-text);
+  @include theme-transition;
+
+  &::placeholder {
+    color: var(--yt-text-muted);
+  }
+
+  &:focus {
+    outline: 0;
+    border-color: var(--yt-accent);
+    box-shadow: 0 0 0 3px var(--yt-accent-soft);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background: var(--yt-surface-2);
+  }
+}
+
+.form__textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form__select {
+  appearance: none;
+  padding-right: $space-8;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--yt-text-muted) 50%),
+    linear-gradient(135deg, var(--yt-text-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+// ==========================================================================
+// Validation states
+// ==========================================================================
+
+.form__group--error .form__control,
+.form__group--error .form__select,
+.form__group--error .form__textarea {
+  border-color: var(--yt-danger);
+}
+
+.form__group--success .form__control,
+.form__group--success .form__select,
+.form__group--success .form__textarea {
+  border-color: var(--yt-success);
+}
+
+.form__group--error .form__hint {
+  display: none;
+}
+
+.form__group--error .form__error {
+  display: block;
+}
+
+// ==========================================================================
+// Checkbox / radio
+// ==========================================================================
+
+.form__choice {
+  @include inline-center;
+  gap: $space-2;
+  min-height: 44px;
+}
+
+.form__choice-input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--yt-accent);
+}
+
+.form__choice-label {
+  color: var(--yt-text);
+}
+
+// ==========================================================================
+// Buttons
+// ==========================================================================
+
+.form__submit {
+  min-width: 10rem;
+}

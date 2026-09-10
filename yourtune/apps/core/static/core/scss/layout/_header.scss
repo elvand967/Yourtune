@@ -1,0 +1,107 @@
+// apps/core/static/core/scss/layout/_header.scss
+// ==========================================================================
+// Header
+// Верхняя панель сайта: логотип, навигация, действия пользователя.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Site header
+// ==========================================================================
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+  background: var(--yt-surface);
+  border-bottom: 1px solid var(--yt-line);
+  @include theme-transition;
+}
+
+.site-header__inner {
+  @include cluster($space-4, wrap, center);
+  min-height: $header-height;
+  justify-content: space-between;
+  padding-top: $space-3;
+  padding-bottom: $space-3;
+}
+
+.site-header__brand {
+  @include inline-center;
+  gap: $space-3;
+  color: var(--yt-text);
+  text-decoration: none;
+  font-weight: $font-weight-semibold;
+}
+
+.site-header__logo {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+}
+
+.site-header__nav {
+  @include inline-center;
+  gap: $space-2;
+}
+
+.site-header__actions {
+  @include inline-center;
+  gap: $space-2;
+}
+
+// ==========================================================================
+// Nav links
+// ==========================================================================
+
+.site-header__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 $space-3;
+  border-radius: $radius-pill;
+  color: var(--yt-text-muted);
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+  @include theme-transition;
+
+  &:hover {
+    background: var(--yt-surface-2);
+    color: var(--yt-text);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &--active {
+    background: var(--yt-chip);
+    color: var(--yt-text);
+  }
+}
+
+// ==========================================================================
+// Mobile behavior
+// ==========================================================================
+
+.site-header__toggle {
+  display: none;
+}
+
+@include below(md) {
+  .site-header__inner {
+    align-items: stretch;
+  }
+
+  .site-header__nav,
+  .site-header__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .site-header__toggle {
+    display: inline-flex;
+  }
+}

@@ -1,0 +1,140 @@
+// components/_empty-state.scss
+// Empty state — блок, который показывается, когда нет данных:
+// пустой список, нет сообщений, нет результатов поиска и т.п.
+//
+// Назначение:
+// - объяснить, почему контент отсутствует;
+// - подсказать следующее действие (кнопка, ссылка);
+// - избежать ощущения «пустой страницы» или ошибки.
+//
+// Использование:
+// - размещать внутри основного контейнера (.container);
+// - текст должен быть коротким и понятным;
+// - обязательно предусматривать действие, если оно уместно.
+
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+// Базовый блок empty state
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  padding: $space-8 $space-4;
+  text-align: center;
+
+  // На больших экранах можно чуть увеличить внутренние отступы
+  @include above(md) {
+    padding: $space-10 $space-6;
+    gap: $space-5;
+  }
+}
+
+// Иконка / иллюстрация
+.empty-state__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: $radius-sm;
+  background-color: var(--yt-surface-2, rgba(0, 0, 0, 0.04));
+  color: var(--yt-text-muted, #6b7280);
+  font-size: 28px;
+  line-height: 1;
+  @include theme-transition(background-color, color);
+
+  // Если используется SVG/картинка, можно переопределить размеры
+  img,
+  svg {
+    display: block;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+// Заголовок
+.empty-state__title {
+  margin: 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-tight;
+  color: var(--yt-text);
+  @include heading;
+  @include theme-transition(color);
+}
+
+// Описание
+.empty-state__description {
+  margin: 0;
+  max-width: 480px;
+  font-size: $font-size-md;
+  line-height: $line-height-normal;
+  color: var(--yt-text-muted, #6b7280);
+  @include text-body;
+  @include theme-transition(color);
+}
+
+// Блок действий (кнопки, ссылки)
+.empty-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+  margin-top: $space-2;
+}
+
+// Модификатор: компактный empty state (например, внутри карточки)
+.empty-state--compact {
+  padding: $space-5 $space-4;
+  gap: $space-3;
+
+  .empty-state__icon {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
+
+    img,
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  .empty-state__title {
+    font-size: $font-size-lg;
+  }
+
+  .empty-state__description {
+    font-size: $font-size-sm;
+  }
+}
+
+// Модификатор: по левому краю (например, в сайдбаре или узкой колонке)
+.empty-state--left {
+  align-items: flex-start;
+  text-align: left;
+
+  .empty-state__actions {
+    justify-content: flex-start;
+  }
+}
+
+// Адаптив: на малых экранах чуть меньше отступы и шрифты
+@include below(sm) {
+  .empty-state {
+    padding: $space-6 $space-3;
+    gap: $space-3;
+  }
+
+  .empty-state__title {
+    font-size: $font-size-lg;
+  }
+
+  .empty-state__description {
+    font-size: $font-size-sm;
+  }
+}

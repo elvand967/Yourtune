@@ -1,54 +1,84 @@
 // apps/core/static/core/js/theme-switcher.js
 
-(() => {
-  const STORAGE_KEY = 'theme';
+(function() {
+  'use strict';
+
   const THEMES = ['light', 'dark', 'cream'];
+  const STORAGE_KEY = 'yourtune_theme';
 
-  const root = document.documentElement;
-  const toggle = document.getElementById('themeToggle');
-  const label = document.getElementById('themeToggleLabel');
-
-  if (!root || !toggle) return;
-
-  const themeLabels = {
-    light: 'Светлая',
-    dark: 'Тёмная',
-    cream: 'Кремовая',
+  const LABELS = {
+    light: '☀️',
+    dark: '🌙',
+    cream: '🎨',
   };
 
-  const getSystemTheme = () => {
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light';
-  };
+  function getStoredTheme() {
+    return localStorage.getItem(STORAGE_KEY) || 'light';
+  }
 
-  const getInitialTheme = () => {
-    const savedTheme = localStorage.getItem(STORAGE_KEY);
-    return THEMES.includes(savedTheme) ? savedTheme : getSystemTheme();
-  };
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(STORAGE_KEY, theme);
+    updateThemeLabel(theme);  // ← Обновлённая функция
+  }
 
-  const applyTheme = (theme, persist = true) => {
-    const nextTheme = THEMES.includes(theme) ? theme : 'light';
-    root.setAttribute('data-theme', nextTheme);
-
-    if (persist) {
-      localStorage.setItem(STORAGE_KEY, nextTheme);
-    }
-
+  // ← ЗАМЕНИТЕ ЭТУ ФУНКЦИЮ
+  function updateThemeLabel(theme) {
+    const label = document.getElementById('theme-label');
     if (label) {
-      label.textContent = themeLabels[nextTheme] || nextTheme;
+      label.textContent = LABELS[theme] || LABELS.light;
+    }
+  }
+
+  function cycleTheme() {
+    const current = getStoredTheme();
+    const currentIndex = THEMES.indexOf(current);
+    const nextIndex = (currentIndex + 1) % THEMES.length;
+    return THEMES[nextIndex];
+  }
+
+  function init() {
+    // Устанавливаем сохранённую тему
+    const storedTheme = getStoredTheme();
+    setTheme(storedTheme);
+
+    // Добавляем обработчик
+    const toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      toggle.addEventListener('click', function() {
+        const nextTheme = cycleTheme();
+        setTheme(nextTheme);
+      });
     }
 
-    toggle.setAttribute('aria-label', `Переключить тему. Сейчас: ${themeLabels[nextTheme]}`);
-    toggle.setAttribute('aria-pressed', nextTheme !== 'light');
+    // Кнопка "Наверх" в футере
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+          backToTop.classList.add('is-active');
+        } else {
+          backToTop.classList.remove('is-active');
+        }
+      });
+
+      backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  }
+
+  // Инициализация после загрузки DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // Глобальный API
+  window.YourTuneTheme = {
+    getTheme: getStoredTheme,
+    setTheme: setTheme,
+    cycleTheme: cycleTheme,
   };
-
-  applyTheme(getInitialTheme(), false);
-
-  toggle.addEventListener('click', () => {
-    const current = root.getAttribute('data-theme') || getInitialTheme();
-    const index = THEMES.indexOf(current);
-    const next = THEMES[(index + 1) % THEMES.length];
-    applyTheme(next, true);
-  });
 })();

@@ -1,3 +1,4 @@
+
 └── Yourtune
     ├── .gitignore
     ├── development_teams.txt
@@ -79,6 +80,8 @@
         │   │   ├── templates
         │   │   │   └── core
         │   │   │       ├── base.html
+        │   │   │       ├── base_.html
+        │   │   │       ├── base_old-start.html
         │   │   │       ├── docs.html
         │   │   │       ├── includes
         │   │   │       │   ├── core_header.html
@@ -116,9 +119,45 @@
         │   │   ├── apps.py
         │   │   ├── models.py
         │   │   ├── tests.py
+        │   │   ├── urls.py
         │   │   ├── views.py
         │   │   ├── __pycache__ [содержимое скрыто]
-        │   │   └── migrations [содержимое скрыто]
+        │   │   ├── migrations [содержимое скрыто]
+        │   │   ├── static
+        │   │   │   └── main
+        │   │   │       ├── css
+        │   │   │       │   └── main.css
+        │   │   │       ├── js
+        │   │   │       └── scss
+        │   │   │           ├── main.scss
+        │   │   │           ├── abstracts
+        │   │   │           │   ├── _mixins.scss
+        │   │   │           │   └── _variables.scss
+        │   │   │           ├── base
+        │   │   │           │   ├── _page.scss
+        │   │   │           │   └── _responsive.scss
+        │   │   │           ├── components
+        │   │   │           │   ├── _blog.scss
+        │   │   │           │   ├── _buttons.scss
+        │   │   │           │   ├── _collections.scss
+        │   │   │           │   ├── _cta.scss
+        │   │   │           │   ├── _daily.scss
+        │   │   │           │   ├── _hero.scss
+        │   │   │           │   ├── _stats.scss
+        │   │   │           │   └── _topics.scss
+        │   │   │           └── layout
+        │   │   │               └── _main-page.scss
+        │   │   └── templates
+        │   │       └── main
+        │   │           ├── home.html
+        │   │           └── components
+        │   │               ├── _blog.html
+        │   │               ├── _cta.html
+        │   │               ├── _daily_focus.html
+        │   │               ├── _featured.html
+        │   │               ├── _hero.html
+        │   │               ├── _stats.html
+        │   │               └── _topics.html
         │   └── users
         │       ├── __init__.py
         │       ├── adapters.py
@@ -176,8 +215,40 @@
         ├── logs
         │   ├── scss_compile
         │   │   ├── scss_compile_20260912_122626.log
-        │   │   └── scss_compile_20260912_125133.log
+        │   │   ├── scss_compile_20260912_125133.log
+        │   │   ├── scss_compile_20260912_131316.log
+        │   │   ├── scss_compile_20260912_141027.log
+        │   │   ├── scss_compile_20260912_142733.log
+        │   │   ├── scss_compile_20260912_142911.log
+        │   │   ├── scss_compile_20260912_143409.log
+        │   │   ├── scss_compile_20260912_143513.log
+        │   │   ├── scss_compile_20260912_143722.log
+        │   │   ├── scss_compile_20260912_144006.log
+        │   │   ├── scss_compile_20260912_144329.log
+        │   │   ├── scss_compile_20260912_144656.log
+        │   │   ├── scss_compile_20260912_145141.log
+        │   │   ├── scss_compile_20260912_145531.log
+        │   │   ├── scss_compile_20260912_145812.log
+        │   │   ├── scss_compile_20260912_150020.log
+        │   │   ├── scss_compile_20260912_150250.log
+        │   │   ├── scss_compile_20260912_150555.log
+        │   │   ├── scss_compile_20260912_151030.log
+        │   │   ├── scss_compile_20260912_152357.log
+        │   │   ├── scss_compile_20260912_153604.log
+        │   │   ├── scss_compile_20260912_153952.log
+        │   │   ├── scss_compile_20260912_154000.log
+        │   │   ├── scss_compile_20260912_154400.log
+        │   │   ├── scss_compile_20260912_154855.log
+        │   │   ├── scss_compile_20260912_160654.log
+        │   │   ├── scss_compile_20260912_160853.log
+        │   │   └── scss_compile_20260912_161050.log
         │   └── scss_errors
+        │       ├── main_scss_error_20260912_143409.log
+        │       ├── main_scss_error_20260912_143513.log
+        │       ├── main_scss_error_20260912_143722.log
+        │       ├── main_scss_error_20260912_145812.log
+        │       ├── main_scss_error_20260912_160654.log
+        │       └── main_scss_error_20260912_160853.log
         ├── media [содержимое скрыто]
         └── static
             ├── css

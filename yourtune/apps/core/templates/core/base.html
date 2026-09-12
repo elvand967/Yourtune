@@ -155,54 +155,50 @@
   <div class="site-wrapper">
 
     {# ==================================================================== #}
-    {# Header                                                               #}
+    {# Header — новая шапка topbar                                         #}
     {# ==================================================================== #}
 
-    <header class="main-header">
-      <nav
-        class="navbar"
-        role="navigation"
-        aria-label="Главное меню"
-      >
-        <a
-          class="navbar__brand"
-          href="/"
-        >
-          YourTune
-        </a>
+    <header class="topbar">
+      <div class="topbar__inner">
 
-        <div class="navbar__links">
-          <a
-            class="navbar__link"
-            href="#topics"
-          >
-            Темы
-          </a>
+        {# Логотип #}
+        <div class="topbar__logo" aria-hidden="true"></div>
 
-          <a
-            class="navbar__link"
-            href="#featured"
-          >
-            Подборки
-          </a>
-
-          <a
-            class="navbar__link"
-            href="#daily"
-          >
-            День
-          </a>
-
-          <a
-            class="navbar__link"
-            href="#blog"
-          >
-            Статьи
-          </a>
+        {# Бренд #}
+        <div class="topbar__brand">
+          <strong>YourTune</strong>
+          <span>Аффирмации, подборки, практика</span>
         </div>
-      </nav>
 
-      {% block header %}{% endblock %}
+        {# Поиск #}
+        <div class="topbar__search" role="search" aria-label="Поиск">
+          <div class="topbar__search-dot"></div>
+          <input
+            type="text"
+            placeholder="Поиск тем, подборок, аффирмаций..."
+            aria-label="Поиск по сайту"
+          />
+        </div>
+
+        {# Навигация #}
+        <nav class="topbar__nav" aria-label="Быстрая навигация">
+          <a class="topbar__pill" href="#topics">Темы</a>
+          <a class="topbar__pill" href="#featured">Подборки</a>
+          <a class="topbar__pill" href="#daily">День</a>
+          <a class="topbar__pill" href="#blog">Статьи</a>
+
+          {# Переключатель тем #}
+          <button
+            id="theme-toggle"
+            class="topbar__toggle"
+            type="button"
+            aria-label="Переключить тему"
+          >
+            <span class="topbar__toggle-icon"></span>
+            <span class="topbar__toggle-label" id="theme-label">Светлая</span>
+          </button>
+        </nav>
+      </div>
     </header>
 
     {# ==================================================================== #}
@@ -215,13 +211,6 @@
     >
       {% block content %}{% endblock %}
     </main>
-
-    {# ==================================================================== #}
-    {# Fast navigation                                                      #}
-    {# ==================================================================== #}
-
-    {# {% load fast_nav %} #}
-    {# {% render_fast_nav %} #}
 
     {# ==================================================================== #}
     {# Footer                                                               #}
@@ -241,6 +230,8 @@
     src="{% static 'core/js/footer_animations.js' %}"
   ></script>
 
+  <script src="{% static 'core/js/theme-switcher.js' %}"></script>
+  
   {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -1,0 +1,424 @@
+// ==========================================================================
+// apps/core/static/core/scss/layout/_topbar.scss
+// Шапка сайта (Topbar) для YourTune
+// ==========================================================================
+//
+// Назначение:
+//   Стили для верхней навигационной панели с логотипом, брендом, поиском,
+//   навигацией и переключателем тем.
+//
+// Зависимости:
+//   - abstracts/_variables.scss (переменные проекта)
+//   - abstracts/_themes.scss (CSS-переменные тем: --yt-*)
+//
+// ==========================================================================
+
+// Импортируем переменные (не генерирует CSS, только переменные)
+@import "../abstracts/variables";
+
+
+// ============================================================================
+// 1. Основной контейнер topbar
+// ============================================================================
+
+.topbar {
+  // Липкая позиция — прилипает к верху экрана при прокрутке
+  position: sticky;
+  top: 0;
+
+  // Z-index выше контента, но ниже модальных окон
+  z-index: $z-sticky;
+
+  // Фон с прозрачностью и размытием (glassmorphism эффект)
+  background: color-mix(in srgb, var(--yt-bg) 86%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px); // Для Safari
+
+  // Граница снизу
+  border-bottom: 1px solid var(--yt-line);
+
+  // Плавные переходы для смены темы
+  transition:
+    background-color $transition-base,
+    border-color $transition-base,
+    backdrop-filter $transition-base;
+}
+
+
+// ============================================================================
+// 2. Внутренний контейнер
+// ============================================================================
+
+.topbar__inner {
+  // Ограничиваем ширину как у основного контейнера
+  max-width: $container-max-width;
+
+  // Центрируем по горизонтали
+  margin: 0 auto;
+
+  // Внутренние отступы
+  padding: $space-4 $container-padding-x;
+
+  // Flexbox для горизонтального расположения элементов
+  display: flex;
+  gap: $space-4;
+  align-items: center;
+
+  // Перенос на новую строку на мобильных
+  flex-wrap: wrap;
+}
+
+
+// ============================================================================
+// 3. Логотип
+// ============================================================================
+
+.topbar__logo {
+  // Фиксированный размер
+  width: 44px;
+  height: 44px;
+
+  // Скруглённые углы
+  border-radius: $radius-lg;
+
+  // Градиентный фон (используем акцентный цвет темы)
+  background: linear-gradient(
+    135deg,
+    var(--yt-accent),
+    #9f7aea // Светло-фиолетовый для контраста
+  );
+
+  // Тень
+  box-shadow: $shadow-lg;
+
+  // Не сжимается
+  flex: 0 0 auto;
+
+  // Плавные переходы
+  transition:
+    background-color $transition-base,
+    box-shadow $transition-base;
+}
+
+
+// ============================================================================
+// 4. Бренд (название + подпись)
+// ============================================================================
+
+.topbar__brand {
+  // Вертикальное расположение
+  display: flex;
+  flex-direction: column;
+
+  // Межстрочный интервал
+  line-height: $line-height-tight;
+
+  // Минимальная ширина
+  min-width: 140px;
+}
+
+.topbar__brand strong {
+  // Название YourTune
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  color: var(--yt-text);
+}
+
+.topbar__brand span {
+  // Подпись "Аффирмации, подборки, практика"
+  font-size: $font-size-sm;
+  color: var(--yt-text-muted);
+}
+
+
+// ============================================================================
+// 5. Поиск
+// ============================================================================
+
+.topbar__search {
+  // Растягивается на доступное пространство
+  flex: 1;
+
+  // Flexbox для иконки и input
+  display: flex;
+  gap: $space-2;
+  align-items: center;
+
+  // Внутренние отступы
+  padding: $space-3 $space-4;
+
+  // Полностью скруглённая форма
+  border-radius: $radius-pill;
+
+  // Фон и граница
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-line);
+
+  // Тень
+  box-shadow: $shadow-lg;
+
+  // Минимальная ширина
+  min-width: 200px;
+
+  // Плавные переходы
+  transition:
+    background-color $transition-base,
+    border-color $transition-base,
+    box-shadow $transition-base;
+}
+
+.topbar__search-dot {
+  // Анимированная точка-индикатор
+  width: 10px;
+  height: 10px;
+  border-radius: $radius-pill;
+  background: var(--yt-accent-2);
+  flex: 0 0 auto;
+
+  // Пульсация
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.topbar__search input {
+  // Input на всю ширину
+  width: 100%;
+
+  // Без границ и фона
+  border: 0;
+  outline: 0;
+  background: transparent;
+
+  // Шрифт
+  font-size: $font-size-md;
+  color: var(--yt-text);
+  font-family: $font-family-base;
+}
+
+.topbar__search input::placeholder {
+  // Цвет placeholder
+  color: color-mix(in srgb, var(--yt-text-muted) 75%, #98a2b3);
+}
+
+
+// ============================================================================
+// 6. Навигация
+// ============================================================================
+
+.topbar__nav {
+  // Flexbox
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+  align-items: center;
+
+  // Прижимаем вправо
+  justify-content: flex-end;
+}
+
+
+// ============================================================================
+// 7. Pill-кнопки навигации
+// ============================================================================
+
+.topbar__pill {
+  // Внутренние отступы
+  padding: $space-2 $space-4;
+
+  // Полностью скруглённая форма
+  border-radius: $radius-pill;
+
+  // Фон и граница
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-line);
+
+  // Цвет текста
+  color: var(--yt-text-muted);
+
+  // Шрифт
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  // Тень
+  box-shadow: $shadow-lg;
+
+  // Курсор
+  cursor: pointer;
+
+  // Запрет выделения текста
+  user-select: none;
+
+  // Плавные переходы
+  transition:
+    background-color $transition-base,
+    color $transition-base,
+    border-color $transition-base,
+    box-shadow $transition-base,
+    transform $transition-base;
+}
+
+.topbar__pill:hover {
+  // При наведении
+  background: var(--yt-surface-2);
+  color: var(--yt-text);
+  transform: translateY(-1px); // Лёгкое поднятие
+}
+
+.topbar__pill:focus-visible {
+  // Видимый фокус для доступности
+  outline: 3px solid var(--yt-focus);
+  outline-offset: 2px;
+}
+
+
+// ============================================================================
+// 8. Переключатель тем
+// ============================================================================
+
+.topbar__toggle {
+  // Flexbox для иконки и текста
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+
+  // Те же стили что у .topbar__pill
+  padding: $space-2 $space-4;
+  border-radius: $radius-pill;
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-line);
+  color: var(--yt-text-muted);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  box-shadow: $shadow-lg;
+  cursor: pointer;
+  user-select: none;
+
+  // Плавные переходы
+  transition:
+    background-color $transition-base,
+    color $transition-base,
+    border-color $transition-base,
+    box-shadow $transition-base,
+    transform $transition-base;
+}
+
+.topbar__toggle:hover {
+  background: var(--yt-surface-2);
+  color: var(--yt-text);
+  transform: translateY(-1px);
+}
+
+.topbar__toggle:focus-visible {
+  outline: 3px solid var(--yt-focus);
+  outline-offset: 2px;
+}
+
+.topbar__toggle-icon {
+  // Круглая иконка
+  width: 18px;
+  height: 18px;
+  border-radius: $radius-pill;
+
+  // Градиент зависит от темы (см. ниже)
+  background: linear-gradient(135deg, #f4c36d, #e7a85e);
+  flex: 0 0 auto;
+  transition: background $transition-base;
+}
+
+// Иконка для тёмной темы
+html[data-theme="dark"] .topbar__toggle-icon {
+  background: linear-gradient(135deg, #93c5fd, #60a5fa);
+}
+
+// Иконка для кремовой темы
+html[data-theme="cream"] .topbar__toggle-icon {
+  background: linear-gradient(135deg, #d8a06c, #f1c27d);
+}
+
+.topbar__toggle-label {
+  // Текст не переносится
+  white-space: nowrap;
+}
+
+
+// ============================================================================
+// 9. Responsive — планшеты и меньше
+// ============================================================================
+
+@media (max-width: $bp-lg) {
+  .topbar__search {
+    // Поиск перемещается под шапку
+    order: 3;
+    flex-basis: 100%;
+    min-width: 100%;
+  }
+
+  .topbar__nav {
+    // Навигация на всю ширину
+    justify-content: flex-start;
+    width: 100%;
+  }
+}
+
+
+// ============================================================================
+// 10. Responsive — мобильные
+// ============================================================================
+
+@media (max-width: $bp-md) {
+  .topbar__inner {
+    // Меньше отступы
+    padding: $space-3 $container-padding-x;
+    gap: $space-2;
+  }
+
+  .topbar__logo {
+    // Логотип меньше
+    width: 38px;
+    height: 38px;
+  }
+
+  .topbar__brand span {
+    // Скрываем подпись
+    display: none;
+  }
+
+  .topbar__pill {
+    // Кнопки компактнее
+    padding: $space-2 $space-2;
+    font-size: $font-size-xs;
+  }
+
+  .topbar__toggle-label {
+    // Скрываем текст переключателя
+    display: none;
+  }
+}
+
+
+// ============================================================================
+// 11. Accessibility — reduced motion
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar,
+  .topbar__pill,
+  .topbar__toggle,
+  .topbar__logo {
+    // Отключаем анимации
+    transition: none;
+  }
+
+  .topbar__search-dot {
+    // Отключаем пульсацию
+    animation: none;
+  }
+}

@@ -1,84 +1,70 @@
+
 // apps/core/static/core/js/theme-switcher.js
+// Переключатель цветовых тем для YourTune
 
 (function() {
   'use strict';
 
-  const THEMES = ['light', 'dark', 'cream'];
-  const STORAGE_KEY = 'yourtune_theme';
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleMobile = document.getElementById('theme-toggle-mobile');
+  const html = document.documentElement;
 
-  const LABELS = {
+  // Эмодзи для тем
+  const themeIcons = {
     light: '☀️',
     dark: '🌙',
-    cream: '🎨',
+    cream: '🎨'
   };
 
-  function getStoredTheme() {
-    return localStorage.getItem(STORAGE_KEY) || 'light';
+  // Установите тему по умолчанию
+  let currentTheme = localStorage.getItem('theme') || 'dark';
+  html.setAttribute('data-theme', currentTheme);
+
+  /**
+   * Обновление иконки
+   */
+  function updateIcon() {
+    const theme = html.getAttribute('data-theme');
+    const icon = themeIcons[theme] || '🌙';
+
+    // Обновляем иконку в обеих кнопках
+    const iconElements = document.querySelectorAll('.topbar__toggle-icon');
+    iconElements.forEach(function(el) {
+      el.textContent = icon;
+    });
   }
 
-  function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem(STORAGE_KEY, theme);
-    updateThemeLabel(theme);  // ← Обновлённая функция
-  }
+  /**
+   * Переключение темы
+   */
+  function toggleTheme() {
+    const currentTheme = html.getAttribute('data-theme');
 
-  // ← ЗАМЕНИТЕ ЭТУ ФУНКЦИЮ
-  function updateThemeLabel(theme) {
-    const label = document.getElementById('theme-label');
-    if (label) {
-      label.textContent = LABELS[theme] || LABELS.light;
-    }
-  }
-
-  function cycleTheme() {
-    const current = getStoredTheme();
-    const currentIndex = THEMES.indexOf(current);
-    const nextIndex = (currentIndex + 1) % THEMES.length;
-    return THEMES[nextIndex];
-  }
-
-  function init() {
-    // Устанавливаем сохранённую тему
-    const storedTheme = getStoredTheme();
-    setTheme(storedTheme);
-
-    // Добавляем обработчик
-    const toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      toggle.addEventListener('click', function() {
-        const nextTheme = cycleTheme();
-        setTheme(nextTheme);
-      });
+    // Переключение: dark → light → cream → dark
+    let newTheme;
+    if (currentTheme === 'dark') {
+      newTheme = 'light';
+    } else if (currentTheme === 'light') {
+      newTheme = 'cream';
+    } else {
+      newTheme = 'dark';
     }
 
-    // Кнопка "Наверх" в футере
-    const backToTop = document.getElementById('backToTop');
-    if (backToTop) {
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 300) {
-          backToTop.classList.add('is-active');
-        } else {
-          backToTop.classList.remove('is-active');
-        }
-      });
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
 
-      backToTop.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    }
+    updateIcon();
   }
 
-  // Инициализация после загрузки DOM
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  // Инициализация иконки
+  updateIcon();
+
+  // Навешиваем обработчики событий
+  if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
   }
 
-  // Глобальный API
-  window.YourTuneTheme = {
-    getTheme: getStoredTheme,
-    setTheme: setTheme,
-    cycleTheme: cycleTheme,
-  };
+  if (themeToggleMobile) {
+    themeToggleMobile.addEventListener('click', toggleTheme);
+  }
 })();

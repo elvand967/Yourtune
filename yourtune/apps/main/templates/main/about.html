@@ -1,0 +1,104 @@
+{# apps/main/templates/main/about.html #}
+{# Страница «О проекте» YourTune #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}
+  {{ title|default:"О проекте" }} — YourTune
+{% endblock %}
+
+{% block meta_description %}
+  {{ description|default:"YourTune — платформа аффирмаций и ежедневных практик для спокойствия, уверенности и личностного роста." }}
+{% endblock %}
+
+{% block meta_robots %}
+  index, follow
+{% endblock %}
+
+{% block canonical %}
+  {{ request.build_absolute_uri }}
+{% endblock %}
+
+{% block og_title %}
+  {{ title|default:"О проекте" }} — YourTune
+{% endblock %}
+
+{% block og_description %}
+  {{ description|default:"Платформа аффирмаций и ежедневных практик для внутренней опоры и спокойствия." }}
+{% endblock %}
+
+{% block og_type %}
+  website
+{% endblock %}
+
+{% block og_url %}
+  {{ request.build_absolute_uri }}
+{% endblock %}
+
+{% block twitter_title %}
+  {{ title|default:"О проекте" }} — YourTune
+{% endblock %}
+
+{% block twitter_description %}
+  {{ description|default:"YourTune — платформа аффирмаций для спокойствия и личностного роста." }}
+{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+
+  <div class="about-page">
+
+    <section class="about-page__header">
+      <div class="container">
+        <h1 class="about-page__title">
+          {{ title|default:"О проекте YourTune" }}
+        </h1>
+
+        <p class="about-page__lead">
+          {{ description|default:"Платформа аффирмаций и ежедневных практик для спокойствия, уверенности и личностного роста." }}
+        </p>
+      </div>
+    </section>
+
+    <section class="about-page__mission">
+      <div class="container">
+        <div class="mission-card">
+          <h2 class="mission-card__title">Наша миссия</h2>
+
+          <p class="mission-card__text">
+            Мы создали YourTune, чтобы помочь людям обрести внутреннюю опору,
+            спокойствие и уверенность в себе через простые ежедневные практики.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-page__cta">
+      <div class="container">
+        <div class="about-cta-card">
+          <h2 class="about-cta-card__title">Начните практику сегодня</h2>
+
+          <p class="about-cta-card__description">
+            Присоединяйтесь к YourTune и сделайте первый шаг к внутренней опоре.
+          </p>
+
+          <div class="about-cta-card__actions">
+            <a class="button button--primary" href="{% url 'main:home' %}">
+              Перейти к подборкам
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'main/js/main.js' %}" defer></script>
+{% endblock %}

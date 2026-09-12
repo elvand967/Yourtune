@@ -5,7 +5,7 @@
 //
 // Назначение:
 //   Стили для верхней навигационной панели с логотипом, брендом, поиском,
-//   навигацией и переключателем тем.
+//   навигацией, переключателем тем, dropdown меню и мобильной версией.
 //
 // Зависимости:
 //   - abstracts/_variables.scss (переменные проекта)
@@ -26,7 +26,7 @@
   position: sticky;
   top: 0;
 
-  // Z-index выше контента, но ниже модальных окон
+  // Z-index выше контента, но ниже модального меню
   z-index: $z-sticky;
 
   // Фон с прозрачностью и размытием (glassmorphism эффект)
@@ -230,6 +230,12 @@
 // ============================================================================
 
 .topbar__pill {
+  // ← КРИТИЧНО: inline-flex для работы внутри flex-контейнера
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+
   // Внутренние отступы
   padding: $space-2 $space-4;
 
@@ -284,27 +290,32 @@
 // ============================================================================
 
 .topbar__toggle {
-  // Flexbox для иконки и текста
+  // Flexbox для иконки
   display: inline-flex;
   align-items: center;
-  gap: $space-2;
+  justify-content: center;
 
-  // Те же стили что у .topbar__pill
-  padding: $space-2 $space-4;
+  // Квадратная кнопка
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  // Полностью скруглённая форма
   border-radius: $radius-pill;
+
+  // Фон и граница
   background: var(--yt-surface);
   border: 1px solid var(--yt-line);
-  color: var(--yt-text-muted);
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+
+  // Тень
   box-shadow: $shadow-lg;
+
+  // Курсор
   cursor: pointer;
-  user-select: none;
 
   // Плавные переходы
   transition:
     background-color $transition-base,
-    color $transition-base,
     border-color $transition-base,
     box-shadow $transition-base,
     transform $transition-base;
@@ -312,7 +323,6 @@
 
 .topbar__toggle:hover {
   background: var(--yt-surface-2);
-  color: var(--yt-text);
   transform: translateY(-1px);
 }
 
@@ -322,35 +332,347 @@
 }
 
 .topbar__toggle-icon {
-  // Круглая иконка
-  width: 18px;
-  height: 18px;
-  border-radius: $radius-pill;
-
-  // Градиент зависит от темы (см. ниже)
-  background: linear-gradient(135deg, #f4c36d, #e7a85e);
+  // Иконка — эмодзи
+  font-size: 20px;
+  line-height: 1;
   flex: 0 0 auto;
-  transition: background $transition-base;
+  transition: transform $transition-base;
 }
 
-// Иконка для тёмной темы
-html[data-theme="dark"] .topbar__toggle-icon {
-  background: linear-gradient(135deg, #93c5fd, #60a5fa);
+.topbar__toggle:hover .topbar__toggle-icon {
+  transform: scale(1.1);
 }
 
-// Иконка для кремовой темы
-html[data-theme="cream"] .topbar__toggle-icon {
-  background: linear-gradient(135deg, #d8a06c, #f1c27d);
+// ============================================================================
+// 9. Dropdown меню (профиль/вход)
+// ============================================================================
+
+.topbar__dropdown {
+  position: relative;
+
+  // Показываем меню при наведении
+  &:hover .topbar__dropdown-menu {
+    display: flex;
+  }
 }
 
-.topbar__toggle-label {
-  // Текст не переносится
-  white-space: nowrap;
+.topbar__pill--dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+
+  // ← КРИТИЧНО: pointer-events только на кнопке, не на контейнере
+  pointer-events: auto;
+}
+
+.topbar__pill-icon {
+  font-size: $font-size-md;
+}
+
+.topbar__dropdown-menu {
+  position: absolute;
+  top: calc(100% + $space-2);
+  right: 0;
+  z-index: $z-dropdown;
+
+  display: none;
+  flex-direction: column;
+  gap: $space-1;
+
+  min-width: 200px;
+  padding: $space-2;
+
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-line);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+
+  // ← КРИТИЧНО: pointer-events только когда меню видимо
+  pointer-events: none;
+
+  .topbar__dropdown:hover & {
+    pointer-events: auto;
+  }
+}
+
+.topbar__dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+
+  border-radius: $radius-md;
+  color: var(--yt-text);
+  text-decoration: none;
+  font-size: $font-size-sm;
+
+  transition:
+    background-color $transition-base,
+    color $transition-base;
+
+  &:hover {
+    background: var(--yt-surface-2);
+    color: var(--yt-text);
+  }
+}
+
+.topbar__dropdown-icon {
+  font-size: $font-size-md;
+}
+
+// Выделение админ-ссылки
+.topbar__dropdown-item--admin {
+  background: color-mix(in srgb, var(--yt-accent) 10%, var(--yt-surface-2));
+  border: 1px solid color-mix(in srgb, var(--yt-accent) 30%, var(--yt-line));
+
+  &:hover {
+    background: color-mix(in srgb, var(--yt-accent) 15%, var(--yt-surface));
+  }
 }
 
 
 // ============================================================================
-// 9. Responsive — планшеты и меньше
+// 10. Mobile burger button
+// ============================================================================
+
+.topbar__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+
+  width: 44px;
+  height: 44px;
+  padding: $space-2;
+
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+
+  // Показываем только на мобильных
+  @include below(md) {
+    display: flex;
+    order: -1;
+  }
+}
+
+.topbar__burger-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--yt-text);
+  border-radius: 2px;
+  transition: transform $transition-base, opacity $transition-base;
+}
+
+// Анимация бургера при открытии
+.topbar__burger[aria-expanded="true"] .topbar__burger-line:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.topbar__burger[aria-expanded="true"] .topbar__burger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.topbar__burger[aria-expanded="true"] .topbar__burger-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+
+// ============================================================================
+// 11. Desktop nav visibility
+// ============================================================================
+
+.topbar__nav--desktop {
+  @include above(md) {
+    display: flex;
+  }
+
+  @include below(md) {
+    display: none;
+  }
+}
+
+
+// ============================================================================
+// 12. Mobile menu panel
+// ============================================================================
+
+.topbar__mobile-menu {
+  @include above(md) {
+    display: none;
+  }
+
+  @include below(md) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: $z-modal + 100;
+
+    display: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  &.is-open {
+    display: block;
+  }
+}
+
+.topbar__mobile-menu-inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+
+  width: 320px;
+  max-width: 85vw;
+  height: 100%;
+  padding: $space-5;
+
+  // Фон панели: 25% прозрачности (75% поверхности)
+  background: color-mix(in srgb, var(--yt-surface) 75%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-left: 1px solid var(--yt-line);
+
+  box-shadow: $shadow-lg;
+
+  transform: translateX(100%);
+  transition: transform $transition-slow;
+
+  .topbar__mobile-menu.is-open & {
+    transform: translateX(0);
+  }
+}
+
+.topbar__mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $space-6;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid var(--yt-line);
+
+  strong {
+    font-size: $font-size-lg;
+    color: var(--yt-text);
+  }
+}
+
+.topbar__mobile-close {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+  color: var(--yt-text);
+  font-size: $font-size-xl;
+  cursor: pointer;
+
+  @include inline-center;
+}
+
+.topbar__mobile-nav {
+  @include stack($space-2);
+}
+
+.topbar__mobile-item {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-4;
+
+  border-radius: $radius-lg;
+
+  // Кнопки: полностью непрозрачные
+  background: var(--yt-surface-2);
+  color: var(--yt-text);
+  text-decoration: none;
+
+  transition:
+    background-color $transition-base,
+    transform $transition-base;
+
+  &:hover {
+    background: var(--yt-surface);
+    transform: translateX(4px);
+  }
+}
+
+.topbar__mobile-icon {
+  font-size: $font-size-xl;
+  flex: 0 0 auto;
+}
+
+.topbar__mobile-title {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+}
+
+.topbar__mobile-divider {
+  height: 1px;
+  margin: $space-4 0;
+  background: var(--yt-line);
+}
+
+.topbar__mobile-profile-label {
+  display: block;
+  padding: $space-2 $space-3;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: var(--yt-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.topbar__mobile-auth,
+.topbar__mobile-profile {
+  @include stack($space-1);
+
+  margin-top: $space-2;
+}
+
+.topbar__mobile-item--admin {
+  background: color-mix(in srgb, var(--yt-accent) 10%, var(--yt-surface-2));
+  border: 1px solid color-mix(in srgb, var(--yt-accent) 30%, var(--yt-line));
+}
+
+.topbar__mobile-theme {
+  margin-top: $space-6;
+  padding-top: $space-4;
+  border-top: 1px solid var(--yt-line);
+
+  @include stack($space-3);
+
+  span {
+    font-size: $font-size-sm;
+    color: var(--yt-text-muted);
+  }
+}
+
+.topbar__mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: $z-modal + 99;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity $transition-slow;
+
+  .topbar__mobile-menu.is-open & {
+    opacity: 1;
+  }
+}
+
+
+// ============================================================================
+// 13. Responsive — планшеты и меньше
 // ============================================================================
 
 @media (max-width: $bp-lg) {
@@ -370,7 +692,7 @@ html[data-theme="cream"] .topbar__toggle-icon {
 
 
 // ============================================================================
-// 10. Responsive — мобильные
+// 14. Responsive — мобильные
 // ============================================================================
 
 @media (max-width: $bp-md) {
@@ -405,7 +727,7 @@ html[data-theme="cream"] .topbar__toggle-icon {
 
 
 // ============================================================================
-// 11. Accessibility — reduced motion
+// 15. Accessibility — reduced motion
 // ============================================================================
 
 @media (prefers-reduced-motion: reduce) {

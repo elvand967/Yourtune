@@ -2,9 +2,10 @@
 
 {% load static %}
 {% load footer_menu %}
+{% load core_tags %}  {# ← Добавляем загрузку core_tags #}
 
 <!DOCTYPE html>
-<html lang="{% block html_lang %}ru{% endblock %}" data-theme="light">
+<html lang="{% block html_lang %}ru{% endblock %}" data-theme="dark">
 <head>
   <meta charset="UTF-8">
 
@@ -155,7 +156,7 @@
   <div class="site-wrapper">
 
     {# ==================================================================== #}
-    {# Header — новая шапка topbar                                         #}
+    {# Header — шапка topbar                                         #}
     {# ==================================================================== #}
 
     <header class="topbar">
@@ -180,24 +181,9 @@
           />
         </div>
 
-        {# Навигация #}
-        <nav class="topbar__nav" aria-label="Быстрая навигация">
-          <a class="topbar__pill" href="#topics">Темы</a>
-          <a class="topbar__pill" href="#featured">Подборки</a>
-          <a class="topbar__pill" href="#daily">День</a>
-          <a class="topbar__pill" href="#blog">Статьи</a>
+        {# Главное меню через templatetag #}
+        {% main_menu %}
 
-          {# Переключатель тем #}
-          <button
-            id="theme-toggle"
-            class="topbar__toggle"
-            type="button"
-            aria-label="Переключить тему"
-          >
-            <span class="topbar__toggle-icon"></span>
-            <span class="topbar__toggle-label" id="theme-label">Светлая</span>
-          </button>
-        </nav>
       </div>
     </header>
 
@@ -227,11 +213,15 @@
   {# ====================================================================== #}
 
   <script
+    src="{% static 'core/js/mobile-menu.js' %}"
+  ></script>
+
+  <script
     src="{% static 'core/js/footer_animations.js' %}"
   ></script>
 
   <script src="{% static 'core/js/theme-switcher.js' %}"></script>
-  
+
   {% block extra_js %}{% endblock %}
 </body>
 </html>

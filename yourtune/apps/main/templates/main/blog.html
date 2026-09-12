@@ -1,0 +1,209 @@
+{# apps/main/templates/main/blog.html #}
+{# Страница блога и статей YourTune #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{# ====================================================================== #}
+{# SEO                                                                    #}
+{# ====================================================================== #}
+
+{% block title %}
+  {{ title|default:"Блог и статьи" }} — YourTune
+{% endblock %}
+
+{% block meta_description %}
+  {{ description|default:"Статьи, практики и советы по использованию аффирмаций для спокойствия, уверенности и личностного роста." }}
+{% endblock %}
+
+{% block meta_robots %}
+  index, follow
+{% endblock %}
+
+{% block canonical %}
+  {{ request.build_absolute_uri }}
+{% endblock %}
+
+{% block og_title %}
+  {{ title|default:"Блог и статьи" }} — YourTune
+{% endblock %}
+
+{% block og_description %}
+  {{ description|default:"Практики, объяснения и полезные материалы о работе с аффирмациями." }}
+{% endblock %}
+
+{% block og_type %}
+  blog
+{% endblock %}
+
+{% block og_url %}
+  {{ request.build_absolute_uri }}
+{% endblock %}
+
+{% block twitter_title %}
+  {{ title|default:"Блог и статьи" }} — YourTune
+{% endblock %}
+
+{% block twitter_description %}
+  {{ description|default:"Статьи и практики для работы с аффирмациями." }}
+{% endblock %}
+
+{# ====================================================================== #}
+{# Page-specific styles                                                   #}
+{# ====================================================================== #}
+
+{% block extra_head %}
+  <link
+    rel="stylesheet"
+    href="{% static 'main/css/main.css' %}"
+  >
+{% endblock %}
+
+{# ====================================================================== #}
+{# Main content                                                           #}
+{# ====================================================================== #}
+
+{% block content %}
+
+  <div class="blog-page">
+
+    {# ================================================================== #}
+    {# Header секции                                                      #}
+    {# ================================================================== #}
+
+    <section class="blog-page__header">
+      <div class="container">
+        <h1 class="blog-page__title">
+          {{ title|default:"Блог и статьи" }}
+        </h1>
+
+        <p class="blog-page__lead">
+          {{ description|default:"Практики, объяснения и полезные материалы о работе с аффирмациями для спокойствия, уверенности и внутренней опоры." }}
+        </p>
+      </div>
+    </section>
+
+    {# ================================================================== #}
+    {# Список статей                                                      #}
+    {# ================================================================== #}
+
+    <section class="blog-page__articles">
+      <div class="container">
+        <div class="blog-grid">
+          {% for article in articles %}
+            <article class="blog-card blog-card--{{ article.style|default:'violet' }}">
+              <span class="blog-card__label">
+                {{ article.category|default:"Статья" }}
+              </span>
+
+              <h3 class="blog-card__title">
+                <a href="{{ article.url|default:'#' }}">
+                  {{ article.title }}
+                </a>
+              </h3>
+
+              {% if article.description %}
+                <p class="blog-card__description">
+                  {{ article.description }}
+                </p>
+              {% endif %}
+
+              {% if article.author %}
+                <div class="blog-card__meta">
+                  <span class="blog-card__author">
+                    {{ article.author }}
+                  </span>
+
+                  {% if article.published_date %}
+                    <time class="blog-card__date" datetime="{{ article.published_date }}">
+                      {{ article.published_date|date:"d.m.Y" }}
+                    </time>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </article>
+          {% empty %}
+            <p class="blog-page__empty">
+              Статьи пока не добавлены.
+            </p>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    {# ================================================================== #}
+    {# Категории (опционально)                                            #}
+    {# ================================================================== #}
+
+    {% if categories %}
+      <section class="blog-page__categories">
+        <div class="container">
+          <h2 class="blog-page__subtitle">
+            Категории
+          </h2>
+
+          <div class="blog-categories">
+            {% for category in categories %}
+              <a
+                class="blog-category"
+                href="{{ category.url }}"
+              >
+                {{ category.name }}
+                <span class="blog-category__count">
+                  ({{ article.count|default:0 }})
+                </span>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    {# ================================================================== #}
+    {# CTA блок                                                           #}
+    {# ================================================================== #}
+
+    <section class="blog-page__cta">
+      <div class="container">
+        <div class="blog-cta-card">
+          <h2 class="blog-cta-card__title">
+            Начните практику сегодня
+          </h2>
+
+          <p class="blog-cta-card__description">
+            Сохраняйте любимые статьи, возвращайтесь к ним и постепенно выстраивайте личную систему поддержки.
+          </p>
+
+          <div class="blog-cta-card__actions">
+            <a
+              class="button button--primary"
+              href="{% url 'main:home' %}"
+            >
+              Перейти к подборкам
+            </a>
+
+            <a
+              class="button button--secondary"
+              href="{% url 'main:faq' %}"
+            >
+              Читать FAQ
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+{% endblock %}
+
+{# ====================================================================== #}
+{# Page-specific JavaScript                                               #}
+{# ====================================================================== #}
+
+{% block extra_js %}
+  <script
+    src="{% static 'main/js/main.js' %}"
+    defer
+  ></script>
+{% endblock %}

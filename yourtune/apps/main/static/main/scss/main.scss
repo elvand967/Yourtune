@@ -1,0 +1,22 @@
+// apps/main/static/main/scss/main.scss
+
+// ==========================================================================
+// YourTune Main
+// ==========================================================================
+
+@import "abstracts/variables";
+@import "abstracts/mixins";
+
+@import "base/page";
+@import "base/responsive";
+
+@import "components/buttons";
+@import "components/hero";
+@import "components/stats";
+@import "components/topics";
+@import "components/collections";
+@import "components/daily";
+@import "components/blog";
+@import "components/cta";
+
+@import "layout/main-page";

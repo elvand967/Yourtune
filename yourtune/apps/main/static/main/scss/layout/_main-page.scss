@@ -1,0 +1,76 @@
+// apps/main/static/main/scss/layout/_main-page.scss
+
+// ==========================================================================
+// Main page layout
+// Общая сетка и композиция домашней страницы.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Main content columns
+// ==========================================================================
+
+.main-page__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: $main-section-gap;
+}
+
+// ==========================================================================
+// Main page sections
+// ==========================================================================
+
+.main-page__section {
+  min-width: 0;
+}
+
+// ==========================================================================
+// Shared content blocks
+// ==========================================================================
+
+.featured-section,
+.daily-section,
+.blog-section,
+.cta-section {
+  @include main-section;
+}
+
+// ==========================================================================
+// Empty state
+// ==========================================================================
+
+.main-page__empty-state {
+  margin: 0;
+  padding: $main-space-4;
+
+  color: var(--yt-text-muted);
+
+  font-size: $main-font-size-sm;
+  line-height: 1.5;
+  text-align: center;
+}
+
+// ==========================================================================
+// Responsive layout
+// ==========================================================================
+
+@include main-tablet {
+  .main-page__columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@include main-mobile {
+  .main-page__columns {
+    gap: $main-space-3;
+  }
+
+  .featured-section,
+  .daily-section,
+  .blog-section,
+  .cta-section {
+    padding: $main-space-5;
+  }
+}

@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # кастомные пакеты:
     "apps.core.apps.CoreConfig",
     "apps.users.apps.UsersConfig",
+    'apps.main.apps.MainConfig',
 ]
 
 
@@ -63,7 +64,7 @@ AUTHENTICATION_BACKENDS = [
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
-ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
@@ -104,6 +105,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+
+                "apps.core.utils.context_processors.site_defaults",
             ],
         },
     },

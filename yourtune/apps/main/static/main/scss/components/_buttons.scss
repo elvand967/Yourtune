@@ -1,0 +1,72 @@
+// apps/main/static/main/scss/components/_buttons.scss
+
+// ==========================================================================
+// Buttons
+// ==========================================================================
+
+.button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 $main-space-4;
+
+  border: 1px solid transparent;
+  border-radius: $main-radius-pill;
+
+  font-size: $main-font-size-sm;
+  font-weight: $main-font-weight-semibold;
+  line-height: 1;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  @include main-theme-transition;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button:focus-visible {
+  outline: 3px solid var(--yt-focus);
+  outline-offset: 3px;
+}
+
+.button--primary {
+  border-color: var(--yt-accent);
+  background: var(--yt-accent);
+  color: #ffffff;
+}
+
+.button--primary:hover {
+  background: var(--yt-accent-strong);
+}
+
+.button--secondary {
+  border-color: var(--yt-line);
+  background: transparent;
+  color: var(--yt-text);
+}
+
+.button--secondary:hover {
+  border-color: var(--yt-accent);
+  color: var(--yt-accent);
+}
+
+@include main-mobile {
+  .button {
+    min-height: 46px;
+  }
+}
+
+@include main-prefers-reduced-motion {
+  .button {
+    transition: none;
+  }
+
+  .button:hover {
+    transform: none;
+  }
+}

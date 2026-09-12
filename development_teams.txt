@@ -37,8 +37,12 @@ python manage.py generate_folder_structure --mode gui
 python manage.py compile_scss --verbose
 -Только core
 python manage.py compile_scss --only core
+
 -Только одно приложение
 python manage.py compile_scss --app catalog
+или
+python manage.py compile_scss --app main
+
 -Режим слежения
 python manage.py compile_scss --watch
 -С явным BASE_DIR

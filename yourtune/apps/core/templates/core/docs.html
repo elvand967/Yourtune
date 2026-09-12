@@ -1,0 +1,22 @@
+{# apps/core/templates/core/contracts_instructions.html #}
+
+{% extends "users/base_userpanel.html" %}
+
+{% block title %}{{ document.seo_title|default:document.title }}{% endblock %}
+{% block meta_description %}{{ document.seo_description }}{% endblock %}
+
+{% block users_content %}
+<article class="contracts-instructions">
+    <header>
+        <h1>{{ document.title }}</h1>
+    </header>
+
+    <section class="document-content ckeditor-content">
+        {{ document.content|safe }}
+    </section>
+
+    <footer>
+        <small>Создано: {{ document.created_at|date:"d.m.Y H:i" }}</small>
+    </footer>
+</article>
+{% endblock %}

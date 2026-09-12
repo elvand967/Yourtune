@@ -1,4 +1,5 @@
 // apps/core/static/core/scss/layout/_footer.scss
+
 // ==========================================================================
 // Footer
 // Нижняя часть сайта: навигация, копирайт, вспомогательные ссылки.
@@ -16,22 +17,26 @@
   background: var(--yt-surface);
   border-top: 1px solid var(--yt-line);
   color: var(--yt-text-muted);
+
   @include theme-transition;
 }
 
 .site-footer__inner {
   @include stack($space-6);
+
   padding-top: $space-8;
   padding-bottom: $space-8;
 }
 
 .site-footer__top {
   @include grid(12, $space-6);
+
   align-items: start;
 }
 
 .site-footer__brand {
   grid-column: span 12;
+
   @include stack($space-3);
 }
 
@@ -45,17 +50,23 @@
 .site-footer__description {
   max-width: 40rem;
   color: var(--yt-text-muted);
+  line-height: $line-height-base;
 }
+
+// ==========================================================================
+// Footer links
+// ==========================================================================
 
 .site-footer__links {
   grid-column: span 12;
+
   @include cluster($space-4, wrap, flex-start);
 }
 
-.site-footer__link {
+.site-footer__link,
+.footer-link {
   color: var(--yt-text-muted);
   text-decoration: none;
-  @include theme-transition;
 
   &:hover {
     color: var(--yt-text);
@@ -67,12 +78,144 @@
   }
 }
 
+// ==========================================================================
+// Footer reveal animation
+// Логика взаимодействия с footer_animations.js
+// ==========================================================================
+
+.footer-reveal,
+.footer-link {
+  opacity: 0;
+  transform: translateY($footer-reveal-distance);
+
+  transition:
+    opacity $transition-slow,
+    transform $transition-slow,
+    color $transition-base,
+    background-color $transition-base;
+
+  transition-delay: 0ms;
+}
+
+.footer-reveal.is-visible,
+.footer-link.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+// ==========================================================================
+// Footer link interaction states
+// ==========================================================================
+
+.footer-link.is-active {
+  color: var(--yt-accent);
+}
+
+.footer-link:focus-visible {
+  @include focus-ring;
+}
+
+// ==========================================================================
+// Footer back-to-top button
+// Логика взаимодействия с footer_animations.js
+// ==========================================================================
+
+.footer-back-to-top {
+  @include inline-center;
+
+  min-width: 42px;
+  min-height: 42px;
+  padding: $space-2;
+
+  border: 1px solid var(--yt-line);
+  border-radius: $radius-pill;
+
+  background: var(--yt-surface);
+  color: var(--yt-text-muted);
+
+  cursor: pointer;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY($footer-back-to-top-distance);
+
+  transition:
+    opacity $transition-base,
+    visibility $transition-base,
+    transform $transition-base,
+    background-color $transition-base,
+    color $transition-base,
+    border-color $transition-base;
+
+  &:hover {
+    background: var(--yt-surface-2, var(--yt-surface));
+    color: var(--yt-text);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// ==========================================================================
+// Footer bottom
+// ==========================================================================
+
 .site-footer__bottom {
   @include cluster($space-3, wrap, center);
+
   justify-content: space-between;
+
   padding-top: $space-4;
   border-top: 1px solid var(--yt-line);
+
+  color: var(--yt-text-muted);
   font-size: $font-size-sm;
+}
+
+// ==========================================================================
+// Reduced motion
+// Уважение системной настройки prefers-reduced-motion
+// ==========================================================================
+
+html.prefers-reduced-motion {
+  .footer-reveal,
+  .footer-link,
+  .footer-back-to-top {
+    transform: none;
+    transition: none;
+  }
+
+  .footer-reveal,
+  .footer-link {
+    opacity: 1;
+  }
+}
+
+@include prefers-reduced-motion {
+  .footer-reveal,
+  .footer-link,
+  .footer-back-to-top {
+    transform: none;
+    transition: none;
+  }
+
+  .footer-reveal,
+  .footer-link {
+    opacity: 1;
+  }
 }
 
 // ==========================================================================

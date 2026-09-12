@@ -1,21 +1,28 @@
 // apps/core/static/core/scss/core.scss
+
 // ==========================================================================
-// Core stylesheet entry point
-// Главная точка сборки всех стилей приложения core.
-// Этот файл компилируется в core.css.
+// YourTune Core stylesheet
+// Главная точка входа для базовых стилей проекта.
 // ==========================================================================
 
 // ==========================================================================
 // Abstracts
-// Переменные, миксины, тема.
-// Сначала подключаем всё, что нужно другим partial-файлам.
+// Переменные и mixins не генерируют CSS сами по себе.
 // ==========================================================================
 
-@import "abstracts/index";
+@import "abstracts/variables";
+@import "abstracts/mixins";
+
+// ==========================================================================
+// Theme tokens
+// CSS-переменные для light, dark и cream тем.
+// ==========================================================================
+
+@import "abstracts/themes";
 
 // ==========================================================================
 // Base
-// Базовые правила, reset и типографика.
+// Сброс, базовая типографика и глобальные правила.
 // ==========================================================================
 
 @import "base/reset";
@@ -24,29 +31,87 @@
 
 // ==========================================================================
 // Components
-// Переиспользуемые UI-элементы.
+// Переиспользуемые визуальные компоненты.
 // ==========================================================================
 
 @import "components/buttons";
 @import "components/cards";
-@import "components/theme-switcher";
-@import "components/modal";
 @import "components/dropdown";
 @import "components/empty-state";
+@import "components/modal";
+@import "components/theme-switcher";
 
 // ==========================================================================
 // Layout
-// Каркас страницы: контейнер, шапка, навигация, подвал...
+// Структурные элементы страницы.
 // ==========================================================================
 
-@import "layout/container";
-@import "layout/header";
-@import "layout/navigation";
-@import "layout/footer";
-@import "layout/sidebar";
-@import "layout/grid";
-@import "layout/forms";
 @import "layout/alerts";
 @import "layout/breadcrumbs";
+@import "layout/container";
+@import "layout/forms";
+@import "layout/footer";
+@import "layout/grid";
+@import "layout/header";
+@import "layout/navigation";
 @import "layout/pagination";
+@import "layout/sidebar";
 @import "layout/tabs";
+
+// ==========================================================================
+// Global page composition
+// ==========================================================================
+
+html {
+  min-height: 100%;
+  background: var(--yt-bg);
+
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+
+  background: var(--yt-gradient-page);
+  color: var(--yt-text);
+
+  font-family: $font-family-base;
+  line-height: $line-height-base;
+
+  @include theme-transition;
+}
+
+.site-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#main-content {
+  flex: 1 0 auto;
+}
+
+// ==========================================================================
+// Global accessibility
+// ==========================================================================
+
+:focus-visible {
+  @include focus-ring;
+}
+
+@include prefers-reduced-motion {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: $reduced-motion-duration !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: $reduced-motion-duration !important;
+    scroll-behavior: auto !important;
+  }
+}

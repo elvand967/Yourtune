@@ -1,0 +1,39 @@
+
+    <section class="hero-parallax">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center">
+          <!-- На мобиле col-8/col-md-8 раньше формы! -->
+          <div class="col-8 col-md-12 order-2 order-md-1 d-flex flex-column justify-center">
+            <div class="text-center">
+              <h2 class="hero-subtitle mb-1">региональный центр услуг</h2>
+              <h1 class="hero-title text-uppercase mb-4">Moloshop</h1>
+              <p class="hero-subtitle mb-1">Легко найти услугу,</p>
+              <p class="hero-subtitle mb-3">легко разместить предложение</p>
+            </div>
+          </div>
+          <div class="col-4 col-md-12 order-1 order-md-2 d-flex">
+            <section class="search-section w-100 mx-auto my-3">
+              <form method="GET" action="/search/">
+                <input type="text" name="q" placeholder="Что ищете?" value="{{ request.GET.q }}">
+                <select name="category">
+                  <option value="">Все категории</option>
+                  {% for category in categories %}
+                  <option value="{{ category.id }}">{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+                <select name="region">
+                  <option value="">Все регионы</option>
+                  {% for region in regions %}
+                  <option value="{{ region.id }}">{{ region.name }}</option>
+                  {% endfor %}
+                </select>
+                <select name="city" id="id_city">
+                  <option value="">Город</option>
+                </select>
+                <button type="submit" class="btn">Поиск</button>
+              </form>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>

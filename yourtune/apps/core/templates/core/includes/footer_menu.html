@@ -1,0 +1,73 @@
+
+{# ../apps/core/templates/core/includes/footer_menu.html #}
+
+{% load string_filters %}
+
+<div class="footer-menu">
+  <div class="row align-items-start">
+    {# первые три родителя — колонками #}
+    {% for parent in parents|slice:":3" %}
+      <div class="col-{{ parent.get_col_desktop }} col-md-{{ parent.get_col_md }}">
+        <div class="footer-block animate-on-reveal" style="--i:{{ forloop.counter0 }}">
+          {% if parent.icon %}
+            <img src="{{ parent.icon.url }}" alt="{{ parent.name }}" class="footer-icon">
+          {% endif %}
+
+          <a href="{{ parent.get_url }}" class="footer-title">{{ parent.name }}</a>
+
+          {# корректная проверка наличия детей #}
+          {% with kids=parent.children.all %}
+            {% if kids %}
+              <ul class="footer-links">
+                {% for child in kids %}
+                  {% if child.is_active_link %}
+                    <li><a href="{{ child.get_url }}">{{ child.name }}</a></li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+{# остальные родители — строками #}
+<div class="footer-extra mt-4">
+  {% for parent in parents|slice:"3:" %}
+    <div class="footer-inline animate-on-reveal" style="--i:{{ forloop.counter0 }}">
+
+      <a href="{{ parent.get_url }}" class="footer-title-inline">
+        {% if parent.icon %}
+          <img src="{{ parent.icon.url }}" alt="{{ parent.name }}" class="footer-icon-inline">
+        {% endif %}
+        {{ parent.name }}
+      </a>
+
+      {% with kids=parent.children.all %}
+        {% if kids %}
+          <ul class="footer-inline-links">
+            {% for child in kids %}
+              {% if child.is_active_link %}
+                <li>
+                  <a href="{{ child.get_url }}"
+                     {% if child.url|startswith:"http" %} target="_blank" rel="noopener noreferrer"{% endif %}>
+                    {% if child.icon %}
+                      <img src="{{ child.icon.url }}" alt="{{ child.name }}" class="footer-social-icon">
+                    {% else %}
+                      {{ child.name }}
+                    {% endif %}
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+    </div>
+  {% endfor %}
+
+  <br>&copy; 2025 Moloshop.by | Все права защищены
+</div>
+
+</div>

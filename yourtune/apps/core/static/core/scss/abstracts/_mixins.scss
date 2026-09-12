@@ -1,4 +1,5 @@
 // apps/core/static/core/scss/abstracts/_mixins.scss
+
 // ==========================================================================
 // Core mixins
 // Вспомогательные миксины проекта YourTune.
@@ -92,6 +93,7 @@
     }
   } @else {
     $next-breakpoint: nth($keys, $next-index);
+
     @include between($breakpoint, $next-breakpoint) {
       @content;
     }
@@ -165,7 +167,11 @@
 // Typography helpers
 // ==========================================================================
 
-@mixin heading($size: $font-size-3xl, $weight: $font-weight-bold, $lh: 1.1) {
+@mixin heading(
+  $size: $font-size-3xl,
+  $weight: $font-weight-bold,
+  $lh: 1.1
+) {
   margin: 0;
   font-size: $size;
   font-weight: $weight;
@@ -179,7 +185,7 @@
 }
 
 @mixin text-muted {
-  color: var(--yt-muted);
+  color: var(--yt-text-muted);
 }
 
 @mixin clamp($lines: 2) {
@@ -212,16 +218,30 @@
   @if length($props) == 0 {
     transition: all $transition-base;
   } @else {
-    transition-property: $props;
-    transition-duration: 180ms;
-    transition-timing-function: ease;
+    $transition-list: ();
+
+    @each $property in $props {
+      $transition-list: append(
+        $transition-list,
+        $property $transition-base,
+        comma
+      );
+    }
+
+    transition: $transition-list;
   }
 }
 
-// Плавная смена темы для указанных свойств
+// Плавная смена темы для указанных свойств.
+//
 // Использование:
-//   @include theme-transition; // все свойства по умолчанию
-//   @include theme-transition(background-color, color); // только указанные
+//
+// @include theme-transition;
+//
+// или:
+//
+// @include theme-transition(background-color, color);
+
 @mixin theme-transition($properties...) {
   @if length($properties) == 0 {
     transition:
@@ -233,15 +253,23 @@
       stroke $transition-base;
   } @else {
     $list: ();
+
     @each $prop in $properties {
-      $list: append($list, $prop $transition-base, comma);
+      $list: append(
+        $list,
+        $prop $transition-base,
+        comma
+      );
     }
+
     transition: $list;
   }
 }
 
 @mixin hover-lift($distance: -1px) {
-  transition: transform $transition-fast, box-shadow $transition-base;
+  transition:
+    transform $transition-fast,
+    box-shadow $transition-base;
 
   &:hover {
     transform: translateY($distance);
@@ -280,7 +308,10 @@
 // Utility helpers
 // ==========================================================================
 
-@mixin pill($padding-y: $space-2, $padding-x: $space-4) {
+@mixin pill(
+  $padding-y: $space-2,
+  $padding-x: $space-4
+) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -288,8 +319,12 @@
   border-radius: $radius-pill;
 }
 
-@mixin badge($bg: var(--yt-chip), $color: var(--yt-text)) {
+@mixin badge(
+  $bg: var(--yt-chip),
+  $color: var(--yt-text)
+) {
   @include pill($space-2, $space-3);
+
   background: $bg;
   color: $color;
   border: 1px solid var(--yt-line);

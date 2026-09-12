@@ -1,0 +1,27 @@
+{# moloshop/apps/core/templates/core/fag.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+
+{% block content %}
+<h1>{{ title }}</h1>
+        {% with ""|center:5 as repeat_range %}
+          {% for _ in repeat_range %}
+            <p>{{ info }}</p>
+          {% endfor %}
+        {% endwith %}
+<br>
+<a href="{% url 'core:docs_detail' slug='politika-konfidentsialnosti' %}">Политика конфиденциальности</a>
+<br>
+<a href="{% url 'core:docs_detail' slug='polzovatelskoe-soglashenie' %}">Пользовательское соглашение</a>
+<br>
+<a href="{% url 'core:docs_detail' slug='soobshchenie-cherez-formu-obratnoi-sviazi' %}">Обратная связь</a>
+
+{% endblock content %}

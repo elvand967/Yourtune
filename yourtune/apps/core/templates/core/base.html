@@ -1,0 +1,246 @@
+{# apps/core/templates/core/base.html #}
+
+{% load static %}
+{% load footer_menu %}
+
+<!DOCTYPE html>
+<html lang="{% block html_lang %}ru{% endblock %}" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  {# ====================================================================== #}
+  {# Основные SEO-метаданные                                               #}
+  {# ====================================================================== #}
+
+  <title>
+    {% block title %}
+      {{ site_default_title|default:"YourTune — аффирмации и ежедневные практики" }}
+    {% endblock %}
+  </title>
+
+  <meta
+    name="description"
+    content="{% block meta_description %}{{ site_default_description|default:"YourTune — платформа аффирмаций, тематических подборок, ежедневных практик и статей для спокойствия, уверенности и личностного роста." }}{% endblock %}"
+  >
+
+  <meta
+    name="robots"
+    content="{% block meta_robots %}index, follow{% endblock %}"
+  >
+
+  <meta
+    name="author"
+    content="YourTune"
+  >
+
+  <link
+    rel="canonical"
+    href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}"
+  >
+
+  {# ====================================================================== #}
+  {# Open Graph                                                            #}
+  {# ====================================================================== #}
+
+  <meta
+    property="og:site_name"
+    content="{{ site_name|default:"YourTune" }}"
+  >
+
+  <meta
+    property="og:locale"
+    content="ru_RU"
+  >
+
+  <meta
+    property="og:title"
+    content="{% block og_title %}{{ site_default_title|default:"YourTune — аффирмации и ежедневные практики" }}{% endblock %}"
+  >
+
+  <meta
+    property="og:description"
+    content="{% block og_description %}{{ site_default_description|default:"YourTune — платформа аффирмаций, тематических подборок, ежедневных практик и статей для спокойствия, уверенности и личностного роста." }}{% endblock %}"
+  >
+
+  <meta
+    property="og:type"
+    content="{% block og_type %}website{% endblock %}"
+  >
+
+  <meta
+    property="og:url"
+    content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}"
+  >
+
+  <meta
+    property="og:image"
+    content="{% block og_image %}{{ site_default_og_image|default:request.build_absolute_uri }}{% endblock %}"
+  >
+
+  <meta
+    property="og:image:alt"
+    content="{% block og_image_alt %}YourTune — аффирмации и ежедневные практики{% endblock %}"
+  >
+
+  <meta
+    property="og:image:type"
+    content="image/jpeg"
+  >
+
+  {# ====================================================================== #}
+  {# X / Twitter Cards                                                     #}
+  {# ====================================================================== #}
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
+
+  <meta
+    name="twitter:title"
+    content="{% block twitter_title %}{{ site_default_title|default:"YourTune — аффирмации и ежедневные практики" }}{% endblock %}"
+  >
+
+  <meta
+    name="twitter:description"
+    content="{% block twitter_description %}{{ site_default_description|default:"YourTune — платформа аффирмаций, тематических подборок, ежедневных практик и статей для спокойствия, уверенности и личностного роста." }}{% endblock %}"
+  >
+
+  <meta
+    name="twitter:image"
+    content="{% block twitter_image %}{{ site_default_og_image|default:request.build_absolute_uri }}{% endblock %}"
+  >
+
+  <meta
+    name="twitter:image:alt"
+    content="{% block twitter_image_alt %}YourTune — аффирмации и ежедневные практики{% endblock %}"
+  >
+
+  {# ====================================================================== #}
+  {# Иконки сайта                                                           #}
+  {# ====================================================================== #}
+
+  <link
+    rel="icon"
+    href="{% static 'core/img/logo.ico' %}"
+    type="image/x-icon"
+  >
+
+  <link
+    rel="shortcut icon"
+    href="{% static 'core/img/logo.ico' %}"
+    type="image/x-icon"
+  >
+
+  {# ====================================================================== #}
+  {# Общие стили core                                                      #}
+  {# ====================================================================== #}
+
+  <link
+    rel="stylesheet"
+    href="{% static 'core/css/core.css' %}"
+  >
+
+  {# Дополнительные стили дочернего шаблона                                #}
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+  <div class="site-wrapper">
+
+    {# ==================================================================== #}
+    {# Header                                                               #}
+    {# ==================================================================== #}
+
+    <header class="main-header">
+      <nav
+        class="navbar"
+        role="navigation"
+        aria-label="Главное меню"
+      >
+        <a
+          class="navbar__brand"
+          href="/"
+        >
+          YourTune
+        </a>
+
+        <div class="navbar__links">
+          <a
+            class="navbar__link"
+            href="#topics"
+          >
+            Темы
+          </a>
+
+          <a
+            class="navbar__link"
+            href="#featured"
+          >
+            Подборки
+          </a>
+
+          <a
+            class="navbar__link"
+            href="#daily"
+          >
+            День
+          </a>
+
+          <a
+            class="navbar__link"
+            href="#blog"
+          >
+            Статьи
+          </a>
+        </div>
+      </nav>
+
+      {% block header %}{% endblock %}
+    </header>
+
+    {# ==================================================================== #}
+    {# Основное содержимое страницы                                         #}
+    {# ==================================================================== #}
+
+    <main
+      id="main-content"
+      class="container"
+    >
+      {% block content %}{% endblock %}
+    </main>
+
+    {# ==================================================================== #}
+    {# Fast navigation                                                      #}
+    {# ==================================================================== #}
+
+    {# {% load fast_nav %} #}
+    {# {% render_fast_nav %} #}
+
+    {# ==================================================================== #}
+    {# Footer                                                               #}
+    {# ==================================================================== #}
+
+    <footer class="site-footer">
+      {% render_footer_menu %}
+    </footer>
+
+  </div>
+
+  {# ====================================================================== #}
+  {# Общие JavaScript-файлы                                                #}
+  {# ====================================================================== #}
+
+  <script
+    src="{% static 'core/js/footer_animations.js' %}"
+  ></script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

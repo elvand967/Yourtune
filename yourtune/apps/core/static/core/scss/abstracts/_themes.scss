@@ -1,3 +1,4 @@
+
 // apps/core/static/core/scss/abstracts/_themes.scss
 
 // ==========================================================================
@@ -43,75 +44,149 @@
 
 
 // ==========================================================================
-// Светлая тема по умолчанию
+// Light theme
 // ==========================================================================
 
-:root {
+:root,
+html[data-theme="light"] {
+  color-scheme: light;
+
   --yt-bg: #f5f7fb;
   --yt-bg-2: #eef2ff;
+
   --yt-surface: #ffffff;
   --yt-surface-2: #eef4ff;
+
   --yt-text: #1f2a37;
-  --yt-muted: #667085;
+  --yt-text-muted: #667085;
+
   --yt-line: #dbe3f0;
+
   --yt-accent: #7c5cff;
   --yt-accent-2: #2dd4bf;
   --yt-accent-3: #f59e0b;
-  --yt-shadow: 0 18px 40px rgba(31, 42, 55, 0.08);
-  --yt-chip: #f3f5fb;
-  --yt-focus: rgba(124, 92, 255, 0.14);
-  --yt-navbar: rgba(245, 247, 251, 0.86);
-  --yt-hero-bg: linear-gradient(135deg, #f7f2ff, #eef4ff);
 
-  color-scheme: light;
+  --yt-focus: #7c5cff;
+
+  --yt-shadow: 0 18px 40px rgba(31, 42, 55, 0.08);
+  --yt-shadow-sm: 0 4px 10px rgba(31, 42, 55, 0.06);
+  --yt-shadow-md: 0 12px 28px rgba(31, 42, 55, 0.10);
+  --yt-shadow-lg: 0 18px 40px rgba(31, 42, 55, 0.12);
+
+  --yt-chip: #f3f5fb;
+
+  --yt-gradient-page:
+    radial-gradient(
+      circle at top,
+      rgba(124, 92, 255, 0.10) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 12%,
+      rgba(45, 212, 191, 0.08) 0%,
+      transparent 22%
+    ),
+    linear-gradient(
+      180deg,
+      var(--yt-bg) 0%,
+      var(--yt-bg-2) 100%
+    );
 }
 
-
 // ==========================================================================
-// Тёмная тема
+// Dark theme
 // ==========================================================================
 
 html[data-theme="dark"] {
+  color-scheme: dark;
+
   --yt-bg: #0b1020;
   --yt-bg-2: #0f172a;
+
   --yt-surface: #121a33;
   --yt-surface-2: #182246;
-  --yt-text: #eef2ff;
-  --yt-muted: #a9b4d0;
-  --yt-line: rgba(255, 255, 255, 0.08);
-  --yt-accent: #7c5cff;
-  --yt-accent-2: #2dd4bf;
-  --yt-accent-3: #f59e0b;
-  --yt-shadow: 0 22px 50px rgba(0, 0, 0, 0.30);
-  --yt-chip: rgba(255, 255, 255, 0.04);
-  --yt-focus: rgba(124, 92, 255, 0.16);
-  --yt-navbar: rgba(11, 16, 32, 0.82);
-  --yt-hero-bg: linear-gradient(135deg, #121a33, #151f3d);
 
-  color-scheme: dark;
+  --yt-text: #eef2ff;
+  --yt-text-muted: #a9b4d0;
+
+  --yt-line: rgba(255, 255, 255, 0.08);
+
+  --yt-accent: #9b87ff;
+  --yt-accent-2: #2dd4bf;
+  --yt-accent-3: #fbbf24;
+
+  --yt-focus: #a78bfa;
+
+  --yt-shadow: 0 22px 50px rgba(0, 0, 0, 0.30);
+  --yt-shadow-sm: 0 6px 14px rgba(0, 0, 0, 0.22);
+  --yt-shadow-md: 0 14px 32px rgba(0, 0, 0, 0.28);
+  --yt-shadow-lg: 0 22px 50px rgba(0, 0, 0, 0.30);
+
+  --yt-chip: rgba(255, 255, 255, 0.04);
+
+  --yt-gradient-page:
+    radial-gradient(
+      circle at top,
+      rgba(124, 92, 255, 0.14) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 12%,
+      rgba(45, 212, 191, 0.10) 0%,
+      transparent 22%
+    ),
+    linear-gradient(
+      180deg,
+      var(--yt-bg) 0%,
+      var(--yt-bg-2) 100%
+    );
 }
 
-
 // ==========================================================================
-// Кремовая тема
+// Cream theme
 // ==========================================================================
 
 html[data-theme="cream"] {
+  color-scheme: light;
+
   --yt-bg: #fdfbf7;
   --yt-bg-2: #f6efe7;
+
   --yt-surface: #fffaf2;
   --yt-surface-2: #f7efe4;
+
   --yt-text: #2d2420;
-  --yt-muted: #756a61;
+  --yt-text-muted: #756a61;
+
   --yt-line: #e6d9cb;
+
   --yt-accent: #b86b4b;
   --yt-accent-2: #7b8f6a;
   --yt-accent-3: #c69a5a;
-  --yt-shadow: 0 16px 34px rgba(72, 56, 42, 0.08);
-  --yt-chip: #fff7ed;
-  --yt-focus: rgba(184, 107, 75, 0.12);
-  --yt-navbar: rgba(253, 251, 247, 0.86);
-  --yt-hero-bg: linear-gradient(135deg, #fffaf2, #f5ede1);
 
-  color-scheme: light;
+  --yt-focus: #b86b4b;
+
+  --yt-shadow: 0 16px 34px rgba(72, 56, 42, 0.08);
+  --yt-shadow-sm: 0 4px 10px rgba(72, 56, 42, 0.05);
+  --yt-shadow-md: 0 12px 28px rgba(72, 56, 42, 0.08);
+  --yt-shadow-lg: 0 16px 34px rgba(72, 56, 42, 0.08);
+
+  --yt-chip: #fff7ed;
+
+  --yt-gradient-page:
+    radial-gradient(
+      circle at top,
+      rgba(184, 107, 75, 0.10) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 80% 12%,
+      rgba(123, 143, 106, 0.10) 0%,
+      transparent 22%
+    ),
+    linear-gradient(
+      180deg,
+      var(--yt-bg) 0%,
+      var(--yt-bg-2) 100%
+    );
 }

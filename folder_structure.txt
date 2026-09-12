@@ -40,9 +40,16 @@
         │   │   │   └── core
         │   │   │       ├── css
         │   │   │       │   └── core.css
+        │   │   │       ├── img
+        │   │   │       │   └── logo.ico
+        │   │   │       ├── js
+        │   │   │       │   ├── fast_nav.js
+        │   │   │       │   ├── footer_animations.js
+        │   │   │       │   └── theme-switcher.js
         │   │   │       └── scss
         │   │   │           ├── core.scss
         │   │   │           ├── abstracts
+        │   │   │           │   ├── _index.scss
         │   │   │           │   ├── _mixins.scss
         │   │   │           │   ├── _themes.scss
         │   │   │           │   └── _variables.scss
@@ -53,23 +60,65 @@
         │   │   │           ├── components
         │   │   │           │   ├── _buttons.scss
         │   │   │           │   ├── _cards.scss
+        │   │   │           │   ├── _dropdown.scss
+        │   │   │           │   ├── _empty-state.scss
+        │   │   │           │   ├── _modal.scss
         │   │   │           │   └── _theme-switcher.scss
-        │   │   │           ├── layout
-        │   │   │           │   ├── _container.scss
-        │   │   │           │   ├── _footer.scss
-        │   │   │           │   ├── _header.scss
-        │   │   │           │   └── _navigation.scss
-        │   │   │           └── themes
-        │   │   │               ├── _cream.scss
-        │   │   │               ├── _dark.scss
-        │   │   │               └── _light.scss
+        │   │   │           └── layout
+        │   │   │               ├── _alerts.scss
+        │   │   │               ├── _breadcrumbs.scss
+        │   │   │               ├── _container.scss
+        │   │   │               ├── _footer.scss
+        │   │   │               ├── _forms.scss
+        │   │   │               ├── _grid.scss
+        │   │   │               ├── _header.scss
+        │   │   │               ├── _navigation.scss
+        │   │   │               ├── _pagination.scss
+        │   │   │               ├── _sidebar.scss
+        │   │   │               └── _tabs.scss
+        │   │   ├── templates
+        │   │   │   └── core
+        │   │   │       ├── base.html
+        │   │   │       ├── docs.html
+        │   │   │       ├── includes
+        │   │   │       │   ├── core_header.html
+        │   │   │       │   ├── fast_scroll_nav.html
+        │   │   │       │   ├── footer_menu.html
+        │   │   │       │   └── main_menu.html
+        │   │   │       ├── partials
+        │   │   │       │   └── field_row.html
+        │   │   │       └── temp
+        │   │   │           ├── about.html
+        │   │   │           ├── board.html
+        │   │   │           ├── fag.html
+        │   │   │           ├── favorites.html
+        │   │   │           ├── feedback.html
+        │   │   │           ├── home.html
+        │   │   │           ├── portfolio.html
+        │   │   │           └── showcase.html
+        │   │   ├── templatetags
+        │   │   │   ├── __init__.py
+        │   │   │   ├── footer_menu.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
         │   │   └── utils
+        │   │       ├── __init__.py
         │   │       ├── compiler_scss.py
+        │   │       ├── context_processors.py
         │   │       ├── generate_folder_structure.py
         │   │       ├── seo_replacements.json
         │   │       ├── slugify_seo.py
         │   │       ├── stop_words.json
+        │   │       ├── temp.html
         │   │       └── __pycache__ [содержимое скрыто]
+        │   ├── main
+        │   │   ├── __init__.py
+        │   │   ├── admin.py
+        │   │   ├── apps.py
+        │   │   ├── models.py
+        │   │   ├── tests.py
+        │   │   ├── views.py
+        │   │   ├── __pycache__ [содержимое скрыто]
+        │   │   └── migrations [содержимое скрыто]
         │   └── users
         │       ├── __init__.py
         │       ├── adapters.py
@@ -126,6 +175,11 @@
         │       └── __pycache__ [содержимое скрыто]
         ├── logs
         │   ├── scss_compile
-        │   │   └── scss_compile_20260906_204118.log
+        │   │   ├── scss_compile_20260912_122626.log
+        │   │   └── scss_compile_20260912_125133.log
         │   └── scss_errors
-        └── media [содержимое скрыто]
+        ├── media [содержимое скрыто]
+        └── static
+            ├── css
+            ├── images
+            └── js

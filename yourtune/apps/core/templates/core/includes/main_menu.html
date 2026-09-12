@@ -1,0 +1,52 @@
+{# moloshop/apps/core/templates/core/includes/main_menu.html #}
+{% load static %}
+
+<div class="navbar">
+  <div class="row align-items-center">
+
+    <!-- Логотип и бренд -->
+    <div class="navbar-brand col-3 col-md-12">
+      <a href="{% url 'main:includes' %}" class="brand-link">
+        <img src="{% static 'core/img/logo.png' %}" alt="MOLOSHOP Logo" class="brand-logo">
+        <span class="brand-name">MOLOSHOP<sup>rcu</sup></span>
+      </a>
+    </div>
+
+    <!-- Гамбургер и подпись -->
+    <input type="checkbox" id="menu-toggle" class="d-none">
+    <div class="navbar-toggle">
+      <span class="menu-label">Главное меню</span>
+      <label for="menu-toggle" class="hamburger" aria-label="Открыть меню">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+    </div>
+
+    <!-- Основное меню -->
+    <div id="navbar-menu" class="navbar-menu col-9 col-md-12">
+      <ul class="menu-list" role="menubar" aria-label="Главное меню">
+        {% for item in menu_items %}
+          <li class="menu-item{% if item.children %} has-dropdown{% endif %}" role="none">
+            <div class="menu-link-wrap">
+              <a href="{% url item.url_name %}" class="menu-link" role="menuitem">{{ item.title }}</a>
+            </div>
+            {% if item.children %}
+              <ul class="dropdown-menu" aria-label="Подменю" role="menu">
+                {% for child in item.children %}
+                  <li role="none">
+                    <a href="{% url child.url_name %}" class="dropdown-link" role="menuitem">{{ child.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+          {% if not forloop.last %}
+            <li class="divider-item d-none-md-down" aria-hidden="true" role="presentation">|</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+</div>

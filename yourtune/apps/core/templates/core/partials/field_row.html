@@ -1,0 +1,80 @@
+
+{# apps/core/templates/core/partials/field_row.html #}
+{# Универсальный рендерер поля формы Django с адаптацией под сетку проекта #}
+
+{% comment %}
+Чтобы шаблон работал с фильтром {% render_field %}, нужно установить пакет:
+pip install django-widget-tweaks
+-----------------------------------------------------------------------------
+INSTALLED_APPS = [
+    ...
+    "widget_tweaks",
+]
+-----------------------------------------------------------------------------
+| Возможность                                                                   | Пример |
+| ----------------------------------------------------------------------------- | ------ |
+| Автоматически определяет тип поля (input, select, textarea, date/time и т.д.) | ✅      |
+| Подсвечивает ошибки через `is-invalid`                                        | ✅      |
+| Показывает `placeholder`, если он задан в `widget.attrs`                      | ✅      |
+| Показывает `help_text`, если определён в `forms.py`                           | ✅      |
+| Добавляет `*` к обязательным полям                                            | ✅      |
+| Поддерживает адаптивную сетку (4/8 и col-sm-12 на мобильных)                  | ✅      |
+| Готов к переиспользованию в любом шаблоне (admin, userpanel, landing)         | ✅      |
+-----------------------------------------------------------------------------
+💡 Пример использования в шаблоне
+{% for field in form %}
+  {% include "core/partials/field_row.html" with field=field %}
+{% endfor %}
+-----------------------------------------------------------------------------
+{% endcomment %}
+
+
+{% load widget_tweaks %}
+
+<div class="row align-items-start mb-2 field-row" data-field-name="{{ field.name }}">
+  {# ======= Левая колонка: метка ======= #}
+  <div class="col-4 col-sm-12 mb-sm-1">
+    {% if field.label %}
+      {{ field.label_tag }}
+      {% if field.field.required %}
+        <span class="text-danger">*</span>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  {# ======= Правая колонка: элемент ввода ======= #}
+  <div class="col-8 col-sm-12">
+    {% comment %}
+      Поддержка динамического класса для ошибки (добавляется через widget_tweaks)
+      + корректная работа placeholder и readonly
+    {% endcomment %}
+
+    {% if field.errors %}
+      {% render_field field class+="form-control is-invalid" %}
+    {% else %}
+      {% render_field field class+="form-control" %}
+    {% endif %}
+
+    {# ======= Поддержка placeholder, readonly, disabled ======= #}
+    {% if field.field.widget.attrs.placeholder %}
+      <small class="form-text text-muted">
+        {{ field.field.widget.attrs.placeholder }}
+      </small>
+    {% endif %}
+
+    {# ======= Ошибки ======= #}
+    {% if field.errors %}
+      <div class="text-danger small mt-1">
+        {{ field.errors|join:", " }}
+      </div>
+    {% endif %}
+
+    {# ======= Help-текст ======= #}
+    {% if field.help_text %}
+      <small class="form-text text-muted">
+        {{ field.help_text }}
+      </small>
+    {% endif %}
+  </div>
+</div>
+

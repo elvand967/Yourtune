@@ -1,4 +1,5 @@
 // apps/core/static/core/scss/abstracts/_variables.scss
+
 // ==========================================================================
 // Core design tokens
 // Базовые переменные проекта YourTune.
@@ -53,7 +54,7 @@ $space-16: 64px;
 // Radius
 // ==========================================================================
 
-$radius-xs: 4px;        // маленькое скругление: кнопки, инпуты, чипы
+$radius-xs: 4px;
 $radius-sm: 8px;
 $radius-md: 12px;
 $radius-lg: 20px;
@@ -73,18 +74,18 @@ $font-family-base:
   Arial,
   sans-serif;
 
-$font-size-xs: 0.75rem;   // 12px
-$font-size-sm: 0.875rem;  // 14px
-$font-size-md: 1rem;      // 16px
-$font-size-lg: 1.125rem;  // 18px
-$font-size-xl: 1.25rem;   // 20px
-$font-size-2xl: 1.5rem;   // 24px
-$font-size-3xl: 1.875rem; // 30px
-$font-size-4xl: 2.25rem;  // 36px
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-md: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: 1.5rem;
+$font-size-3xl: 1.875rem;
+$font-size-4xl: 2.25rem;
 
-$line-height-normal: 1.5; // для обычного текста в кнопках, меню, элементах интерфейса;
-$line-height-base: 1.6;   // основной межстрочный интервал
-$line-height-tight: 1.2;  // для заголовков
+$line-height-normal: 1.5;
+$line-height-base: 1.6;
+$line-height-tight: 1.2;
 
 $font-weight-regular: 400;
 $font-weight-medium: 500;
@@ -98,6 +99,14 @@ $font-weight-bold: 700;
 $transition-fast: 120ms ease;
 $transition-base: 180ms ease;
 $transition-slow: 260ms ease;
+
+// ==========================================================================
+// Footer animation tokens
+// ==========================================================================
+
+$footer-reveal-distance: 18px;
+$footer-back-to-top-distance: 10px;
+$footer-animation-delay-step: 70ms;
 
 // ==========================================================================
 // Z-index

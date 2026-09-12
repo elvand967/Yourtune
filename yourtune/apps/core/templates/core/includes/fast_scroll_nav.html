@@ -1,0 +1,40 @@
+{# ../apps/core/templates/core/includes/fast_scroll_nav.html #}
+
+{% load static %}
+
+<div class="fast-scroll-nav-fixed">
+ <div class="container">
+  <div class="fast-scroll-nav row align-items-center">
+
+    <!-- Левая кнопка -->
+    <div class="col-2 d-flex justify-center">
+      {% if left_btn %}
+        <a href="{{ left_btn.url }}" class="fast-scroll-btn" title="{{ left_btn.title }}">
+          <img src="{% static 'core/img/icons/png/'|add:left_btn.icon %}" alt="{{ left_btn.title }}">
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- Кнопки скролинга вверх/вниз -->
+{# <!--    <div class="col-8 d-flex justify-center gap-2"> --> #}
+    <div class="col-8 d-flex justify-center">
+      <button class="fast-scroll-btn up" title="Наверх">
+        <img src="{% static 'core/img/icons/png/chevron-up.png' %}" alt="Наверх">
+      </button>
+      <button class="fast-scroll-btn down" title="Вниз">
+        <img src="{% static 'core/img/icons/png/chevron-down.png' %}" alt="Вниз">
+      </button>
+    </div>
+
+    <!-- Правая кнопка -->
+    <div class="col-2 d-flex justify-center">
+      {% if right_btn %}
+        <a href="{{ right_btn.url }}" class="fast-scroll-btn" title="{{ right_btn.title }}">
+          <img src="{% static 'core/img/icons/png/'|add:right_btn.icon %}" alt="{{ right_btn.title }}">
+        </a>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+</div>

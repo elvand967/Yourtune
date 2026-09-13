@@ -1,21 +1,12 @@
 {# apps/core/templates/core/includes/main_menu.html #}
 {# Шаблон главного меню YourTune с dropdown, профилем и мобильной версией #}
 
+
 {# ====================================================================== #}
-{# Кнопка бургера (видна только на мобильных)                             #}
+{# Checkbox hack — должен быть ПЕРВЫМ в шаблоне                          #}
 {# ====================================================================== #}
 
-<button
-  class="topbar__burger"
-  type="button"
-  aria-label="Открыть меню"
-  aria-expanded="false"
-  aria-controls="mobile-menu"
->
-  <span class="topbar__burger-line"></span>
-  <span class="topbar__burger-line"></span>
-  <span class="topbar__burger-line"></span>
-</button>
+<input type="checkbox" id="menu-toggle" class="topbar__menu-toggle">
 
 
 {# ====================================================================== #}
@@ -26,12 +17,40 @@
 
   {# Основные пункты меню #}
   {% for item in menu_items %}
-    <a
-      class="topbar__pill"
-      href="{% url item.url_name %}"
-    >
-      {{ item.title }}
-    </a>
+    {% if item.children %}
+      {# Пункт с подменю #}
+      <div class="topbar__dropdown">
+        <button
+          class="topbar__pill topbar__pill--dropdown"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span>{{ item.title }}</span>
+          <span class="topbar__pill-arrow">▼</span>
+        </button>
+
+        <div class="topbar__dropdown-menu">
+          {% for child in item.children %}
+            <a
+              class="topbar__dropdown-item"
+              href="{% url child.url_name %}"
+            >
+              <span class="topbar__dropdown-icon">{{ child.icon }}</span>
+              <span>{{ child.title }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      {# Обычная ссылка #}
+      <a
+        class="topbar__pill"
+        href="{% url item.url_name %}"
+      >
+        {{ item.title }}
+      </a>
+    {% endif %}
   {% empty %}
     {# Если menu_items пуст #}
     <a class="topbar__pill" href="{% url 'main:home' %}">Главная</a>
@@ -57,7 +76,7 @@
         {% for child in profile_menu.children %}
           <a
             class="topbar__dropdown-item{% if child.is_admin %} topbar__dropdown-item--admin{% endif %}"
-            href="{{ child.url }}"  {# ← Здесь url уже готовый путь из reverse() #}
+            href="{{ child.url }}"
           >
             <span class="topbar__dropdown-icon">{{ child.icon }}</span>
             <span>{{ child.title }}</span>
@@ -67,22 +86,33 @@
     </div>
   {% endif %}
 
-{# Переключатель тем #}
-<button
-  id="theme-toggle"
-  class="topbar__toggle"
-  type="button"
-  aria-label="Цветовые схемы"
-  title="Цветовые схемы"
->
-  <span class="topbar__toggle-icon"></span>
-</button>
+  {# Переключатель тем #}
+  <button
+    id="theme-toggle"
+    class="topbar__toggle"
+    type="button"
+    aria-label="Цветовые схемы"
+    title="Цветовые схемы"
+  >
+    <span class="topbar__toggle-icon"></span>
+  </button>
 
 </nav>
 
 
 {# ====================================================================== #}
-{# Мобильное меню (выезжающая панель)                                     #}
+{# Бургер — label для checkbox (после десктоп меню)                      #}
+{# ====================================================================== #}
+
+<label for="menu-toggle" class="topbar__burger" aria-label="Открыть меню">
+  <span class="topbar__burger-line"></span>
+  <span class="topbar__burger-line"></span>
+  <span class="topbar__burger-line"></span>
+</label>
+
+
+{# ====================================================================== #}
+{# Мобильное меню (выезжающая панель) — ПОСЛЕ бургера                    #}
 {# ====================================================================== #}
 
 <div
@@ -105,52 +135,100 @@
     </div>
 
     {# Навигация #}
-<nav class="topbar__nav topbar__nav--desktop" aria-label="Главное меню">
+    <nav class="topbar__mobile-nav">
 
-  {# 1. Основные пункты меню #}
-  {% for item in menu_items %}
-    <a class="topbar__pill" href="{{ item.url }}">{{ item.title }}</a>
-  {% empty %}
-    <a class="topbar__pill" href="{% url 'main:home' %}">Главная</a>
-    <a class="topbar__pill" href="{% url 'main:about' %}">О проекте</a>
-    <a class="topbar__pill" href="{% url 'main:faq' %}">FAQ</a>
-    <a class="topbar__pill" href="{% url 'main:blog' %}">Блог</a>
-  {% endfor %}
-
-  {# 2. Переключатель тем в мобильном меню #}
-  <div class="topbar__mobile-theme">
-    <span>Тема оформления</span>
-    <button
-      id="theme-toggle-mobile"
-      class="topbar__toggle"
-      type="button"
-      aria-label="Цветовые схемы"
-      title="Цветовые схемы"
-    >
-      <span class="topbar__toggle-icon"></span>
-    </button>
-  </div>
-
-  {# 3. Профиль / Вход (dropdown) — В КОНЦЕ #}
-  {% if profile_menu %}
-    <div class="topbar__dropdown">
-      <button class="topbar__pill topbar__pill--dropdown" type="button" aria-haspopup="true" aria-expanded="false">
-        <span class="topbar__pill-icon">{{ profile_menu.icon }}</span>
-        <span>{{ profile_menu.title }}</span>
-      </button>
-
-      <div class="topbar__dropdown-menu">
-        {% for child in profile_menu.children %}
-          <a class="topbar__dropdown-item{% if child.is_admin %} topbar__dropdown-item--admin{% endif %}" href="{{ child.url }}">
-            <span class="topbar__dropdown-icon">{{ child.icon }}</span>
-            <span>{{ child.title }}</span>
+      {# Основные пункты меню #}
+      {% for item in menu_items %}
+        {% if item.children %}
+          {# Пункт с подменю — в мобильном меню показываем как заголовок #}
+          <div class="topbar__mobile-submenu">
+            <span class="topbar__mobile-submenu-title">{{ item.title }}</span>
+            {% for child in item.children %}
+              <a
+                class="topbar__mobile-item topbar__mobile-item--child"
+                href="{% url child.url_name %}"
+              >
+                <span class="topbar__mobile-icon">{{ child.icon }}</span>
+                <span class="topbar__mobile-title">{{ child.title }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          {# Обычная ссылка #}
+          <a
+            class="topbar__mobile-item"
+            href="{% url item.url_name %}"
+          >
+            <span class="topbar__mobile-icon">{{ item.icon }}</span>
+            <span class="topbar__mobile-title">{{ item.title }}</span>
           </a>
-        {% endfor %}
-      </div>
-    </div>
-  {% endif %}
+        {% endif %}
+      {% empty %}
+        <a class="topbar__mobile-item" href="{% url 'main:home' %}">
+          <span class="topbar__mobile-icon">🏠</span>
+          <span class="topbar__mobile-title">Главная</span>
+        </a>
+        <a class="topbar__mobile-item" href="{% url 'main:about' %}">
+          <span class="topbar__mobile-icon">ℹ️</span>
+          <span class="topbar__mobile-title">О проекте</span>
+        </a>
+        <a class="topbar__mobile-item" href="{% url 'main:faq' %}">
+          <span class="topbar__mobile-icon">❓</span>
+          <span class="topbar__mobile-title">FAQ</span>
+        </a>
+        <a class="topbar__mobile-item" href="{% url 'main:blog' %}">
+          <span class="topbar__mobile-icon">📝</span>
+          <span class="topbar__mobile-title">Блог</span>
+        </a>
+      {% endfor %}
 
-</nav>
+      {# Разделитель #}
+      <div class="topbar__mobile-divider"></div>
+
+      {# Профиль / Вход #}
+      {% if is_authenticated %}
+        <div class="topbar__mobile-profile">
+          <span class="topbar__mobile-profile-label">Профиль</span>
+          {% for child in profile_menu.children %}
+            <a
+              class="topbar__mobile-item{% if child.is_admin %} topbar__mobile-item--admin{% endif %}"
+              href="{{ child.url }}"
+            >
+              <span class="topbar__mobile-icon">{{ child.icon }}</span>
+              <span class="topbar__mobile-title">{{ child.title }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="topbar__mobile-auth">
+          <span class="topbar__mobile-profile-label">Вход</span>
+          {% for child in profile_menu.children %}
+            <a
+              class="topbar__mobile-item"
+              href="{{ child.url }}"
+            >
+              <span class="topbar__mobile-icon">{{ child.icon }}</span>
+              <span class="topbar__mobile-title">{{ child.title }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {# Переключатель тем в мобильном меню #}
+      <div class="topbar__mobile-theme">
+        <span>Тема оформления</span>
+        <button
+          id="theme-toggle-mobile"
+          class="topbar__toggle"
+          type="button"
+          aria-label="Цветовые схемы"
+          title="Цветовые схемы"
+        >
+          <span class="topbar__toggle-icon"></span>
+        </button>
+      </div>
+
+    </nav>
   </div>
 
   {# Затемнение фона #}

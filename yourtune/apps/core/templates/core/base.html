@@ -2,7 +2,7 @@
 
 {% load static %}
 {% load footer_menu %}
-{% load core_tags %}  {# ← Добавляем загрузку core_tags #}
+{% load core_tags %}
 
 <!DOCTYPE html>
 <html lang="{% block html_lang %}ru{% endblock %}" data-theme="dark">
@@ -156,36 +156,36 @@
   <div class="site-wrapper">
 
     {# ==================================================================== #}
-    {# Header — шапка topbar                                         #}
+    {# Header — шапка topbar                                               #}
     {# ==================================================================== #}
 
-    <header class="topbar">
-      <div class="topbar__inner">
+  <header class="topbar">
+  <div class="topbar__inner">
 
-        {# Логотип #}
-        <div class="topbar__logo" aria-hidden="true"></div>
+    {# Логотип #}
+    <div class="topbar__logo" aria-hidden="true"></div>
 
-        {# Бренд #}
-        <div class="topbar__brand">
-          <strong>YourTune</strong>
-          <span>Аффирмации, подборки, практика</span>
-        </div>
+    {# Бренд #}
+    <div class="topbar__brand">
+      <strong>YourTune</strong>
+      <span>Аффирмации, подборки, практика</span>
+    </div>
 
-        {# Поиск #}
-        <div class="topbar__search" role="search" aria-label="Поиск">
-          <div class="topbar__search-dot"></div>
-          <input
-            type="text"
-            placeholder="Поиск тем, подборок, аффирмаций..."
-            aria-label="Поиск по сайту"
-          />
-        </div>
+    {# Поиск #}
+    <div class="topbar__search" role="search" aria-label="Поиск">
+      <div class="topbar__search-dot"></div>
+      <input
+        type="text"
+        placeholder="Поиск тем, подборок, аффирмаций..."
+        aria-label="Поиск по сайту"
+      />
+    </div>
 
-        {# Главное меню через templatetag #}
-        {% main_menu %}
+    {# Главное меню через templatetag — внутри теперь checkbox, бургер и меню #}
+    {% main_menu %}
 
-      </div>
-    </header>
+  </div>
+</header>
 
     {# ==================================================================== #}
     {# Основное содержимое страницы                                         #}

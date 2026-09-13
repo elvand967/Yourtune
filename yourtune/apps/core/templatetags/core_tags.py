@@ -33,16 +33,22 @@ def main_menu(context):
             'icon': 'ℹ️',
             'children': [
                 {
+                    'title': 'О нас',
+                    'url': 'main:about',
+                    'url_name': 'main:about',
+                    'icon': 'ℹ️'
+                },
+                {
                     'title': 'Политика',
-                    'url': 'account_login',
-                    'url_name': 'account_login',
-                    'icon': '🔑'
+                    'url': 'main:policy',
+                    'url_name': 'main:policy',
+                    'icon': '🛡️'
                 },
                 {
                     'title': 'Правила',
-                    'url': 'account_signup',
-                    'url_name': 'account_signup',
-                    'icon': '📝'
+                    'url': 'main:rules',
+                    'url_name': 'main:rules',
+                    'icon': '📜'
                 }
             ]
         },

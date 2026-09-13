@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{# apps/main/templates/main/rules.html #}
+{# Страница правил использования сервиса YourTune #}
 
-</body>
-</html>
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ title|default:"Правила использования сервиса" }} — YourTune{% endblock %}
+
+{% block meta_description %}{{ description|default:"Правила использования платформы YourTune." }}{% endblock %}
+
+{% block meta_robots %}index, follow{% endblock %}
+
+{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}
+
+{% block og_title %}{{ title|default:"Правила использования сервиса" }} — YourTune{% endblock %}
+
+{% block og_description %}{{ description|default:"Правила использования платформы YourTune." }}{% endblock %}
+
+{% block og_type %}website{% endblock %}
+
+{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
+
+{% block twitter_title %}{{ title|default:"Правила использования сервиса" }} — YourTune{% endblock %}
+
+{% block twitter_description %}{{ description|default:"Правила использования платформы YourTune." }}{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="rules-page">
+    <section class="rules-page__header">
+      <div class="container">
+        <h1 class="rules-page__title">{{ title }}</h1>
+        <p class="rules-page__lead">{{ description }}</p>
+      </div>
+    </section>
+
+    <section class="rules-page__content">
+      <div class="container">
+        <article class="rules-content">
+          {% for section in sections %}
+            <section class="rules-section">
+              <h2>{{ section.heading }}</h2>
+              <div class="rules-section__content">
+                {{ section.content|safe }}
+              </div>
+            </section>
+          {% endfor %}
+        </article>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'main/js/main.js' %}" defer></script>
+{% endblock %}

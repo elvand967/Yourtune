@@ -1,3 +1,4 @@
+
 // ==========================================================================
 // apps/core/static/core/scss/layout/_topbar.scss
 // Шапка сайта (Topbar) для YourTune
@@ -13,7 +14,11 @@
 //
 // ==========================================================================
 
-// Импортируем переменные (не генерирует CSS, только переменные)
+// ==========================================================================
+// apps/core/static/core/scss/layout/_topbar.scss
+// Шапка сайта (Topbar) для YourTune
+// ==========================================================================
+
 @import "../abstracts/variables";
 
 
@@ -22,22 +27,16 @@
 // ============================================================================
 
 .topbar {
-  // Липкая позиция — прилипает к верху экрана при прокрутке
   position: sticky;
   top: 0;
-
-  // Z-index выше контента, но ниже модального меню
   z-index: $z-sticky;
 
-  // Фон с прозрачностью и размытием (glassmorphism эффект)
   background: color-mix(in srgb, var(--yt-bg) 86%, transparent);
   backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px); // Для Safari
+  -webkit-backdrop-filter: blur(14px);
 
-  // Граница снизу
   border-bottom: 1px solid var(--yt-line);
 
-  // Плавные переходы для смены темы
   transition:
     background-color $transition-base,
     border-color $transition-base,
@@ -50,21 +49,13 @@
 // ============================================================================
 
 .topbar__inner {
-  // Ограничиваем ширину как у основного контейнера
   max-width: $container-max-width;
-
-  // Центрируем по горизонтали
   margin: 0 auto;
-
-  // Внутренние отступы
   padding: $space-4 $container-padding-x;
 
-  // Flexbox для горизонтального расположения элементов
   display: flex;
   gap: $space-4;
   align-items: center;
-
-  // Перенос на новую строку на мобильных
   flex-wrap: wrap;
 }
 
@@ -74,27 +65,15 @@
 // ============================================================================
 
 .topbar__logo {
-  // Фиксированный размер
   width: 44px;
   height: 44px;
-
-  // Скруглённые углы
   border-radius: $radius-lg;
 
-  // Градиентный фон (используем акцентный цвет темы)
-  background: linear-gradient(
-    135deg,
-    var(--yt-accent),
-    #9f7aea // Светло-фиолетовый для контраста
-  );
-
-  // Тень
+  background: linear-gradient(135deg, var(--yt-accent), #9f7aea);
   box-shadow: $shadow-lg;
 
-  // Не сжимается
   flex: 0 0 auto;
 
-  // Плавные переходы
   transition:
     background-color $transition-base,
     box-shadow $transition-base;
@@ -102,30 +81,23 @@
 
 
 // ============================================================================
-// 4. Бренд (название + подпись)
+// 4. Бренд
 // ============================================================================
 
 .topbar__brand {
-  // Вертикальное расположение
   display: flex;
   flex-direction: column;
-
-  // Межстрочный интервал
   line-height: $line-height-tight;
-
-  // Минимальная ширина
   min-width: 140px;
 }
 
 .topbar__brand strong {
-  // Название YourTune
   font-size: $font-size-md;
   font-weight: $font-weight-bold;
   color: var(--yt-text);
 }
 
 .topbar__brand span {
-  // Подпись "Аффирмации, подборки, практика"
   font-size: $font-size-sm;
   color: var(--yt-text-muted);
 }
@@ -136,31 +108,18 @@
 // ============================================================================
 
 .topbar__search {
-  // Растягивается на доступное пространство
   flex: 1;
-
-  // Flexbox для иконки и input
   display: flex;
   gap: $space-2;
   align-items: center;
-
-  // Внутренние отступы
   padding: $space-3 $space-4;
-
-  // Полностью скруглённая форма
   border-radius: $radius-pill;
 
-  // Фон и граница
   background: var(--yt-surface);
   border: 1px solid var(--yt-line);
-
-  // Тень
   box-shadow: $shadow-lg;
-
-  // Минимальная ширина
   min-width: 200px;
 
-  // Плавные переходы
   transition:
     background-color $transition-base,
     border-color $transition-base,
@@ -168,43 +127,30 @@
 }
 
 .topbar__search-dot {
-  // Анимированная точка-индикатор
   width: 10px;
   height: 10px;
   border-radius: $radius-pill;
   background: var(--yt-accent-2);
   flex: 0 0 auto;
-
-  // Пульсация
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
 @keyframes pulse-dot {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 .topbar__search input {
-  // Input на всю ширину
   width: 100%;
-
-  // Без границ и фона
   border: 0;
   outline: 0;
   background: transparent;
-
-  // Шрифт
   font-size: $font-size-md;
   color: var(--yt-text);
   font-family: $font-family-base;
 }
 
 .topbar__search input::placeholder {
-  // Цвет placeholder
   color: color-mix(in srgb, var(--yt-text-muted) 75%, #98a2b3);
 }
 
@@ -214,13 +160,10 @@
 // ============================================================================
 
 .topbar__nav {
-  // Flexbox
   display: flex;
   gap: $space-2;
   flex-wrap: wrap;
   align-items: center;
-
-  // Прижимаем вправо
   justify-content: flex-end;
 }
 
@@ -230,39 +173,25 @@
 // ============================================================================
 
 .topbar__pill {
-  // ← КРИТИЧНО: inline-flex для работы внутри flex-контейнера
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
 
-  // Внутренние отступы
   padding: $space-2 $space-4;
-
-  // Полностью скруглённая форма
   border-radius: $radius-pill;
 
-  // Фон и граница
   background: var(--yt-surface);
   border: 1px solid var(--yt-line);
-
-  // Цвет текста
   color: var(--yt-text-muted);
 
-  // Шрифт
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-
-  // Тень
   box-shadow: $shadow-lg;
 
-  // Курсор
   cursor: pointer;
-
-  // Запрет выделения текста
   user-select: none;
 
-  // Плавные переходы
   transition:
     background-color $transition-base,
     color $transition-base,
@@ -272,16 +201,25 @@
 }
 
 .topbar__pill:hover {
-  // При наведении
   background: var(--yt-surface-2);
   color: var(--yt-text);
-  transform: translateY(-1px); // Лёгкое поднятие
+  transform: translateY(-1px);
 }
 
 .topbar__pill:focus-visible {
-  // Видимый фокус для доступности
   outline: 3px solid var(--yt-focus);
   outline-offset: 2px;
+}
+
+.topbar__pill-arrow {
+  font-size: 10px;
+  margin-left: 4px;
+  opacity: 0.7;
+  transition: transform $transition-base;
+}
+
+.topbar__dropdown:hover .topbar__pill-arrow {
+  transform: rotate(180deg);
 }
 
 
@@ -290,30 +228,21 @@
 // ============================================================================
 
 .topbar__toggle {
-  // Flexbox для иконки
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  // Квадратная кнопка
   width: 44px;
   height: 44px;
   padding: 0;
 
-  // Полностью скруглённая форма
   border-radius: $radius-pill;
-
-  // Фон и граница
   background: var(--yt-surface);
   border: 1px solid var(--yt-line);
-
-  // Тень
   box-shadow: $shadow-lg;
 
-  // Курсор
   cursor: pointer;
 
-  // Плавные переходы
   transition:
     background-color $transition-base,
     border-color $transition-base,
@@ -332,7 +261,6 @@
 }
 
 .topbar__toggle-icon {
-  // Иконка — эмодзи
   font-size: 20px;
   line-height: 1;
   flex: 0 0 auto;
@@ -343,14 +271,14 @@
   transform: scale(1.1);
 }
 
+
 // ============================================================================
-// 9. Dropdown меню (профиль/вход)
+// 9. Dropdown меню
 // ============================================================================
 
 .topbar__dropdown {
   position: relative;
 
-  // Показываем меню при наведении
   &:hover .topbar__dropdown-menu {
     display: flex;
   }
@@ -360,19 +288,13 @@
   display: inline-flex;
   align-items: center;
   gap: $space-1;
-
-  // ← КРИТИЧНО: pointer-events только на кнопке, не на контейнере
-  pointer-events: auto;
-}
-
-.topbar__pill-icon {
-  font-size: $font-size-md;
+  cursor: pointer;
 }
 
 .topbar__dropdown-menu {
   position: absolute;
   top: calc(100% + $space-2);
-  right: 0;
+  left: 0;
   z-index: $z-dropdown;
 
   display: none;
@@ -386,13 +308,6 @@
   border: 1px solid var(--yt-line);
   border-radius: $radius-lg;
   box-shadow: $shadow-lg;
-
-  // ← КРИТИЧНО: pointer-events только когда меню видимо
-  pointer-events: none;
-
-  .topbar__dropdown:hover & {
-    pointer-events: auto;
-  }
 }
 
 .topbar__dropdown-item {
@@ -420,7 +335,6 @@
   font-size: $font-size-md;
 }
 
-// Выделение админ-ссылки
 .topbar__dropdown-item--admin {
   background: color-mix(in srgb, var(--yt-accent) 10%, var(--yt-surface-2));
   border: 1px solid color-mix(in srgb, var(--yt-accent) 30%, var(--yt-line));
@@ -432,8 +346,20 @@
 
 
 // ============================================================================
-// 10. Mobile burger button
+// 10. Checkbox hack + Mobile burger button
 // ============================================================================
+
+.topbar__menu-toggle {
+  display: none;
+
+  @include below(md) {
+    display: block;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
 
 .topbar__burger {
   display: none;
@@ -448,11 +374,11 @@
   border: 0;
   background: transparent;
   cursor: pointer;
+  flex: 0 0 auto;
+  margin-left: auto;
 
-  // Показываем только на мобильных
   @include below(md) {
     display: flex;
-    order: -1;
   }
 }
 
@@ -465,16 +391,16 @@
   transition: transform $transition-base, opacity $transition-base;
 }
 
-// Анимация бургера при открытии
-.topbar__burger[aria-expanded="true"] .topbar__burger-line:nth-child(1) {
+// Анимация при открытии (через checkbox)
+.topbar__menu-toggle:checked ~ .topbar__burger .topbar__burger-line:nth-child(1) {
   transform: translateY(6px) rotate(45deg);
 }
 
-.topbar__burger[aria-expanded="true"] .topbar__burger-line:nth-child(2) {
+.topbar__menu-toggle:checked ~ .topbar__burger .topbar__burger-line:nth-child(2) {
   opacity: 0;
 }
 
-.topbar__burger[aria-expanded="true"] .topbar__burger-line:nth-child(3) {
+.topbar__menu-toggle:checked ~ .topbar__burger .topbar__burger-line:nth-child(3) {
   transform: translateY(-6px) rotate(-45deg);
 }
 
@@ -508,7 +434,6 @@
     top: 0;
     left: 0;
     z-index: $z-modal + 100;
-
     display: none;
     width: 100%;
     height: 100%;
@@ -530,7 +455,6 @@
   height: 100%;
   padding: $space-5;
 
-  // Фон панели: 25% прозрачности (75% поверхности)
   background: color-mix(in srgb, var(--yt-surface) 75%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -564,13 +488,11 @@
   width: 44px;
   height: 44px;
   padding: 0;
-
   border: 0;
   background: transparent;
   color: var(--yt-text);
   font-size: $font-size-xl;
   cursor: pointer;
-
   @include inline-center;
 }
 
@@ -583,10 +505,8 @@
   align-items: center;
   gap: $space-3;
   padding: $space-4;
-
   border-radius: $radius-lg;
 
-  // Кнопки: полностью непрозрачные
   background: var(--yt-surface-2);
   color: var(--yt-text);
   text-decoration: none;
@@ -630,7 +550,6 @@
 .topbar__mobile-auth,
 .topbar__mobile-profile {
   @include stack($space-1);
-
   margin-top: $space-2;
 }
 
@@ -643,7 +562,6 @@
   margin-top: $space-6;
   padding-top: $space-4;
   border-top: 1px solid var(--yt-line);
-
   @include stack($space-3);
 
   span {
@@ -657,15 +575,26 @@
   top: 0;
   left: 0;
   z-index: $z-modal + 99;
-
   width: 100%;
   height: 100%;
-
   background: rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: opacity $transition-slow;
 
   .topbar__mobile-menu.is-open & {
+    opacity: 1;
+  }
+}
+
+// Показываем меню при checked
+.topbar__menu-toggle:checked ~ .topbar__mobile-menu {
+  display: block;
+
+  .topbar__mobile-menu-inner {
+    transform: translateX(0);
+  }
+
+  .topbar__mobile-overlay {
     opacity: 1;
   }
 }
@@ -677,14 +606,12 @@
 
 @media (max-width: $bp-lg) {
   .topbar__search {
-    // Поиск перемещается под шапку
     order: 3;
     flex-basis: 100%;
     min-width: 100%;
   }
 
   .topbar__nav {
-    // Навигация на всю ширину
     justify-content: flex-start;
     width: 100%;
   }
@@ -697,30 +624,25 @@
 
 @media (max-width: $bp-md) {
   .topbar__inner {
-    // Меньше отступы
     padding: $space-3 $container-padding-x;
     gap: $space-2;
   }
 
   .topbar__logo {
-    // Логотип меньше
     width: 38px;
     height: 38px;
   }
 
   .topbar__brand span {
-    // Скрываем подпись
     display: none;
   }
 
   .topbar__pill {
-    // Кнопки компактнее
     padding: $space-2 $space-2;
     font-size: $font-size-xs;
   }
 
   .topbar__toggle-label {
-    // Скрываем текст переключателя
     display: none;
   }
 }
@@ -735,12 +657,10 @@
   .topbar__pill,
   .topbar__toggle,
   .topbar__logo {
-    // Отключаем анимации
     transition: none;
   }
 
   .topbar__search-dot {
-    // Отключаем пульсацию
     animation: none;
   }
 }

@@ -7,7 +7,7 @@ def home(request):
     context = {
         "hero": {
             "badge": "Один сайт — три настроения",
-            "title": "Подборки аффирмаций на каждый день",
+            "title": "Аффирмации на каждый день",
             "description": (
                 "Мягкие практики для спокойствия, уверенности "
                 "и внутренней опоры."
@@ -178,6 +178,21 @@ def about(request):
     }
     return render(request, 'main/about.html', context)
 
+def policy(request):
+    """Страница 'О политике конфиденциальности'."""
+    context = {
+        'title': 'Политика конфиденциальности',
+        'description': 'Политика конфиденциальности. Политика конфиденциальности. Политика конфиденциальности.',
+    }
+    return render(request, 'main/policy.html', context)
+
+def rules(request):
+    """Страница 'О правилах использования сервиса'."""
+    context = {
+        'title': 'Правила использования сервиса',
+        'description': 'Правила использования сервиса. Правила использования сервиса. Правила использования сервиса.',
+    }
+    return render(request, 'main/rules.html', context)
 
 def faq(request):
     """Страница 'FAQ'."""

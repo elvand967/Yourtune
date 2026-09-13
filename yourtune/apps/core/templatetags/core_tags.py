@@ -31,7 +31,20 @@ def main_menu(context):
             'url': 'main:about',
             'url_name': 'main:about',
             'icon': 'ℹ️',
-            'children': []
+            'children': [
+                {
+                    'title': 'Политика',
+                    'url': 'account_login',
+                    'url_name': 'account_login',
+                    'icon': '🔑'
+                },
+                {
+                    'title': 'Правила',
+                    'url': 'account_signup',
+                    'url_name': 'account_signup',
+                    'icon': '📝'
+                }
+            ]
         },
         {
             'title': 'FAQ',

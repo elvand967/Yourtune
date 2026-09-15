@@ -99,6 +99,12 @@ $font-weight-bold: 700;
 $transition-fast: 120ms ease;
 $transition-base: 180ms ease;
 $transition-slow: 260ms ease;
+// Переменные для плавных выезжающих интерфейсов
+$transition-menu-time: 380ms;
+$transition-menu-curve: cubic-bezier(0.25, 1, 0.5, 1); // Мягкий аут-эффект скольжения
+$transition-accordion: max-height $transition-menu-time $transition-menu-curve,
+                      opacity $transition-menu-time ease,
+                      margin $transition-menu-time ease;
 
 // ==========================================================================
 // Footer animation tokens

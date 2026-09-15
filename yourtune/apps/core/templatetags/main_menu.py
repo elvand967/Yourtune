@@ -1,4 +1,4 @@
-# apps/core/templatetags/core_tags.py
+# apps/core/templatetags/main_menu.py
 # Templatetags для главного меню YourTune
 
 from django import template

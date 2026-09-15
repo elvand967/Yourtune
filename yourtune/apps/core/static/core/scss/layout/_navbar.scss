@@ -1,0 +1,610 @@
+// ==========================================================================
+// apps/core/static/core/scss/layout/_navbar.scss
+// Навигационная панель YourTune
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/themes";
+
+
+// ============================================================================
+// 0. Предотвращаем горизонтальный скролл
+// ============================================================================
+
+html, body {
+  overflow-x: hidden;
+}
+
+.navbar {
+  overflow-x: hidden;
+}
+
+.navbar__grid {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+// ============================================================================
+// 1. Основной контейнер
+// ============================================================================
+
+.navbar {
+  background: color-mix(in srgb, var(--yt-bg) 86%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid var(--yt-line);
+
+  padding: $space-3 $space-4;
+  position: relative;
+  z-index: $z-sticky;
+
+  transition:
+    background-color $transition-base,
+    border-color $transition-base;
+}
+
+
+// ============================================================================
+// 2. Grid-раскладка (3 breakpoints)
+// ============================================================================
+
+.navbar__grid {
+  display: grid;
+  align-items: center;
+
+  padding-right: $space-4;
+
+  // Мобильные (3 строки)
+  gap: $space-3;
+  grid-template-columns: auto auto;
+  grid-template-areas:
+    "brand toggle"
+    "search search"
+    "menu menu";
+
+  @include above(sm) {
+    // Планшет (2 строки)
+    gap: $space-3 $space-4;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "brand search toggle"
+      "menu menu menu";
+  }
+
+  @include above(md) {
+    // Десктоп (1 строка)
+    column-gap: $space-8;
+    row-gap: $space-3;
+    grid-template-columns: auto minmax(200px, 1fr) auto auto;
+    grid-template-areas:
+      "brand search menu toggle";
+  }
+}
+
+.menu-toggle-hidden {
+  display: none !important;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+
+// ============================================================================
+// 3. Логотип и бренд
+// ============================================================================
+
+.navbar__brand {
+  grid-area: brand;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  .navbar__logo {
+    width: 44px;
+    height: 44px;
+    border-radius: $radius-lg;
+    background: linear-gradient(135deg, var(--yt-accent), #9f7aea);
+    box-shadow: $shadow-lg;
+    flex: 0 0 auto;
+  }
+
+  .navbar__brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: $line-height-tight;
+
+    strong {
+      font-size: $font-size-md;
+      font-weight: $font-weight-bold;
+      color: var(--yt-text);
+    }
+
+    span {
+      font-size: $font-size-sm;
+      color: var(--yt-text-muted);
+    }
+  }
+}
+
+
+// ============================================================================
+// 4. Поиск
+// ============================================================================
+
+.navbar__search {
+  grid-area: search;
+
+  .topbar__search {
+    display: flex;
+    gap: $space-2;
+    align-items: center;
+    padding: $space-3 $space-4;
+    border-radius: $radius-pill;
+    background: var(--yt-surface);
+    border: 1px solid var(--yt-line);
+    box-shadow: $shadow-lg;
+    width: 100%;
+  }
+
+  .topbar__search-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: $radius-pill;
+    background: var(--yt-accent-2);
+    flex: 0 0 auto;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .topbar__search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-size: $font-size-sm;
+    color: var(--yt-text);
+    font-family: $font-family-base;
+  }
+
+  .topbar__search input::placeholder {
+    color: color-mix(in srgb, var(--yt-text-muted) 75%, #98a2b3);
+  }
+}
+
+
+// ============================================================================
+// 5. Меню
+// ============================================================================
+
+// Скрываем технические чекбоксы (главный и подменю)
+.menu-toggle-hidden,
+.submenu-toggle-hidden {
+  display: none !important;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.navbar__menu {
+  grid-area: menu;
+
+  // Шапка меню для мобильных устройств
+  .navbar__menu-header {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: $space-3 0;
+    border-bottom: 1px solid var(--yt-line);
+    margin-bottom: $space-4;
+    height: 44px;
+
+    @include below(md) {
+      display: flex;
+    }
+
+    .navbar__menu-label {
+      font-size: $font-size-md;
+      font-weight: $font-weight-bold;
+      color: var(--yt-text);
+    }
+
+    // Бургер-иконка
+    .hamburger {
+      position: relative;
+      width: 2rem;
+      height: 1.5rem;
+      cursor: pointer;
+      flex: 0 0 auto;
+
+      span {
+        display: block;
+        height: 3px;
+        width: 100%;
+        background-color: var(--yt-text);
+        border-radius: 2px;
+        transition:
+          transform $transition-slow,
+          opacity $transition-slow,
+          margin $transition-slow;
+
+        &:not(:last-child) {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  // Список пунктов меню
+  .menu-list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $space-2;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    @include below(md) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      gap: 0;
+      padding-top: 0;
+
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height $transition-menu-time $transition-menu-curve,
+                  opacity $transition-menu-time ease;
+    }
+
+    .menu-item {
+      position: relative;
+      width: auto;
+
+      @include below(md) {
+        width: 100%;
+        margin-bottom: $space-1;
+      }
+
+      .menu-link-wrap {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
+      .menu-link {
+        display: flex;
+        align-items: center;
+        padding: $space-2 $space-3;
+        color: var(--yt-text-muted);
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        text-decoration: none;
+        border-radius: $radius-pill;
+        background: var(--yt-surface);
+        border: 1px solid var(--yt-line);
+        transition: background-color $transition-base, color $transition-base;
+
+        &:hover,
+        &:focus {
+          background: var(--yt-surface-2);
+          color: var(--yt-text);
+
+          // Десктоп: подсвечиваем крылья индикатора при ховере на ссылку
+          .menu-indicator-wings span {
+            background-color: var(--yt-text);
+          }
+        }
+
+        @include below(md) {
+          padding: $space-4 $space-4;
+          width: 100%;
+          background: var(--yt-surface-2);
+          cursor: pointer;
+        }
+
+        // Микроанимация индикатора «Усы -> Линия»
+        .menu-indicator-wings {
+          position: relative;
+          width: 12px;
+          height: 8px;
+          margin-left: $space-2;
+          flex: 0 0 auto;
+
+          @include below(md) {
+            margin-left: auto; // На мобильных прижимаем к правому краю
+          }
+
+          span {
+            position: absolute;
+            top: 3px;
+            width: 7px;
+            height: 2px;
+            background-color: var(--yt-text-muted);
+            border-radius: 1px;
+            transition:
+              transform $transition-menu-time $transition-menu-curve,
+              background-color $transition-base;
+
+            // Левое крылышко
+            &:nth-child(1) {
+              left: 0;
+              transform: rotate(40deg);
+            }
+
+            // Правое крылышко
+            &:nth-child(2) {
+              right: 0;
+              transform: rotate(-40deg);
+            }
+          }
+        }
+      }
+
+      // --- ЛОГИКА ВЫПАДАЮЩЕГО ПОДМЕНЮ (DROPDOWN) ---
+
+      // 1. Десктоп: появление по Hover / Focus
+      &.menu-item--has-dropdown:hover {
+        @include above(md) {
+          > .dropdown-menu {
+            display: flex;
+          }
+          // Раскладываем крылья в прямую линию на десктопе
+          .menu-indicator-wings span {
+            &:nth-child(1) { transform: translateX(0.5px) rotate(0deg); }
+            &:nth-child(2) { transform: translateX(-0.5px) rotate(0deg); }
+          }
+        }
+      }
+
+      &.menu-item--has-dropdown:focus-within {
+        @include above(md) {
+          > .dropdown-menu {
+            display: flex;
+          }
+        }
+      }
+
+      // 2. Мобильные: Плавная анимация раскрытия по Checkbox Hack
+      @include below(md) {
+        &.menu-item--has-dropdown {
+
+          // Раскрываем контейнер подменю (аккордеон)
+          > .submenu-toggle-hidden:checked ~ .dropdown-menu {
+            max-height: 240px;
+            opacity: 1;
+            margin-top: $space-2;
+            margin-bottom: $space-2;
+          }
+
+          // Раскладываем крылья в линию при активации чекбокса на мобильных
+          > .submenu-toggle-hidden:checked ~ .menu-link-wrap {
+            .menu-indicator-wings span {
+              background-color: var(--yt-text);
+              &:nth-child(1) { transform: translateX(0.5px) rotate(0deg); }
+              &:nth-child(2) { transform: translateX(-0.5px) rotate(0deg); }
+            }
+          }
+        }
+      }
+
+      // 3. Базовая структура выпадающего меню (Десктоп по умолчанию)
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + $space-2);
+        left: 0;
+        z-index: $z-dropdown;
+        flex-direction: column;
+        gap: $space-1;
+        min-width: 200px;
+        padding: $space-2;
+        background: var(--yt-surface);
+        border: 1px solid var(--yt-line);
+        border-radius: $radius-lg;
+        box-shadow: $shadow-lg;
+
+        // Мобильная адаптация подменю
+        @include below(md) {
+          display: flex;
+          position: static;
+          width: 100%;
+          box-shadow: none;
+          border: none;
+          padding: 0;
+          background: color-mix(in srgb, var(--yt-surface) 50%, transparent);
+          border-radius: $radius-md;
+
+          // Состояние для анимации
+          max-height: 0;
+          margin-top: 0;
+          margin-bottom: 0;
+          opacity: 0;
+          overflow: hidden;
+          transition: $transition-accordion;
+        }
+
+        .dropdown-link {
+          display: block;
+          padding: $space-2 $space-3;
+          color: var(--yt-text);
+          text-decoration: none;
+          font-size: $font-size-sm;
+          border-radius: $radius-md;
+          transition: background-color $transition-base;
+
+          &:hover,
+          &:focus {
+            background: var(--yt-surface-2);
+            color: var(--yt-text);
+          }
+
+          @include below(md) {
+            padding: $space-3 $space-4 $space-3 $space-6;
+          }
+        }
+
+        // Модификатор ссылки панели администратора
+        .dropdown-link--admin {
+          background: color-mix(in srgb, var(--yt-accent) 10%, var(--yt-surface-2));
+          border: 1px solid color-mix(in srgb, var(--yt-accent) 30%, var(--yt-line));
+
+          &:hover {
+            background: color-mix(in srgb, var(--yt-accent) 15%, var(--yt-surface));
+          }
+        }
+      }
+    }
+
+    // Десктопный разделитель пунктов меню
+    .divider-item {
+      color: var(--yt-text-muted);
+      font-weight: bold;
+      user-select: none;
+      padding: 0 $space-1;
+
+      @include below(md) {
+        display: none;
+      }
+    }
+  }
+}
+
+// ======================================
+// ГЛОБАЛЬНАЯ ЛОГИКА ДЛЯ ГЛАВНОГО МЕНЮ (Гамбургер)
+// ======================================
+@include below(md) {
+  // Плавно показываем мобильный список меню
+  #menu-toggle:checked ~ .navbar__grid .menu-list {
+    max-height: 100vh;
+    opacity: 1;
+    padding-top: $space-2;
+  }
+
+  // Анимация гамбургера в «Крестик»
+  #menu-toggle:checked ~ .navbar__grid .hamburger {
+    span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+}
+
+
+
+// ============================================================================
+// 6. Переключатель тем
+// ============================================================================
+
+.navbar__toggle {
+  grid-area: toggle;
+
+  // Выравниваем по правому краю
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+
+  .topbar__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: $radius-pill;
+    background: var(--yt-surface);
+    border: 1px solid var(--yt-line);
+    box-shadow: $shadow-lg;
+    cursor: pointer;
+    transition:
+      background-color $transition-base,
+      transform $transition-base;
+
+    &:hover {
+      background: var(--yt-surface-2);
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--yt-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  .topbar__toggle-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+}
+
+
+// ============================================================================
+// 7. Checkbox hack — анимация бургера и меню
+// ============================================================================
+
+// Анимация бургера
+#menu-toggle:checked ~ .navbar__grid .navbar__menu .navbar__menu-header .hamburger span:nth-child(1) {
+  transform: rotate(45deg) translateY(8px);
+}
+
+#menu-toggle:checked ~ .navbar__grid .navbar__menu .navbar__menu-header .hamburger span:nth-child(2) {
+  opacity: 0;
+}
+
+#menu-toggle:checked ~ .navbar__grid .navbar__menu .navbar__menu-header .hamburger span:nth-child(3) {
+  transform: rotate(-45deg) translateY(-8px);
+}
+
+// Показываем меню (выезжает вниз)
+#menu-toggle:checked ~ .navbar__grid .navbar__menu .menu-list {
+  display: flex;
+  max-height: 100vh;
+}
+
+
+// ============================================================================
+// 8. Responsive
+// ============================================================================
+
+@include below(md) {
+  .navbar__brand .navbar__brand-text span {
+    display: none;
+  }
+
+  .navbar__logo {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+
+// ============================================================================
+// 9. Accessibility — reduced motion
+// ============================================================================
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .menu-link,
+  .topbar__toggle {
+    transition: none;
+  }
+
+  .topbar__search-dot {
+    animation: none;
+  }
+}

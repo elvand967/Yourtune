@@ -1,0 +1,125 @@
+// apps/main/static/main/scss/base/_responsive.scss
+
+// ==========================================================================
+// Responsive behavior
+// Общие адаптивные правила страницы.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Wide screens
+// ==========================================================================
+
+@media (min-width: 1440px) {
+  .main-page {
+    --yt-content-width: 1320px;
+  }
+}
+
+// ==========================================================================
+// Tablet
+// ==========================================================================
+
+@include main-tablet {
+  .main-page__hero,
+  .main-page__stats,
+  .main-page__section,
+  .main-page__cta {
+    padding-left: $main-space-5;
+    padding-right: $main-space-5;
+  }
+
+  .main-page__hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-section__visual {
+    min-height: 180px;
+  }
+
+  .stats-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// ==========================================================================
+// Mobile
+// ==========================================================================
+
+@include main-mobile {
+  .main-page__hero,
+  .main-page__stats,
+  .main-page__section,
+  .main-page__cta {
+    padding-left: $main-space-4;
+    padding-right: $main-space-4;
+  }
+
+  .main-page__hero {
+    padding-top: $main-space-5;
+    padding-bottom: $main-space-5;
+  }
+
+  .hero-section__title {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .hero-section__lead {
+    font-size: $main-font-size-sm;
+  }
+
+  .hero-section__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-section__actions .button {
+    width: 100%;
+  }
+
+  .stats-section {
+    grid-template-columns: 1fr 1fr;
+    gap: $main-space-3;
+  }
+
+  .stats-section__item {
+    padding: $main-space-3;
+  }
+
+  .stats-section__value {
+    font-size: 1.5rem;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: $main-space-2;
+  }
+
+  .section-heading__meta {
+    align-self: flex-start;
+  }
+}
+
+// ==========================================================================
+// Small mobile screens
+// ==========================================================================
+
+@media (max-width: 380px) {
+  .stats-section {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-section__item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: $main-space-3;
+  }
+
+  .stats-section__value {
+    font-size: 1.35rem;
+  }
+}

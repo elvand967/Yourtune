@@ -1,0 +1,86 @@
+
+Запуск сервера:
+python manage.py runserver
+=========================
+
+Создание миграций новых моделей:
+python manage.py makemigrations
+
+Миграции:
+python manage.py migrate
+=========================
+
+Список всех зависимостей в виртуальном окружении
+Создать:
+(.venv) D:\PythonProject\yourtune> pip freeze > requirements.txt
++++
+Установить (Обеспечить наличие D:\PythonProject\Yourtune\requirements.txt):
+(.venv) D:\PythonProject\yourtune> pip install -r requirements.txt
++++
+Обновление pip:
+python.exe -m pip install --upgrade pip
+
+=========================
+
+Генерация отчёта по структуре каталогов
+GUI через Django:
+python manage.py generate_folder_structure --mode gui
+
+Другие команды запуска см. 3.1.3.7 Генерация отчёта по структуре каталогов
+
+=========================
+
+🎉 Компиляция SCSS → CSS
+-Обычный запуск
+(.venv) D:\PythonProject\Yourtune\yourtune>python manage.py compile_scss
+-Подробный запуск
+python manage.py compile_scss --verbose
+-Только core
+python manage.py compile_scss --only core
+
+-Только одно приложение
+python manage.py compile_scss --app catalog
+или
+python manage.py compile_scss --app main
+
+-Режим слежения
+python manage.py compile_scss --watch
+-С явным BASE_DIR
+python manage.py compile_scss --base-dir D:\PythonProject\yourtune\yourtune
+-С явным BASE_DIR и verbose
+python manage.py compile_scss --base-dir D:\PythonProject\yourtune\yourtune --verbose
+-С явным BASE_DIR и watch
+python manage.py compile_scss --base-dir D:\PythonProject\yourtune\yourtune --watch
+=========================
+
+список всех зависимостей в виртуальном окружении:
+    создать:
+pip freeze > requirements.txt
+    установить:
+pip install -r requirements.txt
+=========================
+
+`python manage.py makemigrations`
+Запускай после изменения моделей: добавил поле, поменял constraint, удалил модель, изменил `Meta`. Команда готовит файл миграции, но саму БД ещё не меняет.
+
+`python manage.py migrate`
+Запускай после `makemigrations`, чтобы применить изменения к базе данных. Также используешь при первом поднятии проекта на новом окружении.
+
+`python manage.py createsuperuser`
+Запускай один раз на каждом новом окружении, когда нужно создать администратора для входа в Django admin.
+
+`python manage.py check`
+Запускай после изменений в настройках, urls, apps, middleware, моделях и перед первым запуском проекта. Это быстрый контроль, что базовая конфигурация не сломана.
+
+`python manage.py runserver`
+Запускай только для локальной разработки. Это команда для проверки интерфейса, views, шаблонов, админки и маршрутов в dev-среде.
+
+`python manage.py load_seo_data`
+Запускай после `migrate`, когда уже созданы таблицы `StopWord` и `SEOReplacement`. Используется для первичного заполнения SEO-справочников или после очистки базы.
+
+`python manage.py collectstatic`
+Запускай перед production-деплоем. Команда собирает все static-файлы в `STATIC_ROOT`, чтобы их мог раздавать веб-сервер.
+
+`python manage.py shell`
+Запускай, когда нужно быстро проверить модели, данные, slug-логику, кеш или выполнить разовую проверку вручную.
+=========================

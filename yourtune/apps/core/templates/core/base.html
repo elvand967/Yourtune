@@ -1,0 +1,68 @@
+{# apps/core/templates/core/base.html #}
+
+{% load static %}
+{% load footer_menu %}
+{% load main_menu %}
+
+<!DOCTYPE html>
+<html lang="{% block html_lang %}ru{% endblock %}" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    {% block title %}
+      {{ site_default_title|default:"YourTune — аффирмации и ежедневные практики" }}
+    {% endblock %}
+  </title>
+
+  <meta
+    name="description"
+    content="{% block meta_description %}{{ site_default_description|default:"YourTune — платформа аффирмаций, тематических подборок, ежедневных практик и статей для спокойствия, уверенности и личностного роста." }}{% endblock %}"
+  >
+
+  <link
+    rel="icon"
+    href="{% static 'core/img/logo.ico' %}"
+    type="image/x-icon"
+  >
+
+  <link
+    rel="stylesheet"
+    href="{% static 'core/css/core.css' %}"
+  >
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+  <div class="site-wrapper">
+
+    <header class="main-header">
+      <nav class="navbar" role="navigation" aria-label="Главное меню">
+        {% main_menu %}
+      </nav>
+      {% block header %}{% endblock %}
+    </header>
+
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Кнопки независимы от футера и зафиксированы на экране -->
+    {% include "core/includes/fast_scroll_nav.html" %}
+
+    <footer class="site-footer">
+      {% render_footer_menu %}
+    </footer>
+
+  </div>
+</body>
+
+  <script src="{% static 'core/js/footer_animations.js' %}"></script>
+  <script src="{% static 'core/js/theme-switcher.js' %}"></script>
+  <script src="{% static 'core/js/fast_nav.js' %}"></script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

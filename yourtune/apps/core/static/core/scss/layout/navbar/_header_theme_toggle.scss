@@ -1,0 +1,55 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_theme_toggle.scss
+
+// ==========================================================================
+// переключатель светлой и тёмной темы.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+@import "../../abstracts/themes";
+
+.navbar__toggle {
+  grid-area: toggle;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  height: 100%;
+
+  .topbar__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+    padding: 0;
+
+    cursor: pointer;
+
+    background: var(--yt-surface);
+    border: 1px solid var(--yt-line);
+    border-radius: $radius-pill;
+    box-shadow: $shadow-lg;
+
+    transition:
+      background-color $transition-base,
+      transform $transition-base;
+
+    &:hover {
+      background: var(--yt-surface-2);
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--yt-focus);
+      outline-offset: 2px;
+    }
+  }
+
+  .topbar__toggle-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+}

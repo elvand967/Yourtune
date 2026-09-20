@@ -1,0 +1,59 @@
+{# apps/main/templates/main/policy.html #}
+{# Страница политики конфиденциальности YourTune #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ title|default:"Политика конфиденциальности" }} — YourTune{% endblock %}
+
+{% block meta_description %}{{ description|default:"Политика конфиденциальности платформы YourTune." }}{% endblock %}
+
+{% block meta_robots %}index, follow{% endblock %}
+
+{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}
+
+{% block og_title %}{{ title|default:"Политика конфиденциальности" }} — YourTune{% endblock %}
+
+{% block og_description %}{{ description|default:"Политика конфиденциальности платформы YourTune." }}{% endblock %}
+
+{% block og_type %}website{% endblock %}
+
+{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
+
+{% block twitter_title %}{{ title|default:"Политика конфиденциальности" }} — YourTune{% endblock %}
+
+{% block twitter_description %}{{ description|default:"Политика конфиденциальности платформы YourTune." }}{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="policy-page">
+    <section class="policy-page__header">
+      <div class="container">
+        <h1 class="policy-page__title">{{ title }}</h1>
+        <p class="policy-page__lead">{{ description }}</p>
+      </div>
+    </section>
+
+    <section class="policy-page__content">
+      <div class="container">
+        <article class="policy-content">
+          {% for section in sections %}
+            <section class="policy-section">
+              <h2>{{ section.heading }}</h2>
+              <div class="policy-section__content">
+                {{ section.content|safe }}
+              </div>
+            </section>
+          {% endfor %}
+        </article>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'main/js/main.js' %}" defer></script>
+{% endblock %}

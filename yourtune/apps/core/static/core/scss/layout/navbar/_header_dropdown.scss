@@ -1,0 +1,257 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_dropdown.scss
+
+// ==========================================================================
+// YourTune Navbar Dropdown
+// Индикаторы и выпадающие подменю.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/themes";
+
+
+// ==========================================================================
+// 1. Индикатор подменю
+// ==========================================================================
+
+.menu-indicator-wings {
+  position: relative;
+
+  width: 12px;
+  height: 8px;
+  margin-left: $space-2;
+  flex: 0 0 auto;
+
+  @include below(md) {
+    margin-left: auto;
+  }
+
+  span {
+    position: absolute;
+    top: 3px;
+
+    width: 7px;
+    height: 2px;
+
+    background-color: var(--yt-text-muted);
+    border-radius: 1px;
+
+    transition:
+      transform $transition-menu-time $transition-menu-curve,
+      background-color $transition-base;
+
+    // Левое крылышко
+    &:nth-child(1) {
+      left: 0;
+      transform: rotate(40deg);
+    }
+
+    // Правое крылышко
+    &:nth-child(2) {
+      right: 0;
+      transform: rotate(-40deg);
+    }
+  }
+}
+
+
+// ==========================================================================
+// 2. Пункт меню с dropdown
+// ==========================================================================
+
+.menu-item--has-dropdown {
+  // ------------------------------------------------------------------------
+  // Планшет и desktop
+  // ------------------------------------------------------------------------
+  //
+  // При ширине выше md dropdown накладывается на основной контент.
+  // Родительский .navbar__menu имеет z-index,
+  // а .dropdown-menu получает собственный z-index.
+
+  @include above(md) {
+    &:hover,
+    &:focus-within {
+      > .dropdown-menu {
+        display: flex;
+      }
+
+      .menu-indicator-wings {
+        span {
+          background-color: var(--yt-text);
+
+          &:nth-child(1) {
+            transform: translateX(0.5px) rotate(0deg);
+          }
+
+          &:nth-child(2) {
+            transform: translateX(-0.5px) rotate(0deg);
+          }
+        }
+      }
+    }
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Мобильная версия
+  // ------------------------------------------------------------------------
+  //
+  // Подменю остаётся в обычном потоке и растягивает navbar.
+
+  @include below(md) {
+    > .submenu-toggle-hidden:checked ~ .dropdown-menu {
+      max-height: 240px;
+      margin-top: $space-2;
+      margin-bottom: $space-2;
+      opacity: 1;
+    }
+
+    > .submenu-toggle-hidden:checked ~ .menu-link-wrap {
+      .menu-indicator-wings {
+        span {
+          background-color: var(--yt-text);
+
+          &:nth-child(1) {
+            transform: translateX(0.5px) rotate(0deg);
+          }
+
+          &:nth-child(2) {
+            transform: translateX(-0.5px) rotate(0deg);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// ==========================================================================
+// 3. Выпадающее меню
+// ==========================================================================
+
+.dropdown-menu {
+  // ------------------------------------------------------------------------
+  // Планшет и desktop
+  // ------------------------------------------------------------------------
+
+  position: absolute;
+  top: calc(100% + $space-2);
+  left: 0;
+  z-index: $z-dropdown;
+
+  display: none;
+  flex-direction: column;
+  gap: $space-1;
+
+  min-width: 200px;
+  padding: $space-2;
+
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-line);
+  border-radius: $radius-lg;
+  box-shadow: $shadow-lg;
+
+
+  // ------------------------------------------------------------------------
+  // Мобильная версия
+  // ------------------------------------------------------------------------
+  //
+  // Здесь dropdown не накладывается на контент.
+  // Он находится в обычном потоке и увеличивает высоту navbar.
+
+  @include below(md) {
+    position: static;
+
+    display: flex;
+
+    width: 100%;
+    min-width: 0;
+    max-height: 0;
+
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+
+    overflow: hidden;
+    opacity: 0;
+
+    background: color-mix(
+      in srgb,
+      var(--yt-surface) 50%,
+      transparent
+    );
+
+    border: none;
+    border-radius: $radius-md;
+    box-shadow: none;
+
+    transition:
+      max-height $transition-menu-time $transition-menu-curve,
+      margin $transition-menu-time $transition-menu-curve,
+      opacity $transition-menu-time ease;
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Ссылки dropdown
+  // ------------------------------------------------------------------------
+
+  .dropdown-link {
+    display: block;
+
+    padding: $space-2 $space-3;
+
+    color: var(--yt-text);
+    font-size: $font-size-sm;
+    text-decoration: none;
+
+    border-radius: $radius-md;
+
+    transition:
+      background-color $transition-base,
+      color $transition-base;
+
+    &:hover,
+    &:focus {
+      color: var(--yt-text);
+      background: var(--yt-surface-2);
+    }
+
+    @include below(md) {
+      padding:
+        $space-3
+        $space-4
+        $space-3
+        $space-6;
+    }
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Ссылка панели администратора
+  // ------------------------------------------------------------------------
+
+  .dropdown-link--admin {
+    background: color-mix(
+      in srgb,
+      var(--yt-accent) 10%,
+      var(--yt-surface-2)
+    );
+
+    border: 1px solid color-mix(
+      in srgb,
+      var(--yt-accent) 30%,
+      var(--yt-line)
+    );
+
+    &:hover,
+    &:focus {
+      background: color-mix(
+        in srgb,
+        var(--yt-accent) 15%,
+        var(--yt-surface)
+      );
+    }
+  }
+}

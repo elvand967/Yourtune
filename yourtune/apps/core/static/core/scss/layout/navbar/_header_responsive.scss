@@ -1,0 +1,22 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_responsive.scss
+
+// ==========================================================================
+// адаптация логотипа и элементов бренда.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+@import "../../abstracts/themes";
+
+@include below(md) {
+  .navbar__brand {
+    .navbar__brand-text span {
+      display: none;
+    }
+
+    .navbar__logo {
+      width: 38px;
+      height: 38px;
+    }
+  }
+}

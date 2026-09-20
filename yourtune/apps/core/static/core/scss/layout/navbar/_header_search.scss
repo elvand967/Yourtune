@@ -1,0 +1,57 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_search.scss
+
+// ==========================================================================
+// поисковая строка.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+@import "../../abstracts/themes";
+
+.navbar__search {
+  grid-area: search;
+
+  .topbar__search {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    width: 100%;
+    padding: $space-3 $space-4;
+
+    background: var(--yt-surface);
+    border: 1px solid var(--yt-line);
+    border-radius: $radius-pill;
+    box-shadow: $shadow-lg;
+  }
+
+  .topbar__search-dot {
+    width: 10px;
+    height: 10px;
+    flex: 0 0 auto;
+
+    background: var(--yt-accent-2);
+    border-radius: $radius-pill;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  input {
+    width: 100%;
+
+    color: var(--yt-text);
+    font-family: $font-family-base;
+    font-size: $font-size-sm;
+
+    background: transparent;
+    border: 0;
+    outline: 0;
+
+    &::placeholder {
+      color: color-mix(
+        in srgb,
+        var(--yt-text-muted) 75%,
+        #98a2b3
+      );
+    }
+  }
+}

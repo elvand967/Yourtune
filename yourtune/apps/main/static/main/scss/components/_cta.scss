@@ -1,0 +1,163 @@
+// apps/main/static/main/scss/components/_cta.scss
+
+// ==========================================================================
+// Call to action
+// Финальный блок домашней страницы.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// CTA section
+// ==========================================================================
+
+.cta-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
+  align-items: center;
+  gap: $main-section-gap;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(124, 92, 255, 0.26),
+      transparent 52%
+    ),
+    var(--yt-surface);
+
+  @include main-theme-transition;
+}
+
+.cta-section:hover {
+  border-color: var(--yt-accent);
+  box-shadow: $main-shadow-soft;
+}
+
+// ==========================================================================
+// CTA content
+// ==========================================================================
+
+.cta-section__content {
+  min-width: 0;
+}
+
+.cta-section__title {
+  max-width: 42rem;
+  margin: 0;
+
+  color: var(--yt-text);
+
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: $main-font-weight-bold;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+.cta-section__description {
+  max-width: 38rem;
+  margin: $main-space-3 0 0;
+
+  color: var(--yt-text-muted);
+
+  font-size: $main-font-size-md;
+  line-height: 1.6;
+}
+
+// ==========================================================================
+// CTA actions
+// ==========================================================================
+
+.cta-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $main-space-3;
+
+  margin-top: $main-space-5;
+}
+
+.cta-section__actions .button {
+  min-width: 150px;
+}
+
+// ==========================================================================
+// CTA aside
+// ==========================================================================
+
+.cta-section__aside {
+  display: flex;
+  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+
+  padding: $main-space-5;
+
+  border: 1px dashed var(--yt-line);
+  border-radius: $main-radius-lg;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.01)
+    );
+
+  color: var(--yt-text-muted);
+
+  font-size: $main-font-size-sm;
+  line-height: 1.5;
+  text-align: center;
+}
+
+// ==========================================================================
+// Responsive layout
+// ==========================================================================
+
+@include main-tablet {
+  .cta-section {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-section__aside {
+    min-height: 140px;
+  }
+}
+
+@include main-mobile {
+  .cta-section {
+    gap: $main-space-4;
+  }
+
+  .cta-section__title {
+    font-size: 1.5rem;
+  }
+
+  .cta-section__description {
+    font-size: $main-font-size-sm;
+  }
+
+  .cta-section__actions {
+    flex-direction: column;
+  }
+
+  .cta-section__actions .button {
+    width: 100%;
+  }
+
+  .cta-section__aside {
+    min-height: 110px;
+    padding: $main-space-4;
+  }
+}
+
+// ==========================================================================
+// Reduced motion
+// ==========================================================================
+
+@include main-prefers-reduced-motion {
+  .cta-section {
+    transition: none;
+  }
+}

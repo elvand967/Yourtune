@@ -1,0 +1,86 @@
+// apps/core/static/core/scss/components/_theme-switcher.scss
+// ==========================================================================
+// Theme switcher
+// Кнопка переключения темы и связанные элементы интерфейса.
+// Стили опираются на CSS custom properties темы.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Base switcher
+// ==========================================================================
+
+.theme-switcher {
+  @include inline-center;
+  @include pill($space-2, $space-3);
+  @include theme-transition;
+
+  min-height: 44px;
+  cursor: pointer;
+  gap: $space-2;
+
+  border: 1px solid var(--yt-line);
+  background: var(--yt-chip);
+  color: var(--yt-text);
+
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--yt-surface-2);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// ==========================================================================
+// Icon inside switcher
+// ==========================================================================
+
+.theme-switcher__icon {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+}
+
+// ==========================================================================
+// Label inside switcher
+// ==========================================================================
+
+.theme-switcher__label {
+  display: inline-block;
+  line-height: 1;
+}
+
+// ==========================================================================
+// State variants
+// ==========================================================================
+
+.theme-switcher--compact {
+  min-height: 36px;
+  padding-left: $space-2;
+  padding-right: $space-2;
+}
+
+.theme-switcher--active {
+  background: var(--yt-surface);
+  border-color: var(--yt-accent);
+}
+
+.theme-switcher--floating {
+  position: fixed;
+  right: $space-4;
+  bottom: $space-4;
+  z-index: $z-sticky;
+  box-shadow: $shadow-md;
+}

@@ -1,0 +1,45 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_brand.scss
+
+// ==========================================================================
+// логотип и текст бренда.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+@import "../../abstracts/themes";
+
+.navbar__brand {
+  grid-area: brand;
+
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+
+  .navbar__logo {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
+
+    border-radius: $radius-lg;
+    background: linear-gradient(135deg, var(--yt-accent), #9f7aea);
+    box-shadow: $shadow-lg;
+  }
+
+  .navbar__brand-text {
+    display: flex;
+    flex-direction: column;
+
+    line-height: $line-height-tight;
+
+    strong {
+      color: var(--yt-text);
+      font-size: $font-size-md;
+      font-weight: $font-weight-bold;
+    }
+
+    span {
+      color: var(--yt-text-muted);
+      font-size: $font-size-sm;
+    }
+  }
+}

@@ -1,0 +1,88 @@
+// apps/core/static/core/scss/layout/_sidebar.scss
+// ==========================================================================
+// Sidebar
+// Боковая панель для навигации, фильтров и вспомогательных блоков.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Base sidebar
+// ==========================================================================
+
+.sidebar {
+  @include stack($space-4);
+  padding: $space-5;
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-line);
+  border-radius: $radius-xl;
+  @include theme-transition;
+}
+
+// ==========================================================================
+// Sticky sidebar
+// ==========================================================================
+
+.sidebar--sticky {
+  position: sticky;
+  top: calc($header-height + $space-4);
+}
+
+// ==========================================================================
+// Sidebar sections
+// ==========================================================================
+
+.sidebar__section {
+  @include stack($space-3);
+  padding-bottom: $space-4;
+  border-bottom: 1px solid var(--yt-line);
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+.sidebar__title {
+  color: var(--yt-text);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sidebar__item {
+  display: block;
+  padding: $space-2 0;
+  color: var(--yt-text-muted);
+  text-decoration: none;
+  @include theme-transition;
+
+  &:hover {
+    color: var(--yt-text);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &--active {
+    color: var(--yt-accent);
+    font-weight: $font-weight-medium;
+  }
+}
+
+// ==========================================================================
+// Compact sidebar
+// ==========================================================================
+
+.sidebar--compact {
+  padding: $space-3;
+}
+
+.sidebar--flush {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}

@@ -1,0 +1,13 @@
+
+// apps/core/static/core/scss/layout/navbar/_navbar.scss
+
+@import "header_container";    // базовый контейнер шапки, предотвращение горизонтального скролла и grid-раскладка.
+@import "header_brand";        // логотип и текст бренда.
+@import "header_search";       // поисковая строка.
+@import "header_main_menu";    // основное меню, пункты меню, мобильная версия и служебные элементы.
+@import "header_dropdown";     // стрелка/индикатор и выпадающие подменю.
+@import "header_theme_toggle"; // переключатель светлой и тёмной темы.
+@import "header_animation";    // все состояния, связанные с анимацией меню и индикаторов.
+@import "header_responsive";   // адаптация логотипа и элементов бренда.
+@import "header_accessibility";// отключение анимаций для пользователей, выбравших reduced motion.
+

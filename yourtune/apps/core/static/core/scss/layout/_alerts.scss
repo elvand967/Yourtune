@@ -1,0 +1,94 @@
+// apps/core/static/core/scss/layout/_alerts.scss
+// ==========================================================================
+// Alerts
+// Уведомления и системные сообщения.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Base alert
+// ==========================================================================
+
+.alert {
+  @include stack($space-3);
+  padding: $space-4 $space-5;
+  border: 1px solid transparent;
+  border-radius: $radius-lg;
+  background: var(--yt-surface);
+  color: var(--yt-text);
+  @include theme-transition;
+}
+
+.alert__title {
+  color: inherit;
+  font-weight: $font-weight-semibold;
+}
+
+.alert__body {
+  color: inherit;
+}
+
+.alert__actions {
+  @include cluster($space-2, wrap, center);
+  margin-top: $space-2;
+}
+
+// ==========================================================================
+// Variants
+// ==========================================================================
+
+.alert--success {
+  background: var(--yt-success-soft);
+  border-color: var(--yt-success);
+  color: var(--yt-success-contrast);
+}
+
+.alert--info {
+  background: var(--yt-info-soft);
+  border-color: var(--yt-info);
+  color: var(--yt-info-contrast);
+}
+
+.alert--warning {
+  background: var(--yt-warning-soft);
+  border-color: var(--yt-warning);
+  color: var(--yt-warning-contrast);
+}
+
+.alert--error {
+  background: var(--yt-danger-soft);
+  border-color: var(--yt-danger);
+  color: var(--yt-danger-contrast);
+}
+
+// ==========================================================================
+// Closable alert
+// ==========================================================================
+
+.alert__close {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.75;
+  @include theme-transition;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// ==========================================================================
+// Compact alerts
+// ==========================================================================
+
+.alert--compact {
+  padding: $space-3 $space-4;
+}

@@ -1,0 +1,220 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_main_menu.scss
+
+// ==========================================================================
+// YourTune Main Menu
+// Основное меню, пункты меню и мобильная структура шапки.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/themes";
+
+
+// ==========================================================================
+// 1. Скрытые технические checkbox-переключатели
+// ==========================================================================
+
+.menu-toggle-hidden,
+.submenu-toggle-hidden {
+  display: none !important;
+
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+
+// ==========================================================================
+// 2. Основной контейнер меню
+// ==========================================================================
+
+.navbar__menu {
+  grid-area: menu;
+
+  position: relative;
+  z-index: $z-dropdown;
+
+
+  // ------------------------------------------------------------------------
+  // Заголовок мобильного меню
+  // ------------------------------------------------------------------------
+
+  .navbar__menu-header {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 44px;
+    padding: $space-3 0;
+    margin-bottom: $space-4;
+
+    border-bottom: 1px solid var(--yt-line);
+
+    @include below(md) {
+      display: flex;
+    }
+
+    .navbar__menu-label {
+      color: var(--yt-text);
+      font-size: $font-size-md;
+      font-weight: $font-weight-bold;
+    }
+
+    .hamburger {
+      position: relative;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      width: 2rem;
+      height: 1.5rem;
+      flex: 0 0 auto;
+
+      cursor: pointer;
+
+      span {
+        display: block;
+
+        width: 100%;
+        height: 3px;
+
+        background-color: var(--yt-text);
+        border-radius: 2px;
+
+        transition:
+          transform $transition-slow,
+          opacity $transition-slow,
+          margin $transition-slow;
+
+        &:not(:last-child) {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Список пунктов меню
+  // ------------------------------------------------------------------------
+
+  .menu-list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: $space-2;
+
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+    @include below(md) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+
+      width: 100%;
+      max-height: 0;
+      padding-top: 0;
+
+      overflow: hidden;
+      opacity: 0;
+
+      transition:
+        max-height $transition-menu-time $transition-menu-curve,
+        opacity $transition-menu-time ease;
+    }
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Пункт меню
+  // ------------------------------------------------------------------------
+
+  .menu-item {
+    position: relative;
+
+    width: auto;
+
+    @include below(md) {
+      width: 100%;
+      margin-bottom: $space-1;
+    }
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Обёртка ссылки и checkbox-переключателя
+  // ------------------------------------------------------------------------
+
+  .menu-link-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Ссылка главного меню
+  // ------------------------------------------------------------------------
+
+  .menu-link {
+    display: flex;
+    align-items: center;
+
+    padding: $space-2 $space-3;
+
+    color: var(--yt-text-muted);
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    text-decoration: none;
+
+    background: var(--yt-surface);
+    border: 1px solid var(--yt-line);
+    border-radius: $radius-pill;
+
+    transition:
+      background-color $transition-base,
+      color $transition-base;
+
+    &:hover,
+    &:focus {
+      color: var(--yt-text);
+      background: var(--yt-surface-2);
+
+      .menu-indicator-wings span {
+        background-color: var(--yt-text);
+      }
+    }
+
+    @include below(md) {
+      width: 100%;
+      padding: $space-4;
+
+      cursor: pointer;
+      background: var(--yt-surface-2);
+    }
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Разделитель пунктов меню
+  // ------------------------------------------------------------------------
+
+  .divider-item {
+    padding: 0 $space-1;
+
+    color: var(--yt-text-muted);
+    font-weight: bold;
+    user-select: none;
+
+    @include below(md) {
+      display: none;
+    }
+  }
+}

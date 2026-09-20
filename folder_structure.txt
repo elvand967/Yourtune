@@ -20,6 +20,7 @@
         │   │   ├── admin.py
         │   │   ├── apps.py
         │   │   ├── tests.py
+        │   │   ├── urls.py
         │   │   ├── views.py
         │   │   ├── __pycache__ [содержимое скрыто]
         │   │   ├── management
@@ -42,7 +43,16 @@
         │   │   │       ├── css
         │   │   │       │   └── core.css
         │   │   │       ├── img
-        │   │   │       │   └── logo.ico
+        │   │   │       │   ├── logo.ico
+        │   │   │       │   └── icons
+        │   │   │       │       ├── chevron-down.ico
+        │   │   │       │       ├── chevron-up.ico
+        │   │   │       │       ├── favorites.ico
+        │   │   │       │       ├── home.ico
+        │   │   │       │       ├── login.ico
+        │   │   │       │       ├── profile.ico
+        │   │   │       │       ├── register.ico
+        │   │   │       │       └── settings.ico
         │   │   │       ├── js
         │   │   │       │   ├── fast_nav.js
         │   │   │       │   ├── footer_animations.js
@@ -63,6 +73,7 @@
         │   │   │           │   ├── _cards.scss
         │   │   │           │   ├── _dropdown.scss
         │   │   │           │   ├── _empty-state.scss
+        │   │   │           │   ├── _fast-scroll.scss
         │   │   │           │   ├── _modal.scss
         │   │   │           │   └── _theme-switcher.scss
         │   │   │           └── layout
@@ -72,36 +83,33 @@
         │   │   │               ├── _footer.scss
         │   │   │               ├── _forms.scss
         │   │   │               ├── _grid.scss
-        │   │   │               ├── _header.scss
         │   │   │               ├── _navigation.scss
         │   │   │               ├── _pagination.scss
         │   │   │               ├── _sidebar.scss
-        │   │   │               └── _tabs.scss
+        │   │   │               ├── _tabs.scss
+        │   │   │               └── navbar
+        │   │   │                   ├── _header_accessibility.scss
+        │   │   │                   ├── _header_animation.scss
+        │   │   │                   ├── _header_brand.scss
+        │   │   │                   ├── _header_container.scss
+        │   │   │                   ├── _header_dropdown.scss
+        │   │   │                   ├── _header_main_menu.scss
+        │   │   │                   ├── _header_responsive.scss
+        │   │   │                   ├── _header_search.scss
+        │   │   │                   ├── _header_theme_toggle.scss
+        │   │   │                   └── _navbar.scss
         │   │   ├── templates
         │   │   │   └── core
         │   │   │       ├── base.html
-        │   │   │       ├── base_.html
-        │   │   │       ├── base_old-start.html
-        │   │   │       ├── docs.html
         │   │   │       ├── includes
-        │   │   │       │   ├── core_header.html
         │   │   │       │   ├── fast_scroll_nav.html
-        │   │   │       │   ├── footer_menu.html
         │   │   │       │   └── main_menu.html
-        │   │   │       ├── partials
-        │   │   │       │   └── field_row.html
-        │   │   │       └── temp
-        │   │   │           ├── about.html
-        │   │   │           ├── board.html
-        │   │   │           ├── fag.html
-        │   │   │           ├── favorites.html
-        │   │   │           ├── feedback.html
-        │   │   │           ├── home.html
-        │   │   │           ├── portfolio.html
-        │   │   │           └── showcase.html
+        │   │   │       └── partials
+        │   │   │           └── field_row.html
         │   │   ├── templatetags
         │   │   │   ├── __init__.py
         │   │   │   ├── footer_menu.py
+        │   │   │   ├── main_menu.py
         │   │   │   └── __pycache__ [содержимое скрыто]
         │   │   └── utils
         │   │       ├── __init__.py
@@ -111,7 +119,6 @@
         │   │       ├── seo_replacements.json
         │   │       ├── slugify_seo.py
         │   │       ├── stop_words.json
-        │   │       ├── temp.html
         │   │       └── __pycache__ [содержимое скрыто]
         │   ├── main
         │   │   ├── __init__.py
@@ -120,7 +127,6 @@
         │   │   ├── models.py
         │   │   ├── tests.py
         │   │   ├── urls.py
-        │   │   ├── views.py
         │   │   ├── __pycache__ [содержимое скрыто]
         │   │   ├── migrations [содержимое скрыто]
         │   │   ├── static
@@ -147,17 +153,31 @@
         │   │   │           │   └── _topics.scss
         │   │   │           └── layout
         │   │   │               └── _main-page.scss
-        │   │   └── templates
-        │   │       └── main
-        │   │           ├── home.html
-        │   │           └── components
-        │   │               ├── _blog.html
-        │   │               ├── _cta.html
-        │   │               ├── _daily_focus.html
-        │   │               ├── _featured.html
-        │   │               ├── _hero.html
-        │   │               ├── _stats.html
-        │   │               └── _topics.html
+        │   │   ├── templates
+        │   │   │   └── main
+        │   │   │       ├── about.html
+        │   │   │       ├── blog.html
+        │   │   │       ├── faq.html
+        │   │   │       ├── home.html
+        │   │   │       ├── policy.html
+        │   │   │       ├── rules.html
+        │   │   │       └── components
+        │   │   │           ├── _blog.html
+        │   │   │           ├── _cta.html
+        │   │   │           ├── _daily_focus.html
+        │   │   │           ├── _featured.html
+        │   │   │           ├── _hero.html
+        │   │   │           ├── _stats.html
+        │   │   │           └── _topics.html
+        │   │   └── views
+        │   │       ├── __init__.py
+        │   │       ├── about.py
+        │   │       ├── blog.py
+        │   │       ├── faq.py
+        │   │       ├── home.py
+        │   │       ├── policy.py
+        │   │       ├── rules.py
+        │   │       └── __pycache__ [содержимое скрыто]
         │   └── users
         │       ├── __init__.py
         │       ├── adapters.py
@@ -202,7 +222,6 @@
         ├── config
         │   ├── __init__.py
         │   ├── asgi.py
-        │   ├── settings.py
         │   ├── urls.py
         │   ├── wsgi.py
         │   ├── __pycache__ [содержимое скрыто]
@@ -214,41 +233,7 @@
         │       └── __pycache__ [содержимое скрыто]
         ├── logs
         │   ├── scss_compile
-        │   │   ├── scss_compile_20260912_122626.log
-        │   │   ├── scss_compile_20260912_125133.log
-        │   │   ├── scss_compile_20260912_131316.log
-        │   │   ├── scss_compile_20260912_141027.log
-        │   │   ├── scss_compile_20260912_142733.log
-        │   │   ├── scss_compile_20260912_142911.log
-        │   │   ├── scss_compile_20260912_143409.log
-        │   │   ├── scss_compile_20260912_143513.log
-        │   │   ├── scss_compile_20260912_143722.log
-        │   │   ├── scss_compile_20260912_144006.log
-        │   │   ├── scss_compile_20260912_144329.log
-        │   │   ├── scss_compile_20260912_144656.log
-        │   │   ├── scss_compile_20260912_145141.log
-        │   │   ├── scss_compile_20260912_145531.log
-        │   │   ├── scss_compile_20260912_145812.log
-        │   │   ├── scss_compile_20260912_150020.log
-        │   │   ├── scss_compile_20260912_150250.log
-        │   │   ├── scss_compile_20260912_150555.log
-        │   │   ├── scss_compile_20260912_151030.log
-        │   │   ├── scss_compile_20260912_152357.log
-        │   │   ├── scss_compile_20260912_153604.log
-        │   │   ├── scss_compile_20260912_153952.log
-        │   │   ├── scss_compile_20260912_154000.log
-        │   │   ├── scss_compile_20260912_154400.log
-        │   │   ├── scss_compile_20260912_154855.log
-        │   │   ├── scss_compile_20260912_160654.log
-        │   │   ├── scss_compile_20260912_160853.log
-        │   │   └── scss_compile_20260912_161050.log
         │   └── scss_errors
-        │       ├── main_scss_error_20260912_143409.log
-        │       ├── main_scss_error_20260912_143513.log
-        │       ├── main_scss_error_20260912_143722.log
-        │       ├── main_scss_error_20260912_145812.log
-        │       ├── main_scss_error_20260912_160654.log
-        │       └── main_scss_error_20260912_160853.log
         ├── media [содержимое скрыто]
         └── static
             ├── css

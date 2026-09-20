@@ -14,9 +14,11 @@ python manage.py migrate
 Создать:
 (.venv) D:\PythonProject\yourtune> pip freeze > requirements.txt
 +++
+
 Установить (Обеспечить наличие D:\PythonProject\Yourtune\requirements.txt):
 (.venv) D:\PythonProject\yourtune> pip install -r requirements.txt
 +++
+
 Обновление pip:
 python.exe -m pip install --upgrade pip
 

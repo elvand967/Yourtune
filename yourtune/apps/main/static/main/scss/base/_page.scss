@@ -1,0 +1,233 @@
+// apps/main/static/main/scss/base/_page.scss
+
+// ==========================================================================
+// Main page
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Page root
+// ==========================================================================
+
+.main-page {
+  width: 100%;
+  min-width: 0;
+  padding: $main-space-6 0 $main-space-6;
+
+  color: var(--yt-text);
+}
+
+.main-page *,
+.main-page *::before,
+.main-page *::after {
+  box-sizing: border-box;
+}
+
+// ==========================================================================
+// Shared section geometry
+// ==========================================================================
+
+.main-page__hero,
+.main-page__stats,
+.main-page__section,
+.main-page__cta {
+  width: 100%;
+  min-width: 0;
+}
+
+// ==========================================================================
+// Main surfaces
+// ==========================================================================
+
+.main-page__stats,
+.main-page__section,
+.main-page__cta {
+  border: 1px solid var(
+    --yt-line,
+    rgba(255, 255, 255, 0.18)
+  );
+  border-radius: $main-radius-lg;
+
+  background: var(
+    --yt-surface,
+    #151827
+  );
+}
+
+// The hero has its own surface and border in _hero.scss.
+.main-page__hero {
+  margin-top: 0;
+}
+
+// ==========================================================================
+// Vertical rhythm
+// ==========================================================================
+
+.main-page__stats,
+.main-page__section,
+.main-page__cta {
+  margin-top: $main-section-gap;
+}
+
+// ==========================================================================
+// Section heading
+// ==========================================================================
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $main-space-4;
+
+  min-width: 0;
+  margin-bottom: $main-space-5;
+}
+
+.section-heading__title,
+.section-heading__description {
+  min-width: 0;
+}
+
+.section-heading__title {
+  margin: 0;
+
+  color: var(--yt-text);
+
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-weight: $main-font-weight-bold;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.section-heading__description {
+  margin: $main-space-2 0 0;
+
+  color: var(--yt-text-muted);
+
+  font-size: $main-font-size-sm;
+  line-height: 1.5;
+}
+
+.section-heading__meta {
+  flex: 0 0 auto;
+
+  color: var(--yt-text-muted);
+
+  font-size: $main-font-size-sm;
+  line-height: 1.4;
+  text-align: right;
+}
+
+// ==========================================================================
+// Empty state
+// ==========================================================================
+
+.main-page__empty-state {
+  grid-column: 1 / -1;
+
+  margin: 0;
+  padding: $main-space-4;
+
+  border: 1px dashed var(
+    --yt-line,
+    rgba(255, 255, 255, 0.18)
+  );
+  border-radius: $main-radius-md;
+
+  color: var(--yt-text-muted);
+
+  font-size: $main-font-size-sm;
+  line-height: 1.5;
+  text-align: center;
+}
+
+// ==========================================================================
+// Two-column layout
+// ==========================================================================
+
+.main-page__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: $main-section-gap;
+
+  width: 100%;
+  min-width: 0;
+
+  margin-top: $main-section-gap;
+}
+
+.main-page__columns > .main-page__section {
+  margin-top: 0;
+}
+
+// ==========================================================================
+// Overflow protection
+// ==========================================================================
+
+.main-page__hero,
+.main-page__stats,
+.main-page__section,
+.main-page__cta,
+.main-page__columns,
+.collection-list,
+.collection-card,
+.blog-grid,
+.blog-card,
+.daily-section__bars,
+.daily-section__card {
+  min-width: 0;
+}
+
+.main-page h1,
+.main-page h2,
+.main-page h3,
+.main-page p {
+  overflow-wrap: anywhere;
+}
+
+// ==========================================================================
+// Responsive
+// ==========================================================================
+
+@include main-tablet {
+  .main-page {
+    padding-top: $main-space-5;
+    padding-bottom: $main-space-5;
+  }
+
+  .main-page__columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@include main-mobile {
+  .main-page {
+    padding-top: $main-space-4;
+    padding-bottom: $main-space-4;
+  }
+
+  .main-page__stats,
+  .main-page__section,
+  .main-page__cta {
+    border-radius: $main-radius-md;
+  }
+
+  .main-page__columns {
+    gap: $main-space-3;
+    margin-top: $main-space-3;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: $main-space-2;
+
+    margin-bottom: $main-space-4;
+  }
+
+  .section-heading__meta {
+    text-align: left;
+  }
+}

@@ -1,0 +1,174 @@
+// apps/main/static/main/scss/components/_topics.scss
+
+// ==========================================================================
+// Topics
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Topics section
+// ==========================================================================
+
+.topics-section {
+  padding: $main-space-5;
+}
+
+// ==========================================================================
+// Topics grid
+// ==========================================================================
+
+.topics-grid {
+  @include main-grid(6, $main-card-gap);
+}
+
+// ==========================================================================
+// Topic card
+// ==========================================================================
+
+.topic-card {
+  position: relative;
+
+  display: flex;
+  min-height: 124px;
+  align-items: flex-end;
+
+  overflow: hidden;
+
+  padding: $main-space-4;
+
+  border: 1px solid var(
+    --yt-line,
+    rgba(255, 255, 255, 0.18)
+  );
+  border-radius: $main-radius-lg;
+
+  color: #122033;
+
+  font-weight: $main-font-weight-bold;
+  line-height: 1.3;
+  text-decoration: none;
+
+  box-shadow: $main-shadow-soft;
+
+  @include main-theme-transition;
+}
+
+.topic-card:hover {
+  border-color: var(--yt-accent);
+  transform: translateY(-2px);
+}
+
+.topic-card::after {
+  position: absolute;
+  right: -24px;
+  bottom: -30px;
+
+  width: 120px;
+  height: 120px;
+
+  content: "";
+
+  border-radius: 50%;
+
+  opacity: 0.22;
+
+  filter: blur(2px);
+}
+
+.topic-card span {
+  position: relative;
+  z-index: 1;
+}
+
+// ==========================================================================
+// Topic colors
+// ==========================================================================
+
+.topic-card--violet {
+  background: linear-gradient(135deg, #eef2ff, #ddd6fe);
+}
+
+.topic-card--violet::after {
+  background: #7c5cff;
+}
+
+.topic-card--blue {
+  background: linear-gradient(135deg, #ecfeff, #cffafe);
+}
+
+.topic-card--blue::after {
+  background: #06b6d4;
+}
+
+.topic-card--rose {
+  background: linear-gradient(135deg, #fdf2f8, #fbcfe8);
+}
+
+.topic-card--rose::after {
+  background: #ec4899;
+}
+
+.topic-card--green {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+}
+
+.topic-card--green::after {
+  background: #22c55e;
+}
+
+.topic-card--yellow {
+  background: linear-gradient(135deg, #fffbeb, #fde68a);
+}
+
+.topic-card--yellow::after {
+  background: #f59e0b;
+}
+
+// ==========================================================================
+// Dark theme compatibility
+// ==========================================================================
+
+html[data-theme="dark"] .topic-card {
+  color: #09111f;
+}
+
+html[data-theme="cream"] .topic-card {
+  color: #332824;
+}
+
+// ==========================================================================
+// Responsive
+// ==========================================================================
+
+@include main-tablet {
+  .topics-grid {
+    @include main-grid(3, $main-card-gap);
+  }
+}
+
+@include main-mobile {
+  .topics-section {
+    padding: $main-space-4;
+  }
+
+  .topics-grid {
+    @include main-grid(2, $main-space-3);
+  }
+
+  .topic-card {
+    min-height: 112px;
+    padding: $main-space-3;
+  }
+}
+
+@include main-prefers-reduced-motion {
+  .topic-card {
+    transition: none;
+  }
+
+  .topic-card:hover {
+    transform: none;
+  }
+}

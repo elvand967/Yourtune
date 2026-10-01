@@ -1,0 +1,64 @@
+{# apps/users/templates/users/admin/audit/detail.html #}
+{# ================================================== #}
+{# Детали записи аудита #}
+{# ================================================== #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Лог #{{ log.pk }} | {{ log.get_action_display }} | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="users-account">
+    <h1 class="users-account__title">Детали записи аудита</h1>
+
+    <div class="users-account__layout">
+      <main class="users-account__content card">
+        <dl class="users-profile__details">
+          <dt>ID</dt>
+          <dd>{{ log.pk }}</dd>
+
+          <dt>Время</dt>
+          <dd>{{ log.created_at|date:"d.m.Y H:i:s" }}</dd>
+
+          <dt>Пользователь</dt>
+          <dd>
+            <a href="{% url 'users:admin_user_detail' log.user.pk %}">
+              {{ log.user.get_full_name|default:log.user.email }}
+            </a>
+          </dd>
+
+          <dt>Действие</dt>
+          <dd>{{ log.get_action_display }}</dd>
+
+          <dt>IP-адрес</dt>
+          <dd>{{ log.ip_address|default:"—" }}</dd>
+
+          <dt>User Agent</dt>
+          <dd><code>{{ log.user_agent|default:"—" }}</code></dd>
+
+          <dt>Детали</dt>
+          <dd style="white-space: pre-wrap;">{{ log.details|default:"—" }}</dd>
+        </dl>
+
+        <div class="users-profile__actions">
+          <a href="{% url 'users:admin_audit_log' %}" class="button button--secondary">
+            ← Назад к списку
+          </a>
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}

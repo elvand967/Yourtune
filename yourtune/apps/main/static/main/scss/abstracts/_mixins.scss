@@ -1,0 +1,92 @@
+// apps/main/static/main/scss/abstracts/_mixins.scss
+
+// ==========================================================================
+// Shared mixins
+// ==========================================================================
+
+// ==========================================================================
+// Container
+// ==========================================================================
+
+@mixin main-container {
+  width: min(
+    calc(100% - 36px),
+    $main-container-width
+  );
+
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// ==========================================================================
+// Surface
+// ==========================================================================
+
+@mixin main-section {
+  padding: $main-space-5;
+
+  border: 1px solid var(
+    --yt-line,
+    rgba(255, 255, 255, 0.18)
+  );
+  border-radius: $main-radius-lg;
+
+  background: var(
+    --yt-surface,
+    #151827
+  );
+}
+
+// ==========================================================================
+// Grid
+// ==========================================================================
+
+@mixin main-grid(
+  $columns: 1,
+  $gap: $main-card-gap
+) {
+  display: grid;
+  grid-template-columns: repeat(
+    $columns,
+    minmax(0, 1fr)
+  );
+  gap: $gap;
+}
+
+// ==========================================================================
+// Theme transitions
+// ==========================================================================
+
+@mixin main-theme-transition {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+// ==========================================================================
+// Responsive breakpoints
+// ==========================================================================
+
+@mixin main-tablet {
+  @media (max-width: $main-breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin main-mobile {
+  @media (max-width: $main-breakpoint-mobile) {
+    @content;
+  }
+}
+
+// ==========================================================================
+// Accessibility
+// ==========================================================================
+
+@mixin main-prefers-reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

@@ -1,0 +1,14 @@
+
+// apps/users/static/users/scss/users.scss
+
+// ==========================================================================
+// YourTune Users stylesheet
+// Уникальные стили приложения users.
+// Общие компоненты подключаются из core.css и здесь не дублируются.
+// ==========================================================================
+
+@import "layout/account";
+@import "components/account-nav";
+@import "components/profile";
+@import "components/admin-table";
+@import "pages/profile";

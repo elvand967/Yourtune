@@ -1,0 +1,50 @@
+{# apps/users/templates/users/admin/roles/confirm_delete.html #}
+{# ============================================================ #}
+{# Подтверждение удаления роли #}
+{# ============================================================ #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Удаление роли | {{ object.name }} | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="users-account">
+    <h1 class="users-account__title">Удаление роли</h1>
+
+    <div class="users-account__layout">
+      <main class="users-account__content card">
+        <div class="empty-state">
+          <div class="empty-state__icon">🗑️</div>
+          <h2 class="empty-state__title">
+            Удалить роль "{{ object.name }}"?
+          </h2>
+          <p class="empty-state__description">
+            Это действие нельзя отменить. Все пользователи потеряют эту роль.
+          </p>
+          <form method="post" class="empty-state__actions">
+            {% csrf_token %}
+            <button type="submit" class="button button--danger">
+              🗑️ Удалить
+            </button>
+            <a href="{% url 'users:admin_role_list' %}" class="button button--secondary">
+              ✖️ Отмена
+            </a>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}

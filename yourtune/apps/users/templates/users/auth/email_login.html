@@ -1,0 +1,89 @@
+
+{# apps/users/templates/users/auth/email_login.html #}
+{# ================================================ #}
+{# Вход через email #}
+{# ================================================ #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Вход через Email | YourTune{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <div class="form-wrapper">
+      <h1 class="form-title">Вход через Email</h1>
+
+      <div class="card">
+        <form class="form" method="post" action="{% url 'users:email_login' %}">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert--error">
+              {% for error in form.non_field_errors %}
+                <p style="margin: 0;">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="form__group">
+            <label for="id_login" class="form__label">Email</label>
+            <input
+              type="email"
+              id="id_login"
+              name="login"
+              class="form__control"
+              placeholder="you@example.com"
+              required
+              autocomplete="email"
+              value="{{ form.login.value|default:'' }}"
+            >
+            {% if form.login.errors %}
+              <p class="form__error">{{ form.login.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div class="form__group">
+            <label for="id_password" class="form__label">Пароль</label>
+            <input
+              type="password"
+              id="id_password"
+              name="password"
+              class="form__control"
+              placeholder="••••••••"
+              required
+              autocomplete="current-password"
+            >
+            {% if form.password.errors %}
+              <p class="form__error">{{ form.password.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div class="form__actions">
+            <button type="submit" class="button button--success form__submit">
+              Войти
+            </button>
+          </div>
+        </form>
+
+        <div style="text-align: center; color: var(--yt-text-muted); font-size: 0.875rem; margin-top: 16px;">
+          <p style="margin: 0 0 8px 0;">
+            Нет аккаунта?
+            <a href="{% url 'users:signup' %}" style="color: var(--yt-accent); font-weight: 500;">
+              Зарегистрироваться
+            </a>
+          </p>
+          <p style="margin: 0;">
+            <a href="{% url 'users:login' %}" style="color: var(--yt-text-muted); text-decoration: underline;">
+              ← Назад ко входу
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

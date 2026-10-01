@@ -1,0 +1,136 @@
+{# apps/users/templates/users/admin/users/list.html #}
+{# ================================================ #}
+{# Список пользователей (админ-панель) #}
+{# ================================================ #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Пользователи | Админ-панель | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="users-account">
+    <h1 class="users-account__title">Пользователи</h1>
+
+    <div class="users-account__layout">
+      <main class="users-account__content card">
+        {% if users %}
+          <div class="users-admin-table-wrapper">
+            <table class="users-admin-table">
+              <thead>
+                <tr>
+                  <th>Пользователь</th>
+                  <th>Email</th>
+                  <th>Роль</th>
+                  <th>Статус</th>
+                  <th>Дата регистрации</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user_obj in users %}
+                  <tr>
+                    <td>
+                      <div class="users-admin-table__user">
+                        <div class="users-admin-table__avatar">
+                          {% if user_obj.profile.avatar %}
+                            <img src="{{ user_obj.profile.avatar.url }}" alt="">
+                          {% else %}
+                            <span style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; font-size: 1.25rem; font-weight: 700; color: var(--yt-text-muted);">
+                              {{ user_obj.email|first|upper }}
+                            </span>
+                          {% endif %}
+                        </div>
+                        <span>{{ user_obj.get_full_name|default:user_obj.email }}</span>
+                      </div>
+                    </td>
+                    <td>{{ user_obj.email }}</td>
+                    <td>
+                      {% if user_obj.is_superuser %}
+                        <span class="users-admin-table__status users-admin-table__status--active">Суперпользователь</span>
+                      {% elif user_obj.is_staff %}
+                        <span class="users-admin-table__status users-admin-table__status--active">Персонал</span>
+                      {% else %}
+                        <span class="users-admin-table__status">Пользователь</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if user_obj.is_active %}
+                        <span class="users-admin-table__status users-admin-table__status--active">Активен</span>
+                      {% else %}
+                        <span class="users-admin-table__status users-admin-table__status--inactive">Неактивен</span>
+                      {% endif %}
+                    </td>
+                    <td>{{ user_obj.date_joined|date:"d.m.Y H:i" }}</td>
+                    <td>
+                      <a href="{% url 'users:admin_user_detail' user_obj.pk %}" class="button button--sm button--ghost">
+                        👁️
+                      </a>
+                      <a href="{% url 'users:admin_user_edit' user_obj.pk %}" class="button button--sm button--ghost">
+                        ✏️
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% if is_paginated %}
+            <nav class="pagination" style="margin-top: 24px;">
+              <ul class="pagination__list">
+                {% if page_obj.has_previous %}
+                  <li class="pagination__item">
+                    <a href="?page={{ page_obj.previous_page_number }}" class="pagination__link pagination__prev">
+                      Назад
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                  {% if num == page_obj.number %}
+                    <li class="pagination__item">
+                      <span class="pagination__link pagination__current">{{ num }}</span>
+                    </li>
+                  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="pagination__item">
+                      <a href="?page={{ num }}" class="pagination__link">{{ num }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                  <li class="pagination__item">
+                    <a href="?page={{ page_obj.next_page_number }}" class="pagination__link pagination__next">
+                      Вперёд
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-state__icon">👥</div>
+            <h2 class="empty-state__title">Пользователи не найдены</h2>
+            <p class="empty-state__description">
+              В системе пока нет зарегистрированных пользователей.
+            </p>
+          </div>
+        {% endif %}
+      </main>
+    </div>
+  </div>
+{% endblock %}

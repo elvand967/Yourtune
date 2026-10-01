@@ -1,0 +1,454 @@
+{# apps/main/templates/main/home.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{# ====================================================================== #}
+{# SEO                                                                    #}
+{# ====================================================================== #}
+
+{% block title %}
+  YourTune — аффирмации и ежедневные практики
+{% endblock %}
+
+{% block meta_description %}
+  YourTune — аффирмации, тематические подборки, ежедневные практики и статьи для спокойствия, уверенности и личностного роста.
+{% endblock %}
+
+{% block meta_robots %}
+  index, follow
+{% endblock %}
+
+{% block canonical %}
+  {{ request.build_absolute_uri }}
+{% endblock %}
+
+{% block og_title %}
+  YourTune — аффирмации и ежедневные практики
+{% endblock %}
+
+{% block og_description %}
+  Аффирмации, тематические подборки и ежедневные практики для спокойствия, уверенности и внутренней опоры.
+{% endblock %}
+
+{% block og_type %}
+  website
+{% endblock %}
+
+{% block og_url %}
+  {{ request.build_absolute_uri }}
+{% endblock %}
+
+{% block twitter_title %}
+  YourTune — аффирмации и ежедневные практики
+{% endblock %}
+
+{% block twitter_description %}
+  Тематические подборки аффирмаций и ежедневные практики для внутренней опоры.
+{% endblock %}
+
+{# ====================================================================== #}
+{# Page-specific styles                                                   #}
+{# ====================================================================== #}
+
+{% block extra_head %}
+  <link
+    rel="stylesheet"
+    href="{% static 'main/css/main.css' %}"
+  >
+{% endblock %}
+
+{# ====================================================================== #}
+{# Main content                                                           #}
+{# ====================================================================== #}
+
+{% block content %}
+
+  <div class="main-page">
+
+    {# ================================================================== #}
+    {# Hero                                                               #}
+    {# ================================================================== #}
+
+    <section
+      class="main-page__hero hero-section"
+      aria-labelledby="hero-title"
+    >
+      <div class="hero-section__content">
+        <span class="hero-section__badge">
+          {{ hero.badge }}
+        </span>
+
+        <h1
+          id="hero-title"
+          class="hero-section__title"
+        >
+          {{ hero.title }}
+        </h1>
+
+        <p class="hero-section__lead">
+          {{ hero.description }}
+        </p>
+
+        <div class="hero-section__actions">
+          <a
+            class="button button--primary"
+            href="{{ hero.primary_action.anchor }}"
+          >
+            {{ hero.primary_action.label }}
+          </a>
+
+          <a
+            class="button button--secondary"
+            href="{{ hero.secondary_action.anchor }}"
+          >
+            {{ hero.secondary_action.label }}
+          </a>
+        </div>
+      </div>
+
+      <aside
+        class="hero-section__side"
+        aria-label="YourTune в цифрах"
+      >
+        <div class="stats-section">
+          {% for stat in stats %}
+            <div class="stats-section__item">
+              <strong class="stats-section__value">
+                {{ stat.value }}
+              </strong>
+
+              <span class="stats-section__label">
+                {{ stat.label }}
+              </span>
+            </div>
+          {% empty %}
+            <p class="main-page__empty-state">
+              Статистика пока не добавлена.
+            </p>
+          {% endfor %}
+        </div>
+
+        <div class="hero-section__mini-list">
+          <article class="hero-section__mini-card">
+            <div
+              class="hero-section__thumb hero-section__thumb--red"
+              aria-hidden="true"
+            ></div>
+
+            <div>
+              <strong>
+                Аффирмации утра
+              </strong>
+
+              <small>
+                Мягкий старт дня
+              </small>
+            </div>
+          </article>
+
+          <article class="hero-section__mini-card">
+            <div
+              class="hero-section__thumb hero-section__thumb--blue"
+              aria-hidden="true"
+            ></div>
+
+            <div>
+              <strong>
+                Перед сном
+              </strong>
+
+              <small>
+                Расслабление и восстановление
+              </small>
+            </div>
+          </article>
+
+          <article class="hero-section__mini-card">
+            <div
+              class="hero-section__thumb hero-section__thumb--green"
+              aria-hidden="true"
+            ></div>
+
+            <div>
+              <strong>
+                Поддержка в стрессе
+              </strong>
+
+              <small>
+                Опора в тревожные моменты
+              </small>
+            </div>
+          </article>
+        </div>
+      </aside>
+    </section>
+
+    {# ================================================================== #}
+    {# Topics                                                             #}
+    {# ================================================================== #}
+
+    <section
+      id="topics"
+      class="main-page__section topics-section"
+      aria-labelledby="topics-title"
+    >
+      <div class="section-heading">
+        <div>
+          <h2
+            id="topics-title"
+            class="section-heading__title"
+          >
+            Темы и категории
+          </h2>
+
+          <p class="section-heading__description">
+            Подборки аффирмаций по жизненным запросам
+          </p>
+        </div>
+
+        <span class="section-heading__meta">
+          Навигация по темам
+        </span>
+      </div>
+
+      <div class="topics-grid">
+        {% for topic in topics %}
+          <a
+            class="topic-card topic-card--{{ topic.style }}"
+            href="{{ topic.anchor }}"
+          >
+            <span>
+              {{ topic.title }}
+            </span>
+          </a>
+        {% empty %}
+          <p class="main-page__empty-state">
+            Темы пока не добавлены.
+          </p>
+        {% endfor %}
+      </div>
+    </section>
+
+    {# ================================================================== #}
+    {# Featured collections and daily focus                              #}
+    {# ================================================================== #}
+
+    <div class="main-page__columns">
+
+      <section
+        id="featured"
+        class="main-page__section featured-section"
+        aria-labelledby="featured-title"
+      >
+        <div class="section-heading">
+          <div>
+            <h2
+              id="featured-title"
+              class="section-heading__title"
+            >
+              Популярные подборки
+            </h2>
+
+            <p class="section-heading__description">
+              Карточки аффирмаций по темам и состояниям
+            </p>
+          </div>
+
+          <span class="section-heading__meta">
+            Рекомендуемые
+          </span>
+        </div>
+
+        <div class="collection-list">
+          {% for collection in featured_collections %}
+            <article class="collection-card">
+              <div
+                class="collection-card__icon
+                       collection-card__icon--{{ collection.style }}"
+                aria-hidden="true"
+              ></div>
+
+              <div class="collection-card__content">
+                <h3 class="collection-card__title">
+                  {{ collection.title }}
+                </h3>
+
+                <p class="collection-card__description">
+                  {{ collection.description }}
+                </p>
+              </div>
+
+              <span class="collection-card__count">
+                {{ collection.count }}
+              </span>
+            </article>
+          {% empty %}
+            <p class="main-page__empty-state">
+              Подборки пока не добавлены.
+            </p>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section
+        id="daily"
+        class="main-page__section daily-section"
+        aria-labelledby="daily-title"
+      >
+        <div class="section-heading">
+          <div>
+            <h2
+              id="daily-title"
+              class="section-heading__title"
+            >
+              {{ daily_focus.title }}
+            </h2>
+
+            <p class="section-heading__description">
+              {{ daily_focus.description }}
+            </p>
+          </div>
+
+          <span class="section-heading__meta">
+            Практика дня
+          </span>
+        </div>
+
+        <div
+          class="daily-section__bars"
+          aria-label="Индикаторы ежедневных направлений"
+        >
+          {% for bar in daily_focus.bars %}
+            <div
+              class="daily-section__bar
+                     daily-section__bar--{{ bar.style }}"
+            >
+              <span style="width: {{ bar.width }}%;"></span>
+            </div>
+          {% empty %}
+            <p class="main-page__empty-state">
+              Данные ежедневного фокуса пока не добавлены.
+            </p>
+          {% endfor %}
+        </div>
+
+        <div class="daily-section__card">
+          <span>
+            {{ daily_focus.label }}
+          </span>
+        </div>
+      </section>
+
+    </div>
+
+    {# ================================================================== #}
+    {# Blog                                                               #}
+    {# ================================================================== #}
+
+    <section
+      id="blog"
+      class="main-page__section blog-section"
+      aria-labelledby="blog-title"
+    >
+      <div class="section-heading">
+        <div>
+          <h2
+            id="blog-title"
+            class="section-heading__title"
+          >
+            Блог и статьи
+          </h2>
+
+          <p class="section-heading__description">
+            Практики, объяснения и полезные материалы
+          </p>
+        </div>
+
+        <span class="section-heading__meta">
+          Карточки статей
+        </span>
+      </div>
+
+      <div class="blog-grid">
+        {% for article in articles %}
+          <article
+            class="blog-card blog-card--{{ article.style }}"
+          >
+            <span class="blog-card__label">
+              Статья
+            </span>
+
+            <h3 class="blog-card__title">
+              {{ article.title }}
+            </h3>
+          </article>
+        {% empty %}
+          <p class="main-page__empty-state">
+            Статьи пока не добавлены.
+          </p>
+        {% endfor %}
+      </div>
+    </section>
+
+    {# ================================================================== #}
+    {# Call to action                                                     #}
+    {# ================================================================== #}
+
+    <section
+      id="cta"
+      class="main-page__cta cta-section"
+      aria-labelledby="cta-title"
+    >
+      <div class="cta-section__content">
+        <h2
+          id="cta-title"
+          class="cta-section__title"
+        >
+          {{ cta.title }}
+        </h2>
+
+        <p class="cta-section__description">
+          {{ cta.description }}
+        </p>
+
+        <div class="cta-section__actions">
+          <a
+            class="button button--primary"
+            href="{{ cta.primary_action.anchor }}"
+          >
+            {{ cta.primary_action.label }}
+          </a>
+
+          <a
+            class="button button--secondary"
+            href="{{ cta.secondary_action.anchor }}"
+          >
+            {{ cta.secondary_action.label }}
+          </a>
+        </div>
+      </div>
+
+      <div
+        class="cta-section__aside"
+        aria-hidden="true"
+      >
+        Зона под иллюстрацию,
+        отзыв или мини-гайд
+      </div>
+    </section>
+
+  </div>
+
+{% endblock %}
+
+{# ====================================================================== #}
+{# Page-specific JavaScript                                               #}
+{# ====================================================================== #}
+
+{% block extra_js %}
+  <script
+    src="{% static 'main/js/main.js' %}"
+    defer
+  ></script>
+{% endblock %}

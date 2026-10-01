@@ -1,0 +1,20 @@
+// ==========================================================================
+// Users profile page
+// ==========================================================================
+
+.users-profile-page {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 0 48px;
+}
+
+.users-profile-page__title {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 767px) {
+  .users-profile-page {
+    padding: 24px 0 32px;
+  }
+}

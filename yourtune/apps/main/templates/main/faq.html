@@ -1,0 +1,112 @@
+{# apps/main/templates/main/faq.html #}
+{# Страница часто задаваемых вопросов (FAQ) YourTune #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}
+  {{ title|default:"Часто задаваемые вопросы" }} — YourTune
+{% endblock %}
+
+{% block meta_description %}
+  {{ description|default:"Ответы на популярные вопросы о работе с аффирмациями, использовании платформы и ежедневных практиках." }}
+{% endblock %}
+
+{% block meta_robots %}
+  index, follow
+{% endblock %}
+
+{% block canonical %}
+  {{ request.build_absolute_uri }}
+{% endblock %}
+
+{% block og_title %}
+  {{ title|default:"Часто задаваемые вопросы" }} — YourTune
+{% endblock %}
+
+{% block og_description %}
+  {{ description|default:"Ответы на вопросы о работе с аффирмациями и использовании YourTune." }}
+{% endblock %}
+
+{% block og_type %}
+  website
+{% endblock %}
+
+{% block og_url %}
+  {{ request.build_absolute_uri }}
+{% endblock %}
+
+{% block twitter_title %}
+  {{ title|default:"Часто задаваемые вопросы" }} — YourTune
+{% endblock %}
+
+{% block twitter_description %}
+  {{ description|default:"Популярные вопросы и ответы о работе с аффирмациями." }}
+{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+
+  <div class="faq-page">
+
+    <section class="faq-page__header">
+      <div class="container">
+        <h1 class="faq-page__title">
+          {{ title|default:"Часто задаваемые вопросы" }}
+        </h1>
+
+        <p class="faq-page__lead">
+          {{ description|default:"Ответы на популярные вопросы о работе с аффирмациями и использовании YourTune." }}
+        </p>
+      </div>
+    </section>
+
+    <section class="faq-page__questions">
+      <div class="container">
+        <div class="faq-list">
+          {% for faq in faqs %}
+            <details class="faq-item" name="faq-{{ forloop.counter }}">
+              <summary class="faq-item__summary">
+                <span class="faq-item__question">{{ faq.question }}</span>
+                <span class="faq-item__icon" aria-hidden="true">+</span>
+              </summary>
+
+              <div class="faq-item__answer">
+                {{ faq.answer|safe }}
+              </div>
+            </details>
+          {% empty %}
+            <p class="faq-page__empty">Вопросы пока не добавлены.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-page__cta">
+      <div class="container">
+        <div class="faq-cta-card">
+          <h2 class="faq-cta-card__title">Не нашли ответ?</h2>
+
+          <p class="faq-cta-card__description">
+            Свяжитесь с нами, и мы поможем разобраться в любом вопросе.
+          </p>
+
+          <div class="faq-cta-card__actions">
+            <a class="button button--primary" href="mailto:support@yourtune.com">
+              Написать нам
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'main/js/faq.js' %}" defer></script>
+{% endblock %}

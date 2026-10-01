@@ -1,0 +1,311 @@
+// apps/main/static/main/scss/components/_hero.scss
+
+// ==========================================================================
+// Hero
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Hero layout
+// ==========================================================================
+
+.hero-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.95fr);
+  gap: $main-section-gap;
+
+  min-width: 0;
+  min-height: 360px;
+  padding: $main-space-6;
+
+  overflow: hidden;
+
+  border: 1px solid var(
+    --yt-line,
+    rgba(255, 255, 255, 0.18)
+  );
+  border-radius: $main-radius-lg;
+
+  background:
+    radial-gradient(
+      circle at 25% 20%,
+      rgba(124, 92, 255, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 70% 30%,
+      rgba(45, 212, 191, 0.1),
+      transparent 26%
+    ),
+    linear-gradient(
+      135deg,
+      var(--yt-surface),
+      var(--yt-surface-muted)
+    );
+
+  box-shadow: $main-shadow-soft;
+
+  @include main-theme-transition;
+}
+
+// ==========================================================================
+// Hero content
+// ==========================================================================
+
+.hero-section__content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-section__badge {
+  display: inline-flex;
+  width: max-content;
+  max-width: 100%;
+  align-items: center;
+
+  padding: $main-space-2 $main-space-3;
+
+  border: 1px solid rgba(124, 92, 255, 0.2);
+  border-radius: $main-radius-pill;
+
+  background: rgba(124, 92, 255, 0.12);
+  color: var(--yt-accent);
+
+  font-size: $main-font-size-sm;
+  line-height: 1.3;
+}
+
+.hero-section__title {
+  max-width: 11ch;
+  margin: $main-space-4 0 $main-space-3;
+
+  color: var(--yt-text);
+
+  font-size: clamp(2.1rem, 4vw, 4.4rem);
+  font-weight: $main-font-weight-bold;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.hero-section__lead {
+  max-width: 62ch;
+  margin: 0;
+
+  color: var(--yt-text-muted);
+
+  font-size: $main-font-size-md;
+  line-height: 1.75;
+}
+
+.hero-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $main-space-3;
+
+  margin-top: $main-space-5;
+}
+
+// ==========================================================================
+// Hero side
+// ==========================================================================
+
+.hero-section__side {
+  display: grid;
+  align-content: start;
+  gap: $main-space-3;
+
+  min-width: 0;
+}
+
+// The stats are placed inside the hero, like in the original prototype.
+.hero-section__side .stats-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $main-space-3;
+
+  padding: 0;
+}
+
+.hero-section__side .stats-section__item {
+  min-width: 0;
+  min-height: auto;
+  padding: $main-space-3;
+
+  border: 1px solid var(
+    --yt-line,
+    rgba(255, 255, 255, 0.18)
+  );
+  border-radius: $main-radius-md;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--yt-surface-muted),
+      rgba(255, 255, 255, 0.02)
+    );
+
+  @include main-theme-transition;
+}
+
+.hero-section__side .stats-section__item:hover {
+  border-color: var(--yt-accent);
+  box-shadow: $main-shadow-soft;
+  transform: translateY(-1px);
+}
+
+.hero-section__side .stats-section__value {
+  font-size: 1.75rem;
+}
+
+.hero-section__side .stats-section__label {
+  margin-top: $main-space-1;
+}
+
+// ==========================================================================
+// Hero mini cards
+// ==========================================================================
+
+.hero-section__mini-list {
+  display: grid;
+  gap: $main-space-3;
+}
+
+.hero-section__mini-card {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: center;
+  gap: $main-space-3;
+
+  min-width: 0;
+  padding: $main-space-3;
+
+  border: 1px solid var(
+    --yt-line,
+    rgba(255, 255, 255, 0.18)
+  );
+  border-radius: $main-radius-md;
+
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.hero-section__mini-card strong,
+.hero-section__mini-card small {
+  display: block;
+}
+
+.hero-section__mini-card strong {
+  color: var(--yt-text);
+
+  font-size: $main-font-size-sm;
+  line-height: 1.35;
+}
+
+.hero-section__mini-card small {
+  margin-top: $main-space-1;
+
+  color: var(--yt-text-muted);
+
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.hero-section__thumb {
+  width: 56px;
+  height: 56px;
+
+  border-radius: $main-radius-md;
+}
+
+.hero-section__thumb--red {
+  background: linear-gradient(135deg, #fb7185, #fda4af);
+}
+
+.hero-section__thumb--blue {
+  background: linear-gradient(135deg, #60a5fa, #93c5fd);
+}
+
+.hero-section__thumb--green {
+  background: linear-gradient(135deg, #34d399, #86efac);
+}
+
+// ==========================================================================
+// Responsive
+// ==========================================================================
+
+@include main-tablet {
+  .hero-section {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-section__title {
+    max-width: 16ch;
+  }
+
+  .hero-section__side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-section__side .stats-section {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hero-section__mini-list {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@include main-mobile {
+  .hero-section {
+    min-height: auto;
+    padding: $main-space-5;
+  }
+
+  .hero-section__title {
+    max-width: 100%;
+
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .hero-section__lead {
+    font-size: $main-font-size-sm;
+  }
+
+  .hero-section__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-section__actions .button {
+    width: 100%;
+  }
+
+  .hero-section__side {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-section__side .stats-section,
+  .hero-section__mini-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ==========================================================================
+// Reduced motion
+// ==========================================================================
+
+@include main-prefers-reduced-motion {
+  .hero-section,
+  .hero-section__side .stats-section__item {
+    transition: none;
+  }
+
+  .hero-section__side .stats-section__item:hover {
+    transform: none;
+  }
+}

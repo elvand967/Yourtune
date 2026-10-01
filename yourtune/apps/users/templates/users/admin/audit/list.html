@@ -1,0 +1,100 @@
+{# apps/users/templates/users/admin/audit/list.html #}
+{# ================================================ #}
+{# Лог аудита (админ-панель) #}
+{# ================================================ #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Лог аудита | Админ-панель | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="users-account">
+    <h1 class="users-account__title">Лог аудита</h1>
+
+    <div class="users-account__layout">
+      <main class="users-account__content card">
+        {% if logs %}
+          <div class="users-admin-table-wrapper">
+            <table class="users-admin-table">
+              <thead>
+                <tr>
+                  <th>Время</th>
+                  <th>Пользователь</th>
+                  <th>Действие</th>
+                  <th>IP</th>
+                  <th>Детали</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in logs %}
+                  <tr>
+                    <td>{{ log.created_at|date:"d.m.Y H:i" }}</td>
+                    <td>{{ log.user.get_full_name|default:log.user.email }}</td>
+                    <td>{{ log.get_action_display }}</td>
+                    <td>{{ log.ip_address|default:"—" }}</td>
+                    <td>{{ log.details|truncatechars:50|default:"—" }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          {% if is_paginated %}
+            <nav class="pagination" style="margin-top: 24px;">
+              <ul class="pagination__list">
+                {% if page_obj.has_previous %}
+                  <li class="pagination__item">
+                    <a href="?page={{ page_obj.previous_page_number }}" class="pagination__link pagination__prev">
+                      Назад
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                  {% if num == page_obj.number %}
+                    <li class="pagination__item">
+                      <span class="pagination__link pagination__current">{{ num }}</span>
+                    </li>
+                  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="pagination__item">
+                      <a href="?page={{ num }}" class="pagination__link">{{ num }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                  <li class="pagination__item">
+                    <a href="?page={{ page_obj.next_page_number }}" class="pagination__link pagination__next">
+                      Вперёд
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          {% endif %}
+        {% else %}
+          <div class="empty-state">
+            <div class="empty-state__icon">📋</div>
+            <h2 class="empty-state__title">Лог аудита пуст</h2>
+            <p class="empty-state__description">
+              Здесь будут отображаться действия пользователей в системе.
+            </p>
+          </div>
+        {% endif %}
+      </main>
+    </div>
+  </div>
+{% endblock %}

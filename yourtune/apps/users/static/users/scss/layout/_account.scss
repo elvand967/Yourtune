@@ -1,0 +1,52 @@
+// ==========================================================================
+// Users account layout
+// ==========================================================================
+
+.users-account {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 18px 40px;
+}
+
+.users-account__layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.users-account__sidebar {
+  min-width: 0;
+}
+
+.users-account__content {
+  min-width: 0;
+}
+
+.users-account__title {
+  margin-bottom: 24px;
+}
+
+.users-account__section {
+  margin-top: 24px;
+}
+
+.users-account__section:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 767px) {
+  .users-account {
+    padding: 16px 12px 32px;
+  }
+
+  .users-account__layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .users-account__title {
+    margin-bottom: 16px;
+  }
+}

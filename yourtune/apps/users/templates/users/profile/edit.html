@@ -1,0 +1,520 @@
+{# apps/users/templates/users/profile/edit.html #}
+{# ============================================ #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Редактирование профиля | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container" style="padding-top: 48px; padding-bottom: 48px;">
+
+    {# Заголовок страницы #}
+    <div style="margin-bottom: 32px;">
+      <h1 style="font-size: 2rem; font-weight: 700; color: var(--yt-text); margin: 0 0 8px 0;">
+        Редактирование профиля
+      </h1>
+
+      <p style="color: var(--yt-text-muted); margin: 0;">
+        Измените информацию о вашем аккаунте
+      </p>
+    </div>
+
+    {# Уведомления Django #}
+    {% if messages %}
+      <div style="margin-bottom: 24px;">
+        {% for message in messages %}
+          <div class="alert alert--{{ message.tags }}">
+            <p style="margin: 0;">
+              {{ message }}
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# Верхний блок: аватар #}
+    <div style="margin-bottom: 32px;">
+      <div class="card" style="padding: 32px;">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px;">
+
+          {# Текущая аватарка #}
+          <div style="position: relative;">
+            {% if profile.avatar %}
+              <img
+                src="{{ profile.avatar.url }}"
+                alt="{{ user.get_full_name|default:user.email }}"
+                width="128"
+                height="128"
+                style="width: 128px; height: 128px; border-radius: 50%; object-fit: cover; box-shadow: var(--yt-shadow-lg);"
+              >
+            {% else %}
+              <div
+                role="img"
+                aria-label="Аватар пользователя"
+                style="width: 128px; height: 128px; border-radius: 50%; background: linear-gradient(135deg, var(--yt-accent), #9f7aea); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 700; color: #fff; box-shadow: var(--yt-shadow-lg);"
+              >
+                {% if user.get_full_name %}
+                  {{ user.get_full_name|slice:":2"|upper }}
+                {% else %}
+                  {{ user.email|slice:":2"|upper }}
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+
+          {# Имя пользователя #}
+          <div style="width: 100%; max-width: 460px;">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--yt-text); margin: 0 0 8px 0;">
+              {{ user.get_full_name|default:"Пользователь" }}
+            </h2>
+
+            <p style="color: var(--yt-text-muted); margin: 0 0 16px 0; font-size: 0.95rem;">
+              {{ user.email }}
+            </p>
+
+            {# Форма загрузки аватарки #}
+            <form
+              method="post"
+              action="{% url 'users:upload_avatar' %}"
+              enctype="multipart/form-data"
+              style="display: flex; flex-direction: column; align-items: center; gap: 12px;"
+            >
+              {% csrf_token %}
+
+              <input
+                type="file"
+                id="id_avatar"
+                name="avatar"
+                accept="image/jpeg,image/png,image/webp"
+                style="display: none;"
+              >
+
+              <label
+                for="id_avatar"
+                class="button button--secondary"
+                style="cursor: pointer; display: inline-flex; align-items: center;"
+              >
+                <svg
+                  style="width: 18px; height: 18px; margin-right: 8px;"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+
+                Выбрать изображение
+              </label>
+
+              <span
+                id="avatar-file-name"
+                style="color: var(--yt-text-muted); font-size: 0.875rem;"
+              >
+                Файл не выбран
+              </span>
+
+              <button
+                type="submit"
+                class="button button--success"
+              >
+                Загрузить аватар
+              </button>
+
+              <p
+                style="color: var(--yt-text-muted); margin: 0; font-size: 0.8rem;"
+              >
+                JPG, PNG или WebP. Максимальный размер — 5 МБ.
+                Файл будет сохранён как JPEG 128×128.
+              </p>
+            </form>
+
+            {# Ошибки загрузки передаются через messages #}
+
+            {# Форма сброса аватарки #}
+            <form
+              method="post"
+              action="{% url 'users:reset_avatar' %}"
+              style="margin-top: 12px;"
+            >
+              {% csrf_token %}
+
+              <button
+                type="submit"
+                class="button button--ghost"
+              >
+                Сбросить аватар
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# Ошибки основной формы #}
+    {% if form.non_field_errors %}
+      <div class="alert alert--error" style="margin-bottom: 24px;">
+        {% for error in form.non_field_errors %}
+          <p style="margin: 0;">
+            {{ error }}
+          </p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# Основная форма редактирования профиля #}
+    <form
+      class="form"
+      method="post"
+      action="{% url 'users:profile_edit' %}"
+    >
+      {% csrf_token %}
+
+      {# Сетка с адаптивностью #}
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+
+        {# Колонка 1: основная информация #}
+        <div class="card" style="padding: 24px;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--yt-text); margin: 0 0 20px 0; padding-bottom: 12px; border-bottom: 1px solid var(--yt-line);">
+            Основная информация
+          </h3>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.first_name.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.first_name.label }}
+            </label>
+
+            {{ form.first_name }}
+
+            {% if form.first_name.errors %}
+              <p class="form__error">
+                {{ form.first_name.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.last_name.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.last_name.label }}
+            </label>
+
+            {{ form.last_name }}
+
+            {% if form.last_name.errors %}
+              <p class="form__error">
+                {{ form.last_name.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.middle_name.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.middle_name.label }}
+            </label>
+
+            {{ form.middle_name }}
+
+            {% if form.middle_name.errors %}
+              <p class="form__error">
+                {{ form.middle_name.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.email.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.email.label }}
+            </label>
+
+            {{ form.email }}
+
+            {% if form.email.errors %}
+              <p class="form__error">
+                {{ form.email.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+
+        {# Колонка 2: дополнительные данные #}
+        <div class="card" style="padding: 24px;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--yt-text); margin: 0 0 20px 0; padding-bottom: 12px; border-bottom: 1px solid var(--yt-line);">
+            Дополнительно
+          </h3>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.gender.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.gender.label }}
+            </label>
+
+            {{ form.gender }}
+
+            {% if form.gender.errors %}
+              <p class="form__error">
+                {{ form.gender.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.date_of_birth.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.date_of_birth.label }}
+            </label>
+
+            {{ form.date_of_birth }}
+
+            {% if form.date_of_birth.errors %}
+              <p class="form__error">
+                {{ form.date_of_birth.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.bio.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.bio.label }}
+            </label>
+
+            {{ form.bio }}
+
+            {% if form.bio.errors %}
+              <p class="form__error">
+                {{ form.bio.errors.0 }}
+              </p>
+            {% endif %}
+
+            {% if form.bio.help_text %}
+              <p class="form__hint">
+                {{ form.bio.help_text }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.voice_preference.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.voice_preference.label }}
+            </label>
+
+            {{ form.voice_preference }}
+
+            {% if form.voice_preference.errors %}
+              <p class="form__error">
+                {{ form.voice_preference.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+
+        {# Колонка 3: контакты и настройки #}
+        <div class="card" style="padding: 24px;">
+          <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--yt-text); margin: 0 0 20px 0; padding-bottom: 12px; border-bottom: 1px solid var(--yt-line);">
+            Контакты и настройки
+          </h3>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.location.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.location.label }}
+            </label>
+
+            {{ form.location }}
+
+            {% if form.location.errors %}
+              <p class="form__error">
+                {{ form.location.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.website.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.website.label }}
+            </label>
+
+            {{ form.website }}
+
+            {% if form.website.errors %}
+              <p class="form__error">
+                {{ form.website.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.language.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.language.label }}
+            </label>
+
+            {{ form.language }}
+
+            {% if form.language.errors %}
+              <p class="form__error">
+                {{ form.language.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.timezone.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.timezone.label }}
+            </label>
+
+            {{ form.timezone }}
+
+            {% if form.timezone.errors %}
+              <p class="form__error">
+                {{ form.timezone.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group" style="margin-bottom: 20px;">
+            <label
+              for="{{ form.privacy_level.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.privacy_level.label }}
+            </label>
+
+            {{ form.privacy_level }}
+
+            {% if form.privacy_level.errors %}
+              <p class="form__error">
+                {{ form.privacy_level.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__choice" style="margin-bottom: 20px;">
+            {{ form.is_public }}
+
+            <label
+              for="{{ form.is_public.id_for_label }}"
+              class="form__choice-label"
+            >
+              {{ form.is_public.label }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {# Кнопки основной формы #}
+      <div
+        class="form__actions"
+        style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--yt-line); display: flex; gap: 12px; flex-wrap: wrap;"
+      >
+        <button
+          type="submit"
+          class="button button--success"
+        >
+          <svg
+            style="width: 18px; height: 18px; margin-right: 8px;"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+
+          Сохранить изменения
+        </button>
+
+        <a
+          href="{% url 'users:profile_detail' %}"
+          class="button button--ghost"
+        >
+          <svg
+            style="width: 18px; height: 18px; margin-right: 8px;"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+
+          Отмена
+        </a>
+      </div>
+    </form>
+
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    (function () {
+      const avatarInput = document.getElementById("id_avatar");
+      const avatarFileName = document.getElementById("avatar-file-name");
+
+      if (!avatarInput || !avatarFileName) {
+        return;
+      }
+
+      avatarInput.addEventListener("change", function () {
+        if (avatarInput.files.length > 0) {
+          avatarFileName.textContent = avatarInput.files[0].name;
+        } else {
+          avatarFileName.textContent = "Файл не выбран";
+        }
+      });
+    })();
+  </script>
+{% endblock %}

@@ -1,0 +1,89 @@
+{# apps/users/templates/users/admin/users/detail.html #}
+{# ================================================== #}
+{# Детали пользователя (админ-панель) #}
+{# ================================================== #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ user.get_full_name|default:user.email }} | Админ-панель | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="users-account">
+    <h1 class="users-account__title">
+      {{ user.get_full_name|default:user.email }}
+    </h1>
+
+    <div class="users-account__layout">
+      <main class="users-account__content card">
+        <div class="users-profile-card">
+          <div class="users-profile-avatar">
+            {% if user.profile.avatar %}
+              <img src="{{ user.profile.avatar.url }}" alt="" class="users-profile-avatar__image">
+            {% else %}
+              <div class="users-profile-avatar__placeholder">
+                {{ user.email|first|upper }}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="users-profile-info">
+            <h2 class="users-profile__name">
+              {{ user.get_full_name|default:user.email }}
+            </h2>
+            <p class="users-profile__email">{{ user.email }}</p>
+
+            <dl class="users-profile__details">
+              <dt>Статус</dt>
+              <dd>
+                {% if user.is_active %}
+                  <span class="users-admin-table__status users-admin-table__status--active">Активен</span>
+                {% else %}
+                  <span class="users-admin-table__status users-admin-table__status--inactive">Неактивен</span>
+                {% endif %}
+              </dd>
+
+              <dt>Роль</dt>
+              <dd>
+                {% if user.is_superuser %}
+                  Суперпользователь
+                {% elif user.is_staff %}
+                  Персонал
+                {% else %}
+                  Пользователь
+                {% endif %}
+              </dd>
+
+              <dt>Дата регистрации</dt>
+              <dd>{{ user.date_joined|date:"d.m.Y H:i" }}</dd>
+
+              <dt>Последний вход</dt>
+              <dd>{{ user.last_login|date:"d.m.Y H:i"|default:"—" }}</dd>
+            </dl>
+
+            <div class="users-profile__actions">
+              <a href="{% url 'users:admin_user_edit' user.pk %}" class="button">
+                ✏️ Редактировать
+              </a>
+              <a href="{% url 'users:admin_user_list' %}" class="button button--secondary">
+                ← Назад к списку
+              </a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{# apps/users/templates/users/integrations/index.html #}
+{# ================================================= #}
+{# Главная страница интеграций #}
+{# ================================================= #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Интеграции | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="users-account">
+    <h1 class="users-account__title">Интеграции</h1>
+
+    <div class="users-account__layout">
+      <main class="users-account__content card">
+        <div class="grid grid--2">
+          <a href="{% url 'users:api_tokens' %}" class="card card-link">
+            <div class="card__header">
+              <h3 class="card__title">🔐 API токены</h3>
+            </div>
+            <div class="card__body">
+              Управление токенами для доступа к API YourTune.
+            </div>
+          </a>
+
+          <a href="{% url 'users:social_accounts' %}" class="card card-link">
+            <div class="card__header">
+              <h3 class="card__title">🌐 Соц. аккаунты</h3>
+            </div>
+            <div class="card__body">
+              Привязка аккаунтов Google, GitHub, Yandex.
+            </div>
+          </a>
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}

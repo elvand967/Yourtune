@@ -1,0 +1,142 @@
+{# apps/users/templates/users/admin/users/edit.html #}
+{# ================================================ #}
+{# Редактирование пользователя (админ-панель) #}
+{# ================================================ #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Редактирование | {{ user.get_full_name|default:user.email }} | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="users-account">
+    <h1 class="users-account__title">Редактирование пользователя</h1>
+
+    <div class="users-account__layout">
+      <main class="users-account__content card">
+        <form method="post" class="form" novalidate>
+          {% csrf_token %}
+
+          <div class="form__group">
+            <label for="id_first_name" class="form__label">Имя</label>
+            <input
+              type="text"
+              name="first_name"
+              id="id_first_name"
+              class="form__control"
+              value="{{ user.first_name }}"
+              maxlength="150"
+            >
+          </div>
+
+          <div class="form__group">
+            <label for="id_middle_name" class="form__label">Отчество</label>
+            <input
+              type="text"
+              name="middle_name"
+              id="id_middle_name"
+              class="form__control"
+              value="{{ user.middle_name }}"
+              maxlength="150"
+            >
+          </div>
+
+          <div class="form__group">
+            <label for="id_last_name" class="form__label">Фамилия</label>
+            <input
+              type="text"
+              name="last_name"
+              id="id_last_name"
+              class="form__control"
+              value="{{ user.last_name }}"
+              maxlength="150"
+            >
+          </div>
+
+          <div class="form__group">
+            <label for="id_email" class="form__label">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="id_email"
+              class="form__control"
+              value="{{ user.email }}"
+              required
+            >
+          </div>
+
+          <div class="grid grid--2">
+            <div class="form__group">
+              <label for="id_is_active" class="form__label">Статус</label>
+              <div class="form__choice">
+                <input
+                  type="checkbox"
+                  name="is_active"
+                  id="id_is_active"
+                  class="form__choice-input"
+                  {% if user.is_active %}checked{% endif %}
+                >
+                <label for="id_is_active" class="form__choice-label">
+                  Активен
+                </label>
+              </div>
+            </div>
+
+            <div class="form__group">
+              <label for="id_is_staff" class="form__label">Доступ в админку</label>
+              <div class="form__choice">
+                <input
+                  type="checkbox"
+                  name="is_staff"
+                  id="id_is_staff"
+                  class="form__choice-input"
+                  {% if user.is_staff %}checked{% endif %}
+                >
+                <label for="id_is_staff" class="form__choice-label">
+                  Персонал
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label for="id_is_verified" class="form__label">Email подтверждён</label>
+            <div class="form__choice">
+              <input
+                type="checkbox"
+                name="is_verified"
+                id="id_is_verified"
+                class="form__choice-input"
+                {% if user.is_verified %}checked{% endif %}
+              >
+              <label for="id_is_verified" class="form__choice-label">
+                Подтверждён
+              </label>
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button type="submit" class="button">
+              💾 Сохранить
+            </button>
+            <a href="{% url 'users:admin_user_list' %}" class="button button--secondary">
+              ← Назад к списку
+            </a>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+{% endblock %}

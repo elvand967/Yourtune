@@ -1,0 +1,39 @@
+{# apps/users/templates/users/security/two_factor.html #}
+{# =================================================== #}
+{# Двухфакторная аутентификация #}
+{# =================================================== #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}2FA | YourTune{% endblock %}
+
+{% block main_nav %}
+  {% load users_menu %}
+  {% users_menu as menu_data %}
+  {% with menu_items=menu_data.header_menu_items profile_menu=menu_data.header_profile_menu %}
+    {% include "core/includes/main_menu.html" %}
+  {% endwith %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="users-account">
+    <h1 class="users-account__title">Двухфакторная аутентификация</h1>
+
+    <div class="users-account__layout">
+      <main class="users-account__content card">
+        <div class="empty-state">
+          <div class="empty-state__icon">📱</div>
+          <h2 class="empty-state__title">2FA</h2>
+          <p class="empty-state__description">
+            Настройка двухфакторной аутентификации будет доступна позже.
+          </p>
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}

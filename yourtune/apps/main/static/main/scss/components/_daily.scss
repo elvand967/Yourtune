@@ -1,0 +1,181 @@
+// apps/main/static/main/scss/components/_daily.scss
+
+// ==========================================================================
+// Daily focus
+// Ежедневная практика и индикаторы направлений.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Daily bars
+// ==========================================================================
+
+.daily-section__bars {
+  display: grid;
+  gap: $main-space-3;
+
+  margin-top: $main-space-5;
+}
+
+.daily-section__bar {
+  position: relative;
+
+  width: 100%;
+  height: 10px;
+
+  overflow: hidden;
+
+  border-radius: $main-radius-pill;
+
+  background: var(--yt-surface-muted);
+}
+
+.daily-section__bar span {
+  display: block;
+
+  width: 0;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: var(--yt-accent);
+
+  transition:
+    width 600ms ease,
+    background-color 200ms ease;
+}
+
+// ==========================================================================
+// Bar colors
+// ==========================================================================
+
+.daily-section__bar--violet span {
+  background: linear-gradient(
+    90deg,
+    #a78bfa,
+    #7c5cff
+  );
+}
+
+.daily-section__bar--blue span {
+  background: linear-gradient(
+    90deg,
+    #93c5fd,
+    #60a5fa
+  );
+}
+
+.daily-section__bar--green span {
+  background: linear-gradient(
+    90deg,
+    #86efac,
+    #34d399
+  );
+}
+
+.daily-section__bar--yellow span {
+  background: linear-gradient(
+    90deg,
+    #fde68a,
+    #fbbf24
+  );
+}
+
+.daily-section__bar--rose span {
+  background: linear-gradient(
+    90deg,
+    #fda4af,
+    #fb7185
+  );
+}
+
+// ==========================================================================
+// Daily card
+// ==========================================================================
+
+.daily-section__card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 190px;
+  margin-top: $main-space-5;
+  padding: $main-space-5;
+
+  border: 1px solid var(--yt-line);
+  border-radius: $main-radius-lg;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(124, 92, 255, 0.22),
+      transparent 58%
+    ),
+    var(--yt-surface);
+
+  color: var(--yt-text);
+  text-align: center;
+
+  @include main-theme-transition;
+}
+
+.daily-section__card:hover {
+  border-color: var(--yt-accent);
+  box-shadow: $main-shadow-soft;
+}
+
+.daily-section__card span {
+  max-width: 22rem;
+
+  color: var(--yt-text-muted);
+
+  font-size: $main-font-size-sm;
+  line-height: 1.55;
+}
+
+// ==========================================================================
+// Progress reveal
+// ==========================================================================
+
+.daily-section__bar span {
+  animation: daily-progress-reveal 800ms ease-out both;
+}
+
+@keyframes daily-progress-reveal {
+  from {
+    width: 0;
+  }
+}
+
+// ==========================================================================
+// Responsive layout
+// ==========================================================================
+
+@include main-mobile {
+  .daily-section__bars {
+    margin-top: $main-space-4;
+  }
+
+  .daily-section__card {
+    min-height: 150px;
+    margin-top: $main-space-4;
+    padding: $main-space-4;
+  }
+}
+
+// ==========================================================================
+// Reduced motion
+// ==========================================================================
+
+@include main-prefers-reduced-motion {
+  .daily-section__bar span {
+    animation: none;
+    transition: none;
+  }
+
+  .daily-section__card {
+    transition: none;
+  }
+}

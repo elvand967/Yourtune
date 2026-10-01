@@ -1,0 +1,109 @@
+{# ========================================================= #}
+{# YourTune Icon Library Quick Reference                     #}
+{# ========================================================= #}
+{% load icons %}
+
+{# ========================================================= #}
+{# Базовое использование                                     #}
+{# ========================================================= #}
+
+{# Простая иконка #}
+{% icon 'edit'|safe %}
+
+{# С размером #}
+{% icon 'heart' width='24' height='24'|safe %}
+
+{# С классом #}
+{% icon 'settings' class_name='nav-icon'|safe %}
+
+{# В кнопке #}
+<button class="button">
+  {% icon 'save'|safe %}
+  Сохранить
+</button>
+
+{# С цветом #}
+<span style="color: var(--yt-accent);">
+  {% icon 'heart-filled'|safe %}
+</span>
+
+
+{# ========================================================= #}
+{# Шевроны (навигация)                                       #}
+{# ========================================================= #}
+
+{# Одиночные шевроны #}
+<button>{% icon 'chevron-up'|safe %}</button>
+<button>{% icon 'chevron-down'|safe %}</button>
+<button>{% icon 'chevron-left'|safe %}</button>
+<button>{% icon 'chevron-right'|safe %}</button>
+
+{# Двойные шевроны #}
+<button>{% icon 'chevrons-up'|safe %}</button>
+<button>{% icon 'chevrons-down'|safe %}</button>
+<button>{% icon 'chevrons-left'|safe %}</button>
+<button>{% icon 'chevrons-right'|safe %}</button>
+
+{# В навигации #}
+<nav>
+  <a href="#">{% icon 'chevron-left'|safe %} Назад</a>
+  <a href="#">Вперёд {% icon 'chevron-right'|safe %}</a>
+</nav>
+
+{# В аккордеоне #}
+<div class="accordion">
+  <button>
+    Раздел 1
+    {% icon 'chevron-down'|safe %}
+  </button>
+</div>
+
+{# Прокрутка #}
+<button title="В начало">{% icon 'chevrons-up'|safe %}</button>
+<button title="В конец">{% icon 'chevrons-down'|safe %}</button>
+
+
+{# ========================================================= #}
+{# Бренды провайдеров                                        #}
+{# ========================================================= #}
+
+<button class="button button--secondary">
+  {% icon 'google' width='20' height='20'|safe %}
+  Войти через Google
+</button>
+
+<button class="button button--secondary">
+  {% icon 'yandex' width='20' height='20'|safe %}
+  Войти через Яндекс
+</button>
+
+
+{# ========================================================= #}
+{# Валюты                                                    #}
+{# ========================================================= #}
+
+<div style="display: flex; gap: 16px;">
+  <span style="color: var(--yt-text);">
+    {% icon 'usd' width='24' height='24'|safe %}
+  </span>
+  <span style="color: var(--yt-text);">
+    {% icon 'eur' width='24' height='24'|safe %}
+  </span>
+  <span style="color: var(--yt-text);">
+    {% icon 'rub' width='24' height='24'|safe %}
+  </span>
+  <span style="color: var(--yt-text);">
+    {% icon 'byn' width='24' height='24'|safe %}
+  </span>
+</div>
+
+
+{# ========================================================= #}
+{# Криптовалюты                                              #}
+{# ========================================================= #}
+
+<div>
+  {% icon 'btc' width='32' height='32' style="color: #F7931A;"|safe %}
+  {% icon 'eth' width='32' height='32' style="color: #627EEA;"|safe %}
+  {% icon 'tether' width='32' height='32' style="color: #26A17B;"|safe %}
+</div>

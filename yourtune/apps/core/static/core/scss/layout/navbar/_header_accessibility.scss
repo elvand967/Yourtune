@@ -1,0 +1,24 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_accessibility.scss
+
+// ==========================================================================
+// отключение анимаций для пользователей, выбравших reduced motion.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .menu-link,
+  .topbar__toggle,
+  .menu-list,
+  .dropdown-menu,
+  .menu-indicator-wings span,
+  .hamburger span {
+    transition: none;
+  }
+
+  .topbar__search-dot {
+    animation: none;
+  }
+}

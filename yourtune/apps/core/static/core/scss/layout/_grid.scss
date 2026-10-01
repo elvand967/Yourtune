@@ -1,0 +1,170 @@
+// apps/core/static/core/scss/layout/_grid.scss
+// ==========================================================================
+// Grid
+// Универсальные сетки для страниц, секций и карточек.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Base grid
+// ==========================================================================
+
+.grid {
+  display: grid;
+  gap: $space-4;
+}
+
+// ==========================================================================
+// Column counts
+// ==========================================================================
+
+// Базовые сетки теперь адаптивны: на мобильных 1 колонка, выше sm/md — целевое количество
+.grid--2 {
+  grid-template-columns: 1fr;
+  @include above(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.grid--3 {
+  grid-template-columns: 1fr;
+  @include above(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @include above(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.grid--4 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @include above(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @include above(lg) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+// ==========================================================================
+// Responsive helpers
+// ==========================================================================
+
+.grid--auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.grid--auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+}
+
+.grid--dense {
+  grid-auto-flow: dense;
+}
+
+// ==========================================================================
+// Spans
+// ==========================================================================
+
+.grid__span-2 {
+  @include above(sm) {
+    grid-column: span 2;
+  }
+}
+
+.grid__span-3 {
+  @include above(md) {
+    grid-column: span 3;
+  }
+}
+
+.grid__span-full {
+  grid-column: 1 / -1;
+}
+
+// ==========================================================================
+// Section grids (Двухколоночный макет: контент + сайдбар)
+// ==========================================================================
+
+.section-grid {
+  @extend .grid;
+  grid-template-columns: 1fr;
+}
+
+@include above(md) {
+  .section-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+@include above(lg) {
+  .section-grid--wide {
+    grid-template-columns: 3fr 1fr;
+  }
+}
+
+// ==========================================================================
+// Header grid utilities (для навигационной панели navbar)
+// ==========================================================================
+
+.header-grid {
+  display: grid;
+  gap: $space-3;
+  align-items: center;
+  width: 100%;
+
+  // ПО УМОЛЧАНИЮ — МОБИЛЬНАЯ ВЕРСИЯ (3 строки)
+  // Распределяем Логотип и Переключатель тем по краям
+  grid-template-columns: 1fr auto; 
+  grid-template-areas:
+    "brand toggle"
+    "search search"
+    "menu menu";
+
+  // ИСПРАВЛЕНИЕ БАГА: Полностью убираем серую/синюю вспышку при кликах во всей шапке на iOS/Android
+  @include below(md) {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@include above(sm) {
+  .header-grid {
+    // ПЛАНШЕТ (2 строки)
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "brand search toggle"
+      "menu menu menu";
+  }
+}
+
+@include above(md) {
+  .header-grid {
+    // ДЕСКТОП (1 строка)
+    grid-template-columns: auto 1fr auto auto;
+    gap: $space-4; // На десктопе можно сделать отступы чуть свободнее
+    grid-template-areas:
+      "brand search menu toggle";
+  }
+}
+
+// Классы для размещения элементов в grid
+.header-grid__brand {
+  grid-area: brand;
+}
+
+.header-grid__search {
+  grid-area: search;
+  width: 100%;
+}
+
+.header-grid__menu {
+  grid-area: menu;
+  width: 100%; // Позволяет меню на мобильных разворачиваться на всю ширину сетки
+}
+
+.header-grid__toggle {
+  grid-area: toggle;
+  justify-self: end; // Гарантирует прижатие переключателя тем к правому краю
+}

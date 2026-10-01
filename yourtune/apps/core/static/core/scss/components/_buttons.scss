@@ -1,0 +1,143 @@
+// apps/core/static/core/scss/components/_buttons.scss
+// ==========================================================================
+// Buttons
+// Базовые стили кнопок проекта YourTune.
+// Подключается через @import в core.scss.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Base button
+// ==========================================================================
+
+.button {
+  @include interactive-reset;
+  @include pill;
+  @include theme-transition;
+
+  display: inline-flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+
+  min-height: 44px;
+  padding-top: $space-3;
+  padding-bottom: $space-3;
+  padding-left: $space-4;
+  padding-right: $space-4;
+
+  border: 1px solid transparent;
+  background: var(--yt-accent);
+  color: #fff;
+
+  font-weight: $font-weight-semibold;
+  text-align: center;
+  white-space: nowrap;
+
+  &:hover {
+    filter: brightness(1.03);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+}
+
+// ==========================================================================
+// Button variants
+// ==========================================================================
+
+.button--secondary {
+  background: var(--yt-surface);
+  color: var(--yt-text);
+  border-color: var(--yt-line);
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--yt-text);
+  border-color: var(--yt-line);
+}
+
+.button--danger {
+  background: #d92d20;
+  color: #fff;
+}
+
+.button--success {
+  background: #12b76a;
+  color: #fff;
+}
+
+// ==========================================================================
+// Button sizes
+// ==========================================================================
+
+.button--sm {
+  min-height: 36px;
+  padding-top: $space-2;
+  padding-bottom: $space-2;
+  padding-left: $space-3;
+  padding-right: $space-3;
+  font-size: $font-size-sm;
+}
+
+.button--lg {
+  min-height: 52px;
+  padding-top: $space-4;
+  padding-bottom: $space-4;
+  padding-left: $space-6;
+  padding-right: $space-6;
+  font-size: $font-size-lg;
+}
+
+// ==========================================================================
+// Icon button
+// ==========================================================================
+
+.button--icon {
+  @include inline-center;
+
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: $radius-pill;
+}
+
+// ==========================================================================
+// Link-like button
+// ==========================================================================
+
+.button--link {
+  @include interactive-reset;
+  @include theme-transition;
+
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+
+  color: var(--yt-accent);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}

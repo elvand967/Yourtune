@@ -1,0 +1,119 @@
+
+// apps/core/static/core/scss/core.scss
+
+// ==========================================================================
+// YourTune Core stylesheet
+// Главная точка входа для базовых стилей проекта.
+// ==========================================================================
+
+// ==========================================================================
+// Abstracts
+// Переменные и mixins не генерируют CSS сами по себе.
+// ==========================================================================
+
+@import "abstracts/variables";  // Базовые переменные проекта YourTune.
+@import "abstracts/mixins";     // Вспомогательные миксины проекта YourTune.
+
+// ==========================================================================
+// Theme tokens
+// CSS-переменные для light, dark и cream тем.
+// ==========================================================================
+
+@import "abstracts/themes";  // Единый источник цветовых схем проекта
+
+// ==========================================================================
+// Base
+// Сброс, базовая типографика и глобальные правила.
+// ==========================================================================
+
+@import "base/reset";       // Сброс стандартных браузерных отступов и базовых различий.
+@import "base/base";        // Базовые стили документа: фон, цвет текста, шрифты и общие правила.
+@import "base/typography";  // Базовая типографика проекта: заголовки, абзацы, вспомогательный текст.
+
+// ==========================================================================
+// Components
+// Переиспользуемые визуальные компоненты.
+// ==========================================================================
+
+@import "components/buttons";        // Базовые стили кнопок проекта YourTune.
+@import "components/cards";          // Базовые карточки и их модификаторы.
+@import "components/dropdown";       // Выпадающее меню: trigger + menu + items + divider + модификаторы
+@import "components/empty-state";    // Empty state — блок, который показывается, когда нет данных:
+@import "components/modal";          // Модальное окно: overlay + dialog + header/body/footer + модификаторы
+@import "components/theme-switcher"; // Кнопка переключения темы и связанные элементы интерфейса.
+@import "components/fast-scroll";    // Кнопки быстрого вертикального скролла (вверх / вниз).
+
+// ==========================================================================
+// Layout
+// Структурные элементы страницы.
+// ==========================================================================
+
+@import "layout/alerts";         // Уведомления и системные сообщения.
+@import "layout/breadcrumbs";    // Хлебные крошки для навигации по иерархии страниц.
+@import "layout/container";      // Универсальный обёрточный контейнер проекта.
+@import "layout/forms";          // Унифицированные стили для форм, полей и состояний валидации.
+@import "layout/footer";         // Нижняя часть сайта: навигация, копирайт, вспомогательные ссылки.
+@import "layout/grid";           // Универсальные сетки для страниц, секций и карточек.
+@import "layout/navigation";
+@import "layout/pagination";     // Постраничная навигация для списков, каталога и ленты.
+@import "layout/sidebar";        // Боковая панель для навигации, фильтров и вспомогательных блоков.
+@import "layout/tabs";           // Горизонтальные вкладки для переключения разделов.
+@import "layout/navbar/navbar";
+
+// ==========================================================================
+// Global page composition
+// ==========================================================================
+
+html {
+  min-height: 100%;
+  background: var(--yt-bg);
+
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+
+  background: var(--yt-gradient-page);
+  color: var(--yt-text);
+
+  font-family: $font-family-base;
+  line-height: $line-height-base;
+
+  @include theme-transition;
+}
+
+.site-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#main-content {
+  flex: 1 0 auto;
+}
+
+// ==========================================================================
+// Global accessibility
+// ==========================================================================
+
+:focus-visible {
+  @include focus-ring;
+}
+
+@include prefers-reduced-motion {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: $reduced-motion-duration !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: $reduced-motion-duration !important;
+    scroll-behavior: auto !important;
+  }
+}

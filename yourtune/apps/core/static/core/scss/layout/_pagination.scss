@@ -1,0 +1,87 @@
+// apps/core/static/core/scss/layout/_pagination.scss
+// ==========================================================================
+// Pagination
+// Постраничная навигация для списков, каталога и ленты.
+// ==========================================================================
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+// ==========================================================================
+// Base pagination
+// ==========================================================================
+
+.pagination {
+  @include inline-center;
+  flex-wrap: wrap;
+  gap: $space-2;
+  color: var(--yt-text-muted);
+}
+
+.pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pagination__item {
+  display: inline-flex;
+}
+
+.pagination__link {
+  @include inline-center;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  padding: 0 $space-3;
+  border: 1px solid var(--yt-line);
+  border-radius: $radius-pill;
+  background: var(--yt-surface);
+  color: var(--yt-text);
+  text-decoration: none;
+  @include theme-transition;
+
+  &:hover {
+    background: var(--yt-surface-2);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.pagination__link--active,
+.pagination__current {
+  background: var(--yt-accent);
+  border-color: var(--yt-accent);
+  color: var(--yt-accent-contrast);
+  font-weight: $font-weight-semibold;
+}
+
+.pagination__link--disabled,
+.pagination__ellipsis {
+  color: var(--yt-text-muted);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+// ==========================================================================
+// Controls
+// ==========================================================================
+
+.pagination__prev,
+.pagination__next {
+  font-weight: $font-weight-medium;
+}
+
+.pagination__prev::before {
+  content: "←";
+  margin-right: $space-2;
+}
+
+.pagination__next::after {
+  content: "→";
+  margin-left: $space-2;
+}

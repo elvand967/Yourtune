@@ -1,0 +1,149 @@
+
+// apps/core/static/core/scss/components/_dropdown.scss
+
+// ==========================================================================
+// Выпадающее меню: trigger + menu + items + divider + модификаторы
+// ==========================================================================
+
+
+@use "../abstracts/variables" as *;
+@use "../abstracts/mixins" as *;
+
+// Контейнер dropdown
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+// Триггер (кнопка/элемент, открывающий меню)
+.dropdown__trigger {
+  // Стили задаются снаружи (обычно btn / btn--ghost и т.п.)
+  // Здесь можно добавить специфичные состояния, если нужно.
+}
+
+// Выпадающее меню
+.dropdown__menu {
+  position: absolute;
+  top: calc(100% + #{$space-1});
+  left: 0;
+  z-index: $z-dropdown;
+  display: none;
+  min-width: 200px;
+  max-width: 280px;
+  padding: $space-2 0;
+  border-radius: $radius-sm;
+  background-color: var(--yt-surface);
+  color: var(--yt-text);
+  box-shadow: var(--yt-shadow-elevated);
+  @include theme-transition(background-color, color, box-shadow, opacity, transform);
+  @include card-surface;
+
+  // Состояние открытия
+  .dropdown.is-open > & {
+    display: block;
+  }
+
+  // Позиционирование справа
+  .dropdown--right > & {
+    left: auto;
+    right: 0;
+  }
+
+  // Выпадание вверх
+  .dropdown--up > & {
+    top: auto;
+    bottom: calc(100% + #{$space-1});
+  }
+
+  // На малых экранах можно прижимать к краю вьюпорта
+  @include below(sm) {
+    left: 0;
+    right: 0;
+    min-width: auto;
+    max-width: none;
+    border-radius: $radius-xs;
+  }
+}
+
+// Элемент меню
+.dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border: 0;
+  background: transparent;
+  color: var(--yt-text);
+  font-size: $font-size-md;
+  line-height: $line-height-normal;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  @include theme-transition(background-color, color);
+
+  &:hover {
+    background-color: var(--yt-surface-2, rgba(0, 0, 0, 0.04));
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+    // Для надёжности внутри меню можно чуть усилить фон
+    background-color: var(--yt-surface-2, rgba(0, 0, 0, 0.06));
+  }
+
+  // Активный/выбранный элемент (опционально)
+  &.is-active {
+    background-color: var(--yt-accent-bg, rgba(0, 0, 0, 0.04));
+    color: var(--yt-accent, #2563eb);
+    font-weight: $font-weight-medium;
+  }
+
+  // Отключённый элемент
+  &.is-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Разделитель между элементами
+.dropdown__divider {
+  margin: $space-2 0;
+  border: 0;
+  border-top: 1px solid var(--yt-border, rgba(0, 0, 0, 0.08));
+  @include theme-transition(border-color);
+}
+
+// Опционально: заголовок внутри меню (например, "Сортировать по")
+.dropdown__header {
+  padding: $space-2 $space-4 $space-1;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--yt-text-muted, #6b7280);
+  @include theme-transition(color);
+}
+
+// Анимация появления (опционально, если хочешь плавное раскрытие)
+.dropdown__menu {
+  // Базовое состояние для анимации
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+
+  .dropdown.is-open > & {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &,
+    .dropdown.is-open > & {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+}

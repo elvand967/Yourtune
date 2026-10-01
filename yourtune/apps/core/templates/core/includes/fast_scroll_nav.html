@@ -1,0 +1,33 @@
+
+{# apps/core/templates/core/includes/fast_scroll_nav.html #}
+
+{% load static %}
+
+<div class="fast-scroll-nav-fixed" aria-hidden="true">
+  <div class="fast-scroll-nav">
+    <button
+      type="button"
+      class="fast-scroll-btn up"
+      aria-label="Прокрутить вверх"
+      title="Вверх"
+    >
+      <img
+        src="{% static 'core/img/icons/chevron-up.ico' %}"
+        alt=""
+        aria-hidden="true"
+      >
+    </button>
+    <button
+      type="button"
+      class="fast-scroll-btn down"
+      aria-label="Прокрутить вниз"
+      title="Вниз"
+    >
+      <img
+        src="{% static 'core/img/icons/chevron-down.ico' %}"
+        alt=""
+        aria-hidden="true"
+      >
+    </button>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_animation.scss
+
+// ==========================================================================
+// YourTune Navbar Animation
+// Анимации поиска, гамбургера и раскрытия мобильного меню.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/themes";
+
+
+// ==========================================================================
+// 1. Анимация точки поиска
+// ==========================================================================
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+
+// ==========================================================================
+// 2. Главное мобильное меню
+// ==========================================================================
+
+@include below(md) {
+  #menu-toggle:checked ~ .navbar__grid {
+    .navbar__menu {
+      z-index: $z-dropdown;
+    }
+
+    .menu-list {
+      display: flex;
+      max-height: 100vh;
+      padding-top: $space-2;
+      opacity: 1;
+    }
+
+    .hamburger {
+      span:nth-child(1) {
+        transform: rotate(45deg) translateY(8px);
+      }
+
+      span:nth-child(2) {
+        opacity: 0;
+      }
+
+      span:nth-child(3) {
+        transform: rotate(-45deg) translateY(-8px);
+      }
+    }
+  }
+}

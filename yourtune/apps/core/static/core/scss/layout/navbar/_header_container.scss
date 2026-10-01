@@ -1,0 +1,115 @@
+
+// apps/core/static/core/scss/layout/navbar/_header_container.scss
+
+// ==========================================================================
+// YourTune Navbar Container
+// Основной контейнер навигационной панели и grid-раскладка.
+// ==========================================================================
+
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+@import "../../abstracts/themes";
+
+
+// ==========================================================================
+// 1. Защита страницы от горизонтального скролла
+// ==========================================================================
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+
+// ==========================================================================
+// 2. Основной контейнер navbar
+// ==========================================================================
+
+.navbar {
+  position: relative;
+  z-index: $z-sticky;
+
+  // Подменю desktop/tablet должно выходить за границы navbar.
+  overflow: visible;
+
+  background: color-mix(
+    in srgb,
+    var(--yt-bg) 86%,
+    transparent
+  );
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-bottom: 1px solid var(--yt-line);
+  padding: $space-3 $space-4;
+
+  @include theme-transition;
+}
+
+
+// ==========================================================================
+// 3. Grid-раскладка navbar
+// ==========================================================================
+
+.navbar__grid {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  align-items: center;
+
+  max-width: 100%;
+  padding-right: $space-4;
+
+  // Нельзя использовать overflow-x: hidden:
+  // оно может обрезать desktop/tablet dropdown.
+  overflow: visible;
+
+  // ------------------------------------------------------------------------
+  // Мобильные устройства
+  // ------------------------------------------------------------------------
+
+  gap: $space-3;
+
+  grid-template-columns: auto auto;
+
+  grid-template-areas:
+    "brand toggle"
+    "search search"
+    "menu menu";
+
+
+  // ------------------------------------------------------------------------
+  // Планшеты
+  // ------------------------------------------------------------------------
+
+  @include above(sm) {
+    gap: $space-3 $space-4;
+
+    grid-template-columns: auto 1fr auto;
+
+    grid-template-areas:
+      "brand search toggle"
+      "menu menu menu";
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Десктоп
+  // ------------------------------------------------------------------------
+
+  @include above(md) {
+    column-gap: $space-8;
+    row-gap: $space-3;
+
+    grid-template-columns:
+      auto
+      minmax(200px, 1fr)
+      auto
+      auto;
+
+    grid-template-areas:
+      "brand search menu toggle";
+  }
+}

@@ -1,0 +1,137 @@
+// apps/core/static/core/scss/components/_fast-scroll.scss
+
+.fast-scroll-nav-fixed {
+  // Базовое состояние (переключается скриптом на absolute)
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 100%;
+
+  // Оставляем транзишн только для opacity и transform (для скрытия у хедера),
+  // но НЕ для свойств top/bottom/position, чтобы не было задержки при упирании в футер.
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+
+  .fast-scroll-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--yt-surface);
+    border-radius: 0.75rem 0.75rem 0 0;
+    box-shadow: var(--yt-shadow);
+    height: 2.5rem;
+
+    // Оставляем видимыми парящие кнопки
+    overflow: visible;
+
+    // Сдвигаем саму панель вниз на 1px, чтобы она перекрывала border-top футера при стыковке
+    transform: translateY(1px);
+
+    .fast-scroll-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      top: -1.25rem; // Идеальное круглое парение
+
+      width: 3rem;
+      height: 3rem;
+      margin: 0 0.75rem;
+
+      border-radius: 50%;
+      border: 2px solid var(--yt-line);
+      background-color: var(--yt-surface);
+      box-shadow: var(--yt-shadow-sm);
+
+      transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.2s ease,
+        opacity 0.25s ease,
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+      flex-shrink: 0;
+
+      img {
+        width: 1.75rem;
+        height: 1.75rem;
+        object-fit: contain;
+        opacity: 0.8;
+        transition: filter 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      // Темы проекта YourTune
+      html[data-theme="light"] & img,
+      html[data-theme="cream"] & img,
+      :root & img {
+        filter: brightness(0.2) contrast(1.2);
+      }
+
+      html[data-theme="dark"] & img {
+        filter: brightness(0) invert(1);
+        opacity: 0.9;
+      }
+
+      &:hover {
+        background-color: var(--yt-accent);
+        border-color: var(--yt-accent);
+        transform: scale(1.1) translateY(-0.1rem);
+
+        img {
+          filter: brightness(0) invert(1) !important;
+          opacity: 1;
+        }
+      }
+
+      // Скрытие кнопки с анимацией к центру
+      &.is-btn-hidden {
+        width: 0;
+        margin: 0;
+        opacity: 0;
+        pointer-events: none;
+        border-color: transparent;
+        transform: scale(0);
+
+        img {
+          transform: scale(0);
+        }
+      }
+    }
+  }
+
+  // Полное скрытие панели у хедера (с учетом смещения на 1px)
+  &.is-hidden {
+    transform: translateY(100%) translateY(1px);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+// Мобильный адаптив
+@media (max-width: 768px) {
+  .fast-scroll-nav-fixed {
+    .fast-scroll-nav {
+      height: 2rem;
+
+      .fast-scroll-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+        top: -1rem;
+
+        img {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+
+        &.is-btn-hidden {
+          width: 0;
+          margin: 0;
+          transform: scale(0);
+        }
+      }
+    }
+  }
+}

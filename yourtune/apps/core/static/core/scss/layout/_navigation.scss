@@ -1,0 +1,28 @@
+
+// apps/core/static/core/scss/layout/_navigation.scss
+
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+.nav {
+  @include cluster($space-3, wrap, center);
+}
+
+.nav__link {
+  @include pill($space-2, $space-3);
+  @include theme-transition;
+  color: var(--yt-text);
+
+  &:hover {
+    background: var(--yt-surface-2);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.nav__link--active {
+  background: var(--yt-surface-2);
+  border: 1px solid var(--yt-line);
+}

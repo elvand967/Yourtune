@@ -1,114 +1,191 @@
-
+# =========================================================
 # yourtune/config/settings/base.py
+# =========================================================
+# Базовые настройки Django-проекта YourTune
+# Версия django-allauth: 65.19.2
+# =========================================================
+
+
+# =========================================================
+# ИМПОРТЫ И БАЗОВЫЕ ПУТИ
+# =========================================================
 
 import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-# Пути внутри проекта следует создавать следующим образом: BASE_DIR / 'subdir'.
+# BASE_DIR — корневая директория проекта (на 3 уровня выше этого файла)
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# Настройки для быстрого запуска разработки — непригодны для использования в производственной среде.
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-load_dotenv()  # Загружает переменные из .env
+# =========================================================
+# ЗАГРУЗКА ПЕРЕМЕННЫХ ОКРУЖЕНИЯ (.env файл)
+# =========================================================
+# load_dotenv() загружает переменные из файла .env в окружение процесса
+# Вызывается ОДИН раз в начале файла
+load_dotenv()
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Секретный ключ для криптографической подписи (сессии, токены, CSRF)
+# Хранится в .env, не коммитить в репозиторий!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production! - ???
+# SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG=True показывает детальные ошибки (не включать на продакшене!)
+# Строка 'True' из .env преобразуется в булево значение
 DEBUG = os.getenv('DEBUG') == 'True'
 
-
-
-# Авторизация
-'''
-Если применяется кастомная модель, до создания любых миграций,
-подготовить к миграции class CustomUser(UUIDModel, AbstractBaseUser, PermissionsMixin)
-и произвести при первой миграции, предварительно указав:  AUTH_USER_MODEL =  'users.CustomUser'
-чтобы Django понимал, что используется именно ваша модель.
-'''
+# =========================================================
+# КАСТОМНАЯ МОДЕЛЬ ПОЛЬЗОВАТЕЛЯ
+# =========================================================
+# Указываем ДО создания миграций, чтобы Django использовал CustomUser
+# вместо встроенной auth.User
+# Модель должна наследоваться от AbstractBaseUser + PermissionsMixin
 AUTH_USER_MODEL = "users.CustomUser"
 
-
+# =========================================================
+# УСТАНОВЛЕННЫЕ ПРИЛОЖЕНИЯ (INSTALLED_APPS)
+# =========================================================
+# Порядок важен: сначала django.contrib, потом allauth, потом кастомные apps
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django.contrib.sites",
+    # Стандартные приложения Django
+    "django.contrib.admin",  # Админ-панель
+    "django.contrib.auth",  # Система аутентификации
+    "django.contrib.contenttypes",  # Система типов контента
+    "django.contrib.sessions",  # Сессии пользователей
+    "django.contrib.messages",  # Система сообщений
+    "django.contrib.staticfiles",  # Статические файлы (CSS, JS, изображения)
+    "django.contrib.sites",  # Мульти-сайт (требуется для allauth)
 
-    # логика allauth:
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
+    # =========================================================
+    # ALLAUTH (аутентификация через email и соц. сети)
+    # =========================================================
+    "allauth",  # Ядро allauth
+    "allauth.account",  # Email-аутентификация (регистрация, вход)
+    "allauth.socialaccount",  # Социальная аутентификация (OAuth2)
+    "allauth.socialaccount.providers.google",  # Google OAuth2 (встроенный провайдер)
 
-    # Кастомные провайдеры (после allauth!)
-    'apps.users.providers.yandex',
+    # Кастомные провайдеры (объявляются ПОСЛЕ allauth.socialaccount!)
+    "apps.users.providers.yandex",  # ✅ Django автоматически найдёт YandexProviderConfig в apps.py
 
-
-    # кастомные пакеты:
-    "apps.core.apps.CoreConfig",
-    "apps.users.apps.UsersConfig",
-    'apps.main.apps.MainConfig',
+    # =========================================================
+    # КАСТОМНЫЕ ПРИЛОЖЕНИЯ ПРОЕКТА
+    # =========================================================
+    "apps.core.apps.CoreConfig",  # Общие утилиты, контекст-процессоры
+    "apps.users.apps.UsersConfig",  # Пользователи, профили, адаптеры, формы
+    'apps.main.apps.MainConfig',  # Главная страница, статические разделы
 ]
 
+# =========================================================
+# CREDENTIALS OAUTH2 (ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ)
+# =========================================================
+# ОБЯЗАТЕЛЬНО объявлять ПЕРЕД SOCIALACCOUNT_PROVIDERS,
+# иначе будет NameError при загрузке настроек
+#
+# Эти переменные читаются из .env файла:
+#   SOCIALACCOUNT_GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
+#   SOCIALACCOUNT_GOOGLE_SECRET=GOCSPX-xxxxx
+#   SOCIALACCOUNT_YANDEX_CLIENT_ID=xxxxx
+#   SOCIALACCOUNT_YANDEX_SECRET=xxxxx
+
+SOCIALACCOUNT_GOOGLE_CLIENT_ID = os.getenv('SOCIALACCOUNT_GOOGLE_CLIENT_ID', '')
+SOCIALACCOUNT_GOOGLE_SECRET = os.getenv('SOCIALACCOUNT_GOOGLE_SECRET', '')
+
+SOCIALACCOUNT_YANDEX_CLIENT_ID = os.getenv('SOCIALACCOUNT_YANDEX_CLIENT_ID', '')
+SOCIALACCOUNT_YANDEX_SECRET = os.getenv('SOCIALACCOUNT_YANDEX_SECRET', '')
 
 # =========================================================
-# Allauth settings
+# ALLAUTH: БАЗОВЫЕ НАСТРОЙКИ
 # =========================================================
+# Версия django-allauth: 65.19.2
+# Документация: https://docs.allauth.org/
 
+# SITE_ID — идентификатор текущего сайта (требуется для django.contrib.sites)
+# Все SocialApp в админке должны быть привязаны к этому сайту (или к "всем")
 SITE_ID = 1
 
-# Бэкенды аутентификации
+# =========================================================
+# БЭКЕНДЫ АУТЕНТИФИКАЦИИ
+# =========================================================
+# Порядок важен: сначала ModelBackend (для админки), потом allauth
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',  # Стандартная аутентификация Django
+    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth (email + соц. сети)
 ]
 
 # =========================================================
-# Account settings (email-аутентификация)
+# ALLAUTH ACCOUNT (EMAIL-АУТЕНТИФИКАЦИЯ)
 # =========================================================
+# Настройки для встроенной системы регистрации/входа по email
 
+# Методы входа: только email (username отключён)
 ACCOUNT_LOGIN_METHODS = {'email'}
+
+# Поля, обязательные при регистрации: email + два пароля
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+
+# Подтверждение email: 'optional' (не обязательно), 'mandatory' (обязательно), 'none' (отключено)
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+# Автоматический вход после подтверждения email
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+
+# Выход по GET-запросу (удобно для кнопки "Выйти" в меню)
 ACCOUNT_LOGOUT_ON_GET = True
+
+# Запоминать сессию после закрытия браузера
 ACCOUNT_SESSION_REMEMBER = True
 
-# Отключаем username
+# =========================================================
+# ОТКЛЮЧЕНИЕ USERNAME
+# =========================================================
+# Используем email как уникальный идентификатор вместо username
+
+# Поле username в модели пользователя не используется
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+# Username не требуется при регистрации
 ACCOUNT_USERNAME_REQUIRED = False
 
 # =========================================================
-# Social account settings (авто-связывание по email)
+# ALLAUTH SOCIALACCOUNT (СОЦИАЛЬНАЯ АУТЕНТИФИКАЦИЯ)
 # =========================================================
+# Настройки для входа через Google, Yandex и других OAuth2-провайдеров
 
+# Автоматическая регистрация новых пользователей без дополнительной формы
 SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# Email обязателен для социальных аккаунтов
 SOCIALACCOUNT_EMAIL_REQUIRED = True
+
+# Запрашивать email у провайдера во время OAuth2-flow
 SOCIALACCOUNT_QUERY_EMAIL = True
+
+# Подтверждение email для соц. аккаунтов: 'optional' (не обязательно)
 SOCIALACCOUNT_EMAIL_VERIFICATION = 'optional'
 
-# Автоматическое связывание существующих аккаунтов по email
+
+# =========================================================
+# АДАПТЕРЫ ALLAUTH
+# =========================================================
+
+# Адаптер для email-аутентификации (вход, регистрация, сброс пароля)
+ACCOUNT_ADAPTER = 'apps.users.adapters.CustomAccountAdapter'
+
+# Адаптер для соц. аутентификации (Google, Yandex)
 SOCIALACCOUNT_ADAPTER = 'apps.users.adapters.CustomSocialAccountAdapter'
 
-# Отключаем промежуточную страницу (bridge page)
+# Отключение промежуточной страницы (bridge page) после OAuth2-редиректа
+# Если True — сразу перенаправляет на LOGIN_REDIRECT_URL после успеха
 SOCIALACCOUNT_LOGIN_ON_REDIRECT = True
 
 # =========================================================
-# Переопределение форм
+# ФОРМЫ ALLAUTH
 # =========================================================
 
 ACCOUNT_FORMS = {
     'login': 'apps.users.forms.auth.CustomLoginForm',
     'signup': 'apps.users.forms.auth.CustomSignupForm',
+    'reset_password': 'apps.users.forms.auth.CustomResetPasswordForm',  # ✅ Добавлено
 }
 
 SOCIALACCOUNT_FORMS = {
@@ -116,91 +193,163 @@ SOCIALACCOUNT_FORMS = {
 }
 
 # =========================================================
-# Провайдеры
+# НАСТРОЙКИ OAUTH2-ПРОВАЙДЕРОВ
 # =========================================================
+# В allauth 65.x ОБЯЗАТЕЛЬНО указывать 'APP' с client_id и secret,
+# иначе будет ошибка SocialApp.DoesNotExist или промежуточная форма
 
 SOCIALACCOUNT_PROVIDERS = {
+    # ---------------------------------------------------------
+    # GOOGLE OAUTH2
+    # ---------------------------------------------------------
     'google': {
+        # Запрашиваемые разрешения (scope): профиль + email
         'SCOPE': ['profile', 'email'],
+
+        # Параметры авторизации: access_type='online' для одностраничного входа
         'AUTH_PARAMS': {'access_type': 'online'},
+
+        # PKCE (Proof Key for Code Exchange) — защита от CSRF в OAuth2
         'OAUTH_PKCE_ENABLED': True,
+
+        # Считать email подтверждённым (Google верифицирует email сам)
         'VERIFIED_EMAIL': True,
+
+        # =========================================================
+        # CREDENTIALS (ОБЯЗАТЕЛЬНО для allauth 65.x!)
+        # =========================================================
+        # Без этого блока allauth не сможет построить OAuth2-ссылку
+        # и покажет промежуточную форму "Вход через Google"
+        'APP': {
+            'client_id': SOCIALACCOUNT_GOOGLE_CLIENT_ID,  # Из .env
+            'secret': SOCIALACCOUNT_GOOGLE_SECRET,  # Из .env
+        },
     },
+
+    # ---------------------------------------------------------
+    # YANDEX OAUTH2 (кастомный провайдер)
+    # ---------------------------------------------------------
     'yandex': {
+        # Запрашиваемые разрешения: email + базовая информация
         'SCOPE': ['login:email', 'login:info'],
+
+        # =========================================================
+        # CREDENTIALS (ОБЯЗАТЕЛЬНО для allauth 65.x!)
+        # =========================================================
+        'APP': {
+            'client_id': SOCIALACCOUNT_YANDEX_CLIENT_ID,  # Из .env
+            'secret': SOCIALACCOUNT_YANDEX_SECRET,  # Из .env
+        },
     },
 }
 
 # =========================================================
-# URL redirects
+# URL REDIRECTS (ПЕРЕНАПРАВЛЕНИЯ ПОСЛЕ ВХОДА/ВЫХОДА)
 # =========================================================
+# Эти URL используются allauth и @login_required декоратором
 
-LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'users:profile_detail'
-LOGOUT_REDIRECT_URL = 'main:home'
+LOGIN_URL = 'users:login'  # Куда перенаправлять неавторизованных (название URL из users/urls.py)
+LOGIN_REDIRECT_URL = 'users:profile_detail'  # Куда после успешного входа
+LOGOUT_REDIRECT_URL = 'main:home'  # Куда после выхода
+
 # =========================================================
-
-
+# MIDDLEWARE (ОБРАБОТЧИКИ ЗАПРОСОВ)
+# =========================================================
+# Порядок важен! AccountMiddleware должен быть после AuthenticationMiddleware
 MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.security.SecurityMiddleware",  # Безопасность (HTTPS, HSTS)
+    "django.contrib.sessions.middleware.SessionMiddleware",  # Сессии
+    "django.middleware.common.CommonMiddleware",  # Общие утилиты (APPEND_SLASH и т.д.)
+    "django.middleware.csrf.CsrfViewMiddleware",  # CSRF-защита
+    "django.contrib.auth.middleware.AuthenticationMiddleware",  # Аутентификация (request.user)
+    "allauth.account.middleware.AccountMiddleware",  # Allauth (соц. аккаунты, messages)
+    "django.contrib.messages.middleware.MessageMiddleware",  # Система сообщений
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",  # Защита от clickjacking
 ]
 
+# =========================================================
+# ROOT URLCONF (ГЛАВНЫЙ MARSHRUTIZATOR)
+# =========================================================
+# Указывает на файл с URL-маршрутами проекта
 ROOT_URLCONF = "config.urls"
 
+# =========================================================
+# TEMPLATES (НАСТРОЙКИ ШАБЛОНОВ)
+# =========================================================
 TEMPLATES = [
     {
+        # Бэкенд для обработки Django-шаблонов
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+
+        # Дополнительные директории с шаблонами (кроме app-директорий)
         "DIRS": [BASE_DIR / "templates"],
+
+        # APP_DIRS=True автоматически ищет шаблоны в папке templates/ каждого приложения
         "APP_DIRS": True,
+
+        # Контекст-процессоры (переменные, доступные во всех шаблонах)
         "OPTIONS": {
             "context_processors": [
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.request",  # request в шаблонах
+                "django.contrib.auth.context_processors.auth",  # user, perms в шаблонах
+                "django.contrib.messages.context_processors.messages",  # messages в шаблонах
 
+                # Кастомный процессор: site_name, site_domain и т.д.
                 "apps.core.utils.context_processors.site_defaults",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = "config.wsgi.application"
-ASGI_APPLICATION = "config.asgi.application"
+# =========================================================
+# WSGI / ASGI APPLICATION (ТОЧКИ ВХОДА ДЛЯ СЕРВЕРА)
+# =========================================================
+WSGI_APPLICATION = "config.wsgi.application"  # Для Gunicorn, uWSGI
+ASGI_APPLICATION = "config.asgi.application"  # Для Daphne, Uvicorn (WebSocket)
 
+# =========================================================
+# ИНТЕРНАЦИОНАЛИЗАЦИЯ (I18N) И ВРЕМЕННАЯ ЗОНА
+# =========================================================
+LANGUAGE_CODE = "ru"  # Язык по умолчанию (русский)
+TIME_ZONE = "Europe/Minsk"  # Временная зона (Минск, UTC+3)
+USE_I18N = True  # Включить интернационализацию
+USE_TZ = True  # Использовать временные зоны (вместо naive datetime)
 
-
-LANGUAGE_CODE = "ru"
-TIME_ZONE = "Europe/Minsk"
-USE_I18N = True
-USE_TZ = True
-
-STATIC_URL = "/static/"
+# =========================================================
+# СТАТИЧЕСКИЕ ФАЙЛЫ (CSS, JS, ИЗОБРАЖЕНИЯ)
+# =========================================================
+STATIC_URL = "/static/"  # URL-префикс для статических файлов
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static",  # Директория с исходными статическими файлами
 ]
-STATIC_ROOT = BASE_DIR / "static_root"
+STATIC_ROOT = BASE_DIR / "static_root"  # Директория для collectstatic (продакшен)
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# =========================================================
+# МЕДИА-ФАЙЛЫ (ЗАГРУЖЕННЫЕ ПОЛЬЗОВАТЕЛЯМИ)
+# =========================================================
+MEDIA_URL = "/media/"  # URL-префикс для медиа-файлов
+MEDIA_ROOT = BASE_DIR / "media"  # Директория для загруженных файлов
 
+# =========================================================
+# DEFAULT AUTO FIELD (ТИП ПОЛЯ ПО УМОЛЧАНИЮ ДЛЯ ID)
+# =========================================================
+# Django 3.2+: явно указываем тип авто-инкрементного поля
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# OAuth credentials (из переменных окружения)
-# import os    # импортирован в начале config/settings/base.py
-from dotenv import load_dotenv
+# =========================================================
+# EMAIL (ДЛЯ РАЗРАБОТКИ)
+# =========================================================
+# Console-backend выводит все письма в консоль runserver.
+# Позволяет тестировать сброс пароля без настройки SMTP.
+#
+# Для продакшена заменить на SMTP-бэкенд:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = os.getenv('EMAIL_HOST')
+# EMAIL_PORT = os.getenv('EMAIL_PORT')
+# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+# EMAIL_USE_TLS = True
 
-load_dotenv()
-
-SOCIALACCOUNT_GOOGLE_CLIENT_ID = os.getenv('SOCIALACCOUNT_GOOGLE_CLIENT_ID', '')
-SOCIALACCOUNT_GOOGLE_SECRET = os.getenv('SOCIALACCOUNT_GOOGLE_SECRET', '')
-
-SOCIALACCOUNT_YANDEX_CLIENT_ID = os.getenv('SOCIALACCOUNT_YANDEX_CLIENT_ID', '')
-SOCIALACCOUNT_YANDEX_SECRET = os.getenv('SOCIALACCOUNT_YANDEX_SECRET', '')
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@yourtune.local'

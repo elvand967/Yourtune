@@ -21,5 +21,8 @@ class SocialAccountsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['social_accounts'] = self.request.user.social_accounts.all()
+
+        # ✅ Используем встроенную связь allauth (через socialaccount_set)
+        context['social_accounts'] = self.request.user.socialaccount_set.all()
+
         return context

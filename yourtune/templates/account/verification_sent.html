@@ -1,0 +1,48 @@
+{# apps/users/templates/account/verification_sent.html #}
+{# ==================================================== #}
+{# «Письмо с подтверждением отправлено» #}
+{# ==================================================== #}
+{# Показывается после регистрации, если #}
+{# ACCOUNT_EMAIL_VERIFICATION = 'mandatory' #}
+{# (у вас сейчас 'optional', поэтому шаблон #}
+{# понадобится при ужесточении политики). #}
+{# ==================================================== #}
+
+{% extends "core/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load icons %}
+
+{% block title %}Подтвердите email | YourTune{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <div class="form-wrapper">
+      <h1 class="form-title">Подтвердите email</h1>
+
+      <div class="card">
+        <div class="empty-state">
+          <div class="empty-state__icon">
+            {% icon 'mail' width='48' height='48' %}
+          </div>
+          <h2 class="empty-state__title">Проверьте почту</h2>
+          <p class="empty-state__description">
+            Мы отправили письмо с ссылкой для подтверждения email
+            на адрес <strong>{{ request.session.get('account_verified_email', '') }}</strong>.
+            <br><br>
+            Если письмо не пришло, проверьте папку «Спам».
+          </p>
+          <div class="empty-state__actions">
+            <a href="{% url 'users:login' %}" class="button">
+              Вернуться ко входу
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

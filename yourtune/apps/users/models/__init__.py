@@ -7,7 +7,6 @@
 
 from apps.users.models.custom_user import CustomUser  # noqa
 from apps.users.models.profile import Profile  # noqa
-from apps.users.models.social_account import SocialAccount  # noqa
 
 # Заглушки для будущих моделей
 from .playlist import Playlist
@@ -19,7 +18,6 @@ from apps.users.models.audit_log import AuditLog  # noqa
 __all__ = [
     'CustomUser',
     'Profile',
-    'SocialAccount',
     'Playlist',
     'Favorite',
     'Role',

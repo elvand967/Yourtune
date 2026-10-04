@@ -1,8 +1,7 @@
-
 {# apps/users/templates/users/auth/email_login.html #}
 {# ================================================ #}
-{# Вход через email #}
-{# ================================================ #}
+{# Вход через email + пароль #}
+{# ================================================== #}
 
 {% extends "core/base.html" %}
 {% load static %}
@@ -22,6 +21,11 @@
         <form class="form" method="post" action="{% url 'users:email_login' %}">
           {% csrf_token %}
 
+          {# ================================================== #}
+          {# Общие ошибки формы #}
+          {# ================================================== #}
+          {# Сюда попадёт сообщение из CustomLoginForm.clean(): #}
+          {# «Этот аккаунт был создан через Google/Yandex...» #}
           {% if form.non_field_errors %}
             <div class="alert alert--error">
               {% for error in form.non_field_errors %}
@@ -30,6 +34,9 @@
             </div>
           {% endif %}
 
+          {# ================================================== #}
+          {# Email #}
+          {# ================================================== #}
           <div class="form__group">
             <label for="id_login" class="form__label">Email</label>
             <input
@@ -47,6 +54,9 @@
             {% endif %}
           </div>
 
+          {# ================================================== #}
+          {# Пароль #}
+          {# ================================================== #}
           <div class="form__group">
             <label for="id_password" class="form__label">Пароль</label>
             <input
@@ -63,6 +73,9 @@
             {% endif %}
           </div>
 
+          {# ================================================== #}
+          {# Кнопка отправки #}
+          {# ================================================== #}
           <div class="form__actions">
             <button type="submit" class="button button--success form__submit">
               Войти
@@ -70,13 +83,27 @@
           </div>
         </form>
 
+        {# ================================================== #}
+        {# Ссылки #}
+        {# ================================================== #}
         <div style="text-align: center; color: var(--yt-text-muted); font-size: 0.875rem; margin-top: 16px;">
+
+          {# Восстановление пароля #}
+          {# Для соц.-пользователей это единственный способ #}
+          {# получить возможность входа по email+пароль #}
+          <p style="margin: 0 0 8px 0;">
+            <a href="{% url 'account_reset_password' %}">
+              Забыли пароль?
+            </a>
+          </p>
+
           <p style="margin: 0 0 8px 0;">
             Нет аккаунта?
             <a href="{% url 'users:signup' %}" style="color: var(--yt-accent); font-weight: 500;">
               Зарегистрироваться
             </a>
           </p>
+
           <p style="margin: 0;">
             <a href="{% url 'users:login' %}" style="color: var(--yt-text-muted); text-decoration: underline;">
               ← Назад ко входу

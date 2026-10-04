@@ -1,0 +1,126 @@
+{# templates/account/login.html #}
+{# ======================================= #}
+{# Вход через allauth (переопределение) #}
+{# ================================================== #}
+{# Этот шаблон используется встроенным LoginView allauth: #}
+{# /accounts/login/ — например, при редиректах после OAuth #}
+{# или при повторной аутентификации. #}
+{# #}
+{# ВАЖНО: кнопки Google/Yandex — POST-формы, а не ссылки. #}
+{# Это сразу инициирует OAuth2-handshake без промежуточной #}
+{# страницы «Вы собираетесь войти… Продолжить». #}
+{# ================================================== #}
+
+{% extends "core/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load socialaccount %}
+{% load icons %}
+
+{% block title %}Вход | YourTune{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <div class="form-wrapper">
+      <h1 class="form-title">Вход</h1>
+
+      <div class="card">
+
+        {# ================================================== #}
+        {# Кнопки социальных провайдеров (POST-формы!) #}
+        {# ================================================== #}
+        {# POST сразу запускает OAuth2-handshake — #}
+        {# промежуточная страница allauth не показывается. #}
+        <div style="margin-bottom: 24px;">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+
+            {# Google #}
+            <form method="post" action="{% provider_login_url 'google' process='login' %}">
+              {% csrf_token %}
+              <button type="submit" class="button button--secondary" style="width: 100%; justify-content: center;">
+                {% icon 'google' width='20' height='20' %}
+                <span style="margin-left: 12px;">Продолжить с Google</span>
+              </button>
+            </form>
+
+            {# Yandex #}
+            <form method="post" action="{% provider_login_url 'yandex' process='login' %}">
+              {% csrf_token %}
+              <button type="submit" class="button button--secondary" style="width: 100%; justify-content: center;">
+                {% icon 'yandex' width='20' height='20' %}
+                <span style="margin-left: 12px;">Продолжить с Yandex</span>
+              </button>
+            </form>
+
+          </div>
+        </div>
+
+        {# ================================================== #}
+        {# Разделитель #}
+        {# ================================================== #}
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+          <div style="flex: 1; height: 1px; background: var(--yt-line);"></div>
+          <span style="color: var(--yt-text-muted); font-size: 0.875rem;">или</span>
+          <div style="flex: 1; height: 1px; background: var(--yt-line);"></div>
+        </div>
+
+        {# ================================================== #}
+        {# Форма входа по email + пароль #}
+        {# ================================================== #}
+        <form class="form" method="post" action="{% url 'account_login' %}">
+          {% csrf_token %}
+
+          {# Общие ошибки #}
+          {% if form.non_field_errors %}
+            <div class="alert alert--error">
+              {% for error in form.non_field_errors %}
+                <p style="margin: 0;">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {# Поля формы #}
+          {% for field in form %}
+            <div class="form__group">
+              <label for="{{ field.id_for_label }}" class="form__label">
+                {{ field.label }}
+              </label>
+              {{ field }}
+              {% if field.errors %}
+                <p class="form__error">{{ field.errors.0 }}</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          <div class="form__actions">
+            <button type="submit" class="button button--success form__submit">
+              {% icon 'log-in' width='18' height='18' %}
+              <span style="margin-left: 8px;">Войти</span>
+            </button>
+          </div>
+        </form>
+
+        {# ================================================== #}
+        {# Ссылки #}
+        {# ================================================== #}
+        <div style="text-align: center; color: var(--yt-text-muted); font-size: 0.875rem; margin-top: 16px;">
+          <p style="margin: 0 0 8px 0;">
+            Нет аккаунта?
+            <a href="{% url 'users:signup' %}" style="color: var(--yt-accent); font-weight: 500;">
+              Зарегистрироваться
+            </a>
+          </p>
+          <p style="margin: 0;">
+            <a href="{% url 'account_reset_password' %}">
+              Установить пароль?
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

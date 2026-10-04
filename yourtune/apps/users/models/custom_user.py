@@ -21,19 +21,33 @@ class CustomUser(UUIDModel, AbstractBaseUser, PermissionsMixin):
     middle_name = models.CharField(max_length=150, blank=True, verbose_name="Отчество")
     last_name = models.CharField(max_length=150, blank=True, verbose_name="Фамилия")
 
-    is_staff = models.BooleanField(default=False, verbose_name="Доступ в админку")
-    is_active = models.BooleanField(default=True, verbose_name="Активен")
-    is_verified = models.BooleanField(default=False, verbose_name="Email подтвержден")
+    # Служебные поля
+    is_staff = models.BooleanField(
+        default=False,
+        verbose_name="Доступ в админку",
+        help_text='Определяет, может ли пользователь войти в админ-панель.',
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Активен",
+        help_text='Определяет, считается ли пользователь активным.',
+    )
+    is_verified = models.BooleanField(
+        default=False,
+        verbose_name="Email подтвержден",
+    )
 
     # Стандартные поля Django auth для совместимости
     date_joined = models.DateTimeField(default=timezone.now, verbose_name="Дата регистрации")
     last_login = models.DateTimeField(blank=True, null=True, verbose_name="Последний вход")
 
+    # Менеджер
     objects = CustomUserManager()
 
+    # Django использует это поле вместо username
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = []  # email уже обязателен
 
     class Meta:
         verbose_name = "Пользователь"
@@ -49,9 +63,11 @@ class CustomUser(UUIDModel, AbstractBaseUser, PermissionsMixin):
         return full_name or self.email
 
     def get_full_name(self):
+        """Возвращает полное имя пользователя."""
         return " ".join(
             part for part in [self.first_name, self.middle_name, self.last_name] if part
         ).strip()
 
     def get_short_name(self):
+        """Возвращает короткое имя пользователя."""
         return self.first_name or self.email

@@ -1,9 +1,21 @@
 # apps/users/urls.py
 # ===================
+# URL-маршруты приложения users.
+#
+# ВАЖНО: allauth.urls подключён в config/urls.py по адресу /accounts/.
+# Поэтому:
+# - Вход через Google:  /accounts/google/login/
+# - Вход через Yandex:  /accounts/yandex/login/
+# - Сброс пароля:       /accounts/password/reset/
+# - Подтверждение email: /accounts/confirm-email/
+#
+# Кастомные страницы входа/регистрации живут здесь:
+# - /users/login/        — единая страница входа
+# - /users/login/email/  — вход по email + пароль
+# - /users/signup/       — регистрация
+# - /users/logout/       — выход
 
-from django.contrib.auth import views as auth_views
-from django.urls import include, path
-from django.views.generic import TemplateView
+from django.urls import path
 
 from apps.users import views
 
@@ -13,27 +25,33 @@ app_name = "users"
 
 urlpatterns = [
     # =========================================================
-    # Аутентификация
+    # Аутентификация (кастомные страницы)
     # =========================================================
 
+    # Единая страница входа: соц. сети + кнопка «Войти через Email»
     path(
         "login/",
         views.UnifiedLoginView.as_view(),
         name="login",
     ),
 
+    # Вход по email + пароль
+    # Использует CustomLoginForm с подсказкой для соц.-пользователей
     path(
         "login/email/",
         views.CustomLoginView.as_view(),
         name="email_login",
     ),
 
+    # Регистрация по email + пароль
     path(
         "signup/",
         views.CustomSignupView.as_view(),
         name="signup",
     ),
 
+    # Выход
+    # ACCOUNT_LOGOUT_ON_GET = True — выход по GET-запросу
     path(
         "logout/",
         views.CustomLogoutView.as_view(),
@@ -41,38 +59,8 @@ urlpatterns = [
     ),
 
     # =========================================================
-    # Allauth
-    # =========================================================
-
-    path(
-        "accounts/",
-        include("allauth.urls"),
-    ),
-
-    # =========================================================
-    # Восстановление пароля
-    # =========================================================
-
-    path(
-        "password/reset/",
-        TemplateView.as_view(
-            template_name="users/auth/password_reset.html",
-        ),
-        name="password_reset",
-    ),
-
-    path(
-        "password/reset/done/",
-        TemplateView.as_view(
-            template_name="users/auth/password_reset_done.html",
-        ),
-        name="password_reset_done",
-    ),
-
-    # =========================================================
     # Профиль
     # =========================================================
-
     path(
         "profile/",
         views.ProfileDetailView.as_view(),
@@ -100,7 +88,6 @@ urlpatterns = [
     # =========================================================
     # Плейлисты и избранное
     # =========================================================
-
     path(
         "playlists/",
         views.PlaylistListView.as_view(),
@@ -116,7 +103,6 @@ urlpatterns = [
     # =========================================================
     # Безопасность
     # =========================================================
-
     path(
         "security/password/change/",
         views.PasswordChangeView.as_view(),
@@ -138,7 +124,6 @@ urlpatterns = [
     # =========================================================
     # Настройки
     # =========================================================
-
     path(
         "settings/",
         views.SettingsView.as_view(),
@@ -166,7 +151,6 @@ urlpatterns = [
     # =========================================================
     # Интеграции
     # =========================================================
-
     path(
         "integrations/",
         views.IntegrationsView.as_view(),
@@ -188,7 +172,6 @@ urlpatterns = [
     # =========================================================
     # Администрирование пользователей
     # =========================================================
-
     path(
         "admin/users/",
         views.AdminUserListView.as_view(),
@@ -210,7 +193,6 @@ urlpatterns = [
     # =========================================================
     # Администрирование ролей
     # =========================================================
-
     path(
         "admin/roles/",
         views.AdminRoleListView.as_view(),
@@ -238,7 +220,6 @@ urlpatterns = [
     # =========================================================
     # Аудит
     # =========================================================
-
     path(
         "admin/audit/",
         views.AdminAuditLogView.as_view(),

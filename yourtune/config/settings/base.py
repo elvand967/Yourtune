@@ -1,3 +1,4 @@
+
 # =========================================================
 # yourtune/config/settings/base.py
 # =========================================================
@@ -56,6 +57,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",  # Статические файлы (CSS, JS, изображения)
     "django.contrib.sites",  # Мульти-сайт (требуется для allauth)
 
+    "django_ckeditor_5",
+
     # =========================================================
     # ALLAUTH (аутентификация через email и соц. сети)
     # =========================================================
@@ -64,15 +67,18 @@ INSTALLED_APPS = [
     "allauth.socialaccount",  # Социальная аутентификация (OAuth2)
     "allauth.socialaccount.providers.google",  # Google OAuth2 (встроенный провайдер)
 
-    # Кастомные провайдеры (объявляются ПОСЛЕ allauth.socialaccount!)
-    "apps.users.providers.yandex",  # ✅ Django автоматически найдёт YandexProviderConfig в apps.py
+    # =========================================================
+    # ✅ ПОДКЛЮЧАЕМ ВСТРОЕННЫЙ ПРОВАЙДЕР ЯНДЕКСА
+    # =========================================================
+    "allauth.socialaccount.providers.yandex",  # Вместо "apps.users.providers.yandex"
 
     # =========================================================
     # КАСТОМНЫЕ ПРИЛОЖЕНИЯ ПРОЕКТА
     # =========================================================
-    "apps.core.apps.CoreConfig",  # Общие утилиты, контекст-процессоры
+    "apps.core.apps.CoreConfig",    # Общие утилиты, контекст-процессоры
     "apps.users.apps.UsersConfig",  # Пользователи, профили, адаптеры, формы
-    'apps.main.apps.MainConfig',  # Главная страница, статические разделы
+    'apps.main.apps.MainConfig',    # Главная страница, статические разделы
+    'apps.legal.apps.LegalConfig',  # Юридические документы
 ]
 
 # =========================================================
@@ -143,16 +149,17 @@ ACCOUNT_SESSION_REMEMBER = True
 # Поле username в модели пользователя не используется
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
-# Username не требуется при регистрации
-ACCOUNT_USERNAME_REQUIRED = False
-
 # =========================================================
 # ALLAUTH SOCIALACCOUNT (СОЦИАЛЬНАЯ АУТЕНТИФИКАЦИЯ)
 # =========================================================
 # Настройки для входа через Google, Yandex и других OAuth2-провайдеров
 
 # Автоматическая регистрация новых пользователей без дополнительной формы
-SOCIALACCOUNT_AUTO_SIGNUP = True
+# SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# Google/Yandex не создают аккаунт автоматически:
+# новый пользователь попадёт на страницу завершения регистрации, где должен явно принять документы согласия.
+SOCIALACCOUNT_AUTO_SIGNUP = False
 
 # Email обязателен для социальных аккаунтов
 SOCIALACCOUNT_EMAIL_REQUIRED = True
@@ -227,18 +234,23 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 
     # ---------------------------------------------------------
-    # YANDEX OAUTH2 (кастомный провайдер)
+    # YANDEX OAUTH2
     # ---------------------------------------------------------
     'yandex': {
-        # Запрашиваемые разрешения: email + базовая информация
-        'SCOPE': ['login:email', 'login:info'],
+        # Права доступа к данным Yandex ID.
+        # В кабинете приложения Yandex OAuth также должны быть
+        # активированы соответствующие разрешения.
+        'SCOPE': [
+            'login:email',
+            'login:info',
+        ],
 
-        # =========================================================
-        # CREDENTIALS (ОБЯЗАТЕЛЬНО для allauth 65.x!)
-        # =========================================================
+        # Не задаём scope вручную и не передаём недокументированный language.
+        'AUTH_PARAMS': {},
+
         'APP': {
-            'client_id': SOCIALACCOUNT_YANDEX_CLIENT_ID,  # Из .env
-            'secret': SOCIALACCOUNT_YANDEX_SECRET,  # Из .env
+            'client_id': SOCIALACCOUNT_YANDEX_CLIENT_ID,
+            'secret': SOCIALACCOUNT_YANDEX_SECRET,
         },
     },
 }
@@ -353,3 +365,54 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@yourtune.local'
+
+
+# =========================================================
+# CKEDITOR 5 (визуальный редактор юридических документов)
+# =========================================================
+
+CKEDITOR_5_CONFIGS = {
+    "legal": {
+        "language": "ru",
+        "toolbar": [
+            "heading",
+            "|",
+            "bold",
+            "italic",
+            "underline",
+            "link",
+            "|",
+            "bulletedList",
+            "numberedList",
+            "|",
+            "blockQuote",
+            "horizontalLine",
+            "|",
+            "undo",
+            "redo",
+        ],
+        "heading": {
+            "options": [
+                {
+                    "model": "paragraph",
+                    "title": "Обычный текст",
+                    "class": "ck-heading_paragraph",
+                },
+                {
+                    "model": "heading2",
+                    "view": "h2",
+                    "title": "Заголовок 2",
+                    "class": "ck-heading_heading2",
+                },
+                {
+                    "model": "heading3",
+                    "view": "h3",
+                    "title": "Заголовок 3",
+                    "class": "ck-heading_heading3",
+                },
+            ]
+        },
+        "height": "600px",
+        "width": "100%",
+    },
+}

@@ -214,16 +214,6 @@
         │       │   ├── profile.py
         │       │   ├── role.py
         │       │   └── __pycache__ [содержимое скрыто]
-        │       ├── providers
-        │       │   ├── __init__.py
-        │       │   ├── __pycache__ [содержимое скрыто]
-        │       │   └── yandex
-        │       │       ├── __init__.py
-        │       │       ├── apps.py
-        │       │       ├── provider.py
-        │       │       ├── urls.py
-        │       │       ├── views.py
-        │       │       └── __pycache__ [содержимое скрыто]
         │       ├── static
         │       │   └── users
         │       │       ├── css

@@ -1,0 +1,93 @@
+// =========================================================
+// apps/legal/static/legal/scss/components/_accept.scss
+// =========================================================
+// Страница обязательного принятия юридических документов.
+// =========================================================
+
+.legal-accept {
+  &__description {
+    margin: 0 0 24px;
+    color: var(--yt-text-muted, #6b7280);
+  }
+
+  &__documents {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  // Главный визуальный блок документа.
+  &__document {
+    padding: 16px;
+    border: 2px solid var(--yt-line, #d1d5db);
+    border-radius: 12px;
+    background: var(--yt-surface, #f9fafb);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  &__document-title {
+    margin: 0 0 4px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--yt-text, #111827);
+  }
+
+  &__version {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 0.875rem;
+    color: var(--yt-text-muted, #6b7280);
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--yt-accent, #2563eb);
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+    }
+
+    &-arrow {
+      font-size: 1rem;
+      line-height: 1;
+    }
+  }
+
+  &__consents {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  &__consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  &__checkbox {
+    width: 18px;
+    height: 18px;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  &__label {
+    margin: 0;
+    color: var(--yt-text, #111827);
+    line-height: 1.4;
+  }
+
+  &__footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+}

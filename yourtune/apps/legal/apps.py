@@ -1,0 +1,14 @@
+
+# apps/legal/apps.py
+#===================
+
+
+from django.apps import AppConfig
+
+
+class LegalConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "apps.legal"
+
+    verbose_name = 'Юридические документы'
+    verbose_name_plural = 'Юридические документы'

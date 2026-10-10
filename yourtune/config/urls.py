@@ -1,6 +1,6 @@
 
 # yourtune/config/urls.py
-# Корневой URL-конфигурация проекта YourTune
+# Корневая URL-конфигурация проекта YourTune
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -8,17 +8,24 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    # Админ-панель Django
     path("admin/", admin.site.urls),
 
-    # Allauth URLs (без namespace!)
-    path('accounts/', include('allauth.urls')),
+    path("users/", include("apps.users.urls", namespace="users")),
 
-    # Основное приложение (главная, о проекте, FAQ, блог)
-    path("", include("apps.main.urls")),
+    path("legal/", include("apps.legal.urls", namespace="legal")),
 
-    # Приложение пользователей (профиль, настройки, избранное)
-    path("users/", include("apps.users.urls")),
+    path("", include("apps.main.urls", namespace="main")),
+
+    # Маршруты django-ckeditor-5.
+    # Нужны для корректной работы визуального редактора в админке.
+    path(
+        "ckeditor5/",
+        include("django_ckeditor_5.urls"),
+        name="ck_editor_5_upload_file",
+    ),
+
+    # Социальная аутентификация allauth
+    path("accounts/", include("allauth.urls")),
 ]
 
 

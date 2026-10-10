@@ -1,15 +1,18 @@
 {# apps/users/templates/users/auth/signup.html #}
 {# ================================================ #}
-{# Регистрация #}
-{# ================================================ #}
-
+{# Регистрация нового пользователя YourTune #}
+{# ================================================== #}
+<!-- SIGNUP TEMPLATE: users/auth/signup.html -->
 {% extends "core/base.html" %}
 {% load static %}
+{% load socialaccount %}
+{% load icons %}
 
 {% block title %}Регистрация | YourTune{% endblock %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+  <link rel="stylesheet" href="{% static 'legal/css/legal.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -18,7 +21,14 @@
       <h1 class="form-title">Регистрация</h1>
 
       <div class="card">
-        <form class="form" method="post" action="{% url 'users:signup' %}">
+        {# ================================================== #}
+        {# Регистрация по Email #}
+        {# ================================================== #}
+        <form
+          class="form"
+          method="post"
+          action="{% url 'users:signup' %}"
+        >
           {% csrf_token %}
 
           {% if form.non_field_errors %}
@@ -29,29 +39,225 @@
             </div>
           {% endif %}
 
-          {% for field in form %}
-            <div class="form__group">
-              <label for="{{ field.id_for_label }}" class="form__label">
-                {{ field.label }}
+          <div class="form__group">
+            <label
+              for="{{ form.first_name.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.first_name.label }}
+            </label>
+
+            {{ form.first_name }}
+
+            {% if form.first_name.errors %}
+              <p class="form__error">
+                {{ form.first_name.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group">
+            <label
+              for="{{ form.email.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.email.label }} *
+            </label>
+
+            {{ form.email }}
+
+            {% if form.email.errors %}
+              <p class="form__error">
+                {{ form.email.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group">
+            <label
+              for="{{ form.password1.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.password1.label }} *
+            </label>
+
+            {{ form.password1 }}
+
+            {% if form.password1.errors %}
+              <p class="form__error">
+                {{ form.password1.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          <div class="form__group">
+            <label
+              for="{{ form.password2.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.password2.label }} *
+            </label>
+
+            {{ form.password2 }}
+
+            {% if form.password2.errors %}
+              <p class="form__error">
+                {{ form.password2.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          {# ================================================== #}
+          {# Юридические документы #}
+          {# ================================================== #}
+          <div class="legal-accept__consents">
+            <div class="legal-accept__consent">
+              {{ form.accept_privacy_policy }}
+
+              <label
+                class="legal-accept__label"
+                for="{{ form.accept_privacy_policy.id_for_label }}"
+              >
+                Я прочитал(а) и принимаю
+                <a
+                  href="{% url 'legal:policy' %}"
+                  target="_blank"
+                  rel="noopener"
+                  class="legal-accept__document-link"
+                >
+                  Политику конфиденциальности
+                </a>
               </label>
-              {{ field }}
-              {% if field.errors %}
-                <p class="form__error">{{ field.errors.0 }}</p>
+
+              {% if form.accept_privacy_policy.errors %}
+                <p class="form__error">
+                  {{ form.accept_privacy_policy.errors.0 }}
+                </p>
               {% endif %}
             </div>
-          {% endfor %}
+
+            <div class="legal-accept__consent">
+              {{ form.accept_terms_of_use }}
+
+              <label
+                class="legal-accept__label"
+                for="{{ form.accept_terms_of_use.id_for_label }}"
+              >
+                Я прочитал(а) и принимаю
+                <a
+                  href="{% url 'legal:rules' %}"
+                  target="_blank"
+                  rel="noopener"
+                  class="legal-accept__document-link"
+                >
+                  Правила использования сервиса
+                </a>
+              </label>
+
+              {% if form.accept_terms_of_use.errors %}
+                <p class="form__error">
+                  {{ form.accept_terms_of_use.errors.0 }}
+                </p>
+              {% endif %}
+            </div>
+          </div>
 
           <div class="form__actions">
-            <button type="submit" class="button button--success form__submit">
+            <button
+              type="submit"
+              class="button button--success form__submit"
+            >
               Зарегистрироваться
             </button>
           </div>
         </form>
 
-        <div style="text-align: center; color: var(--yt-text-muted); font-size: 0.875rem; margin-top: 16px;">
+        {# ================================================== #}
+        {# Альтернативная регистрация через провайдеров #}
+        {# Разделитель #}
+        {# ================================================== #}
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+          <div style="flex: 1; height: 1px; background: var(--yt-line);"></div>
+          <span style="color: var(--yt-text-muted); font-size: 0.875rem;">или зарегистрироваться через</span>
+          <div style="flex: 1; height: 1px; background: var(--yt-line);"></div>
+        </div>
+
+        {# ================================================== #}
+        {# Кнопки социальных провайдеров #}
+        {# ================================================== #}
+        <div style="margin-bottom: 24px;">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+
+            {# Google OAuth2 #}
+            <form method="post" action="{% provider_login_url 'google' process='login' %}">
+              {% csrf_token %}
+
+              <button
+                type="submit"
+                class="button button--secondary"
+                style="width: 100%; justify-content: center;"
+              >
+                {% icon 'google' width='20' height='20' %}
+                <span style="margin-left: 12px;">Продолжить с Google</span>
+              </button>
+            </form>
+
+            {# Yandex OAuth2 #}
+            <form method="post" action="{% provider_login_url 'yandex' process='login' %}">
+              {% csrf_token %}
+
+              <button
+                type="submit"
+                class="button button--secondary"
+                style="
+                  width: 100%;
+                  justify-content: center;
+                  display: flex;
+                  align-items: center;
+                  cursor: pointer;
+                  box-sizing: border-box;
+                "
+              >
+                {% icon 'yandex' width='20' height='20' %}
+                <span style="margin-left: 12px;">Продолжить с Yandex</span>
+              </button>
+            </form>
+
+          </div>
+        </div>
+
+        <p class="signup-social__hint">
+          После выбора Google или Yandex необходимо
+          принять
+          <a
+            href="{% url 'legal:policy' %}"
+            target="_blank"
+            rel="noopener"
+            class="legal-accept__document-link"
+          >
+            Политику конфиденциальности
+          </a>
+          и
+          <a
+            href="{% url 'legal:rules' %}"
+            target="_blank"
+            rel="noopener"
+            class="legal-accept__document-link"
+          >
+            Правила использования сервиса
+          </a>.
+        </p>
+
+        {# ================================================== #}
+        {# Ссылка для существующих пользователей #}
+        {# ================================================== #}
+        <div class="signup-footer">
           <p style="margin: 0;">
             Уже есть аккаунт?
-            <a href="{% url 'users:login' %}" style="color: var(--yt-accent); font-weight: 500;">
+            <a
+              href="{% url 'users:login' %}"
+              style="color: var(--yt-accent); font-weight: 500;"
+            >
               Войти
             </a>
           </p>

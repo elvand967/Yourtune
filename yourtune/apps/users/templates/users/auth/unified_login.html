@@ -43,11 +43,11 @@
         {# ================================================== #}
         {# Сюда попадает сообщение из CustomLoginView.form_invalid(): #}
         {# «elvira@gmail.com — аккаунт был создан через Google/Yandex…» #}
-        {# messages доступны автоматически через MessageMiddleware #}
+        {# Глобальный вывод сообщений вынесен сюда для точечного отображения над кнопками #}
         {% if messages %}
           <div style="margin-bottom: 24px;">
             {% for message in messages %}
-              <div class="alert alert--info" style="
+              <div class="alert alert--{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" style="
                 display: flex;
                 align-items: flex-start;
                 gap: 12px;
@@ -55,6 +55,7 @@
                 border-radius: 8px;
                 background: rgba(59, 130, 246, 0.1);
                 border: 1px solid rgba(59, 130, 246, 0.3);
+                margin-bottom: 8px;
               ">
                 {% icon 'info' width='20' height='20' %}
                 <p style="margin: 0; color: var(--yt-text);">{{ message }}</p>
@@ -66,15 +67,12 @@
         {# ================================================== #}
         {# Кнопки социальных провайдеров #}
         {# ================================================== #}
-        {# ВАЖНО: используем POST-формы, а не ссылки (<a href>). #}
-        {# allauth по умолчанию требует POST для запуска OAuth2 #}
-        {# (защита от CSRF и open-redirect атак). #}
-        {# POST сразу инициирует handshake — промежуточная #}
-        {# страница «Продолжить» не показывается. #}
+        {# Каждая кнопка — это отдельная, изолированная POST-форма. #}
+        {# Это исключает конфликты маршрутизации и вложенности тегов. #}
         <div style="margin-bottom: 24px;">
           <div style="display: flex; flex-direction: column; gap: 12px;">
 
-            {# Google #}
+            {# Google OAuth2 (Встроенный провайдер) #}
             <form method="post" action="{% provider_login_url 'google' process='login' %}">
               {% csrf_token %}
               <button type="submit" class="button button--secondary" style="width: 100%; justify-content: center;">
@@ -83,10 +81,19 @@
               </button>
             </form>
 
-            {# Yandex #}
+            {# Yandex OAuth2 (Встроенный провайдер) #}
+            {# Обертка в изолированную POST-форму принудительно заставляет allauth 65.x #}
+            {# пропустить промежуточную страницу и сразу перенаправить пользователя в Яндекс ID! #}
             <form method="post" action="{% provider_login_url 'yandex' process='login' %}">
               {% csrf_token %}
-              <button type="submit" class="button button--secondary" style="width: 100%; justify-content: center;">
+              <button type="submit" class="button button--secondary" style="
+                width: 100%;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                box-sizing: border-box;
+              ">
                 {% icon 'yandex' width='20' height='20' %}
                 <span style="margin-left: 12px;">Продолжить с Yandex</span>
               </button>

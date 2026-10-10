@@ -4,11 +4,11 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.shortcuts import redirect, render
 from django.views import View
 
+from apps.legal.mixins import ConsentRequiredMixin
 from apps.users.forms.profile import ProfileForm
 from apps.users.models import Profile
 
@@ -16,9 +16,14 @@ from apps.users.models import Profile
 logger = logging.getLogger(__name__)
 
 
-class ProfileViewMixin(LoginRequiredMixin):
+class ProfileViewMixin(ConsentRequiredMixin):
     """
     Общая логика представлений профиля.
+
+    Наследует ConsentRequiredMixin, поэтому:
+    - пользователь должен быть авторизован;
+    - пользователь должен принять актуальные
+      обязательные юридические документы.
     """
 
     profile_model = Profile

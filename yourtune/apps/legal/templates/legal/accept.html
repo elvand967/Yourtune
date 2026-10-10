@@ -1,0 +1,128 @@
+{# apps/legal/templates/legal/accept.html #}
+{# ================================================== #}
+{# Страница обязательного принятия юридических документов #}
+{# ================================================== #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | YourTune{% endblock %}
+
+{% block meta_description %}{{ description }}{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+  <link rel="stylesheet" href="{% static 'legal/css/legal.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <div class="form-wrapper">
+      <h1 class="form-title">{{ title }}</h1>
+
+      <div class="card">
+        <p class="legal-accept__description">
+          {{ description }}
+        </p>
+
+        {# ================================================== #}
+        {# Блоки документов в рамках #}
+        {# ================================================== #}
+        {% if documents %}
+          <div class="legal-accept__documents">
+            {% for document in documents %}
+              <div class="legal-accept__document">
+                <h2 class="legal-accept__document-title">
+                  {{ document.title }}
+                </h2>
+
+                {% if document.current_version %}
+                  <span class="legal-accept__version">
+                    Версия {{ document.current_version.version }}
+                  </span>
+                {% endif %}
+
+                {% if document.document_type == 'privacy_policy' %}
+                  <a
+                    class="legal-accept__link"
+                    href="{% url 'legal:policy' %}"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Открыть полный текст
+                    <span class="legal-accept__link-arrow">&raquo;</span>
+                  </a>
+                {% else %}
+                  <a
+                    class="legal-accept__link"
+                    href="{% url 'legal:rules' %}"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    Открыть полный текст
+                    <span class="legal-accept__link-arrow">&raquo;</span>
+                  </a>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {# ================================================== #}
+        {# Форма принятия документов #}
+        {# ================================================== #}
+        <form
+          class="form"
+          method="post"
+          action="{% url 'legal:required_consent' %}"
+        >
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert--error">
+              {% for error in form.non_field_errors %}
+                <p style="margin: 0;">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="legal-accept__consents">
+            {% for field in form %}
+              <div class="legal-accept__consent">
+                {{ field }}
+
+                <label
+                  class="legal-accept__label"
+                  for="{{ field.id_for_label }}"
+                >
+                  {{ field.label }}
+                </label>
+
+                {% if field.errors %}
+                  <p class="form__error">
+                    {{ field.errors.0 }}
+                  </p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="form__actions">
+            <button
+              type="submit"
+              class="button button--success form__submit"
+            >
+              Принять и продолжить
+            </button>
+          </div>
+        </form>
+
+        <div class="legal-accept__footer">
+          <a href="{% url 'account_logout' %}">
+            Выйти из аккаунта
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

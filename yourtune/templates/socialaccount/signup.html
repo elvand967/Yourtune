@@ -1,0 +1,130 @@
+{# yourtune/templates/socialaccount/signup.html #}
+{# ================================================ #}
+{# Override стандартного шаблона django-allauth. #}
+{# Используется для завершения регистрации #}
+{# через Google / Yandex. #}
+{# ================================================== #}
+
+{% extends "core/base.html" %}
+{% load static %}
+<!-- SOCIAL SIGNUP TEMPLATE: socialaccount/signup.html -->
+
+{% block title %}Завершение регистрации | YourTune{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'users/css/users.css' %}">
+  <link rel="stylesheet" href="{% static 'legal/css/legal.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <div class="form-wrapper">
+      <h1 class="form-title">Завершение регистрации</h1>
+
+      <div class="card">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <p style="margin: 0; color: var(--yt-text-muted);">
+            Почти готово! Подтвердите данные и примите условия сервиса.
+          </p>
+        </div>
+
+        <form
+          class="form"
+          method="post"
+          action="{% url 'socialaccount_signup' %}"
+        >
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert--error">
+              {% for error in form.non_field_errors %}
+                <p style="margin: 0;">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="form__group">
+            <label
+              for="{{ form.email.id_for_label }}"
+              class="form__label"
+            >
+              {{ form.email.label }}
+            </label>
+
+            {{ form.email }}
+
+            {% if form.email.errors %}
+              <p class="form__error">
+                {{ form.email.errors.0 }}
+              </p>
+            {% endif %}
+          </div>
+
+          {# ================================================== #}
+          {# Юридические документы #}
+          {# ================================================== #}
+          <div class="legal-accept__consents">
+            <div class="legal-accept__consent">
+              {{ form.accept_privacy_policy }}
+
+              <label
+                class="legal-accept__label"
+                for="{{ form.accept_privacy_policy.id_for_label }}"
+              >
+                Я прочитал(а) и принимаю
+                <a
+                  href="{% url 'legal:policy' %}"
+                  target="_blank"
+                  rel="noopener"
+                  class="legal-accept__document-link"
+                >
+                  Политику конфиденциальности
+                </a>
+              </label>
+
+              {% if form.accept_privacy_policy.errors %}
+                <p class="form__error">
+                  {{ form.accept_privacy_policy.errors.0 }}
+                </p>
+              {% endif %}
+            </div>
+
+            <div class="legal-accept__consent">
+              {{ form.accept_terms_of_use }}
+
+              <label
+                class="legal-accept__label"
+                for="{{ form.accept_terms_of_use.id_for_label }}"
+              >
+                Я прочитал(а) и принимаю
+                <a
+                  href="{% url 'legal:rules' %}"
+                  target="_blank"
+                  rel="noopener"
+                  class="legal-accept__document-link"
+                >
+                  Правила использования сервиса
+                </a>
+              </label>
+
+              {% if form.accept_terms_of_use.errors %}
+                <p class="form__error">
+                  {{ form.accept_terms_of_use.errors.0 }}
+                </p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button
+              type="submit"
+              class="button button--success form__submit"
+            >
+              Завершить регистрацию
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

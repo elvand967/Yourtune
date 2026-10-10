@@ -1,0 +1,61 @@
+{# apps/legal/templates/legal/base_document.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} — YourTune{% endblock %}
+
+{% block meta_description %}{{ description }}{% endblock %}
+
+{% block meta_robots %}index, follow{% endblock %}
+
+{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}
+
+{% block og_title %}{{ title }} — YourTune{% endblock %}
+
+{% block og_description %}{{ description }}{% endblock %}
+
+{% block og_type %}website{% endblock %}
+
+{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
+
+{% block twitter_title %}{{ title }} — YourTune{% endblock %}
+
+{% block twitter_description %}{{ description }}{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="legal-document-page">
+    <section class="legal-document-page__header">
+      <div class="container">
+        <h1 class="legal-document-page__title">{{ title }}</h1>
+
+        {% if description %}
+          <p class="legal-document-page__lead">{{ description }}</p>
+        {% endif %}
+
+        {% if published_at %}
+          <p class="legal-document-page__meta">
+            Версия {{ version.version }} ·
+            Опубликовано {{ published_at|date:"d.m.Y" }}
+          </p>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="legal-document-page__content">
+      <div class="container">
+        <article class="legal-document-content">
+          {{ content|safe }}
+        </article>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'main/js/main.js' %}" defer></script>
+{% endblock %}

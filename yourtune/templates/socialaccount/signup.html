@@ -7,7 +7,6 @@
 
 {% extends "core/base.html" %}
 {% load static %}
-<!-- SOCIAL SIGNUP TEMPLATE: socialaccount/signup.html -->
 
 {% block title %}Завершение регистрации | YourTune{% endblock %}
 
@@ -73,7 +72,7 @@
               >
                 Я прочитал(а) и принимаю
                 <a
-                  href="{% url 'legal:policy' %}"
+                  href="{% url 'legal:document_detail' slug='politika-konfidencialnosti-servisa-yourtune' %}"
                   target="_blank"
                   rel="noopener"
                   class="legal-accept__document-link"
@@ -98,7 +97,7 @@
               >
                 Я прочитал(а) и принимаю
                 <a
-                  href="{% url 'legal:rules' %}"
+                  href="{% url 'legal:document_detail' slug='pravila-polzovaniya-servisom-yourtune' %}"
                   target="_blank"
                   rel="noopener"
                   class="legal-accept__document-link"

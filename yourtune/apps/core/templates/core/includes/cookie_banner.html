@@ -1,0 +1,99 @@
+{# apps/core/templates/core/includes/cookie_banner.html #}
+
+<div id="cookie-banner" class="cookie-banner" hidden>
+  {# ============================================ #}
+  {# Информационный баннер для гостя #}
+  {# ============================================ #}
+  <div
+    id="cookie-guest-notice"
+    class="cookie-banner__guest"
+    hidden
+  >
+    <p class="cookie-banner__text">
+      YourTune использует необходимые cookie для работы сервиса
+      и обеспечения безопасности.
+    </p>
+
+    <button
+      type="button"
+      id="cookie-guest-close"
+      class="cookie-banner__close"
+      aria-label="Закрыть уведомление"
+    >
+      ✕
+    </button>
+  </div>
+
+  {# ============================================ #}
+  {# Баннер настроек для зарегистрированного пользователя #}
+  {# ============================================ #}
+  <div
+    id="cookie-user-consent"
+    class="cookie-banner__user"
+    hidden
+  >
+    <p class="cookie-banner__text">
+      Настройте использование необязательных cookie в YourTune.
+      Необходимые cookie всегда включены для работы сервиса.
+    </p>
+
+    <div class="cookie-banner__actions">
+      <button
+        type="button"
+        id="cookie-accept-all"
+        class="cookie-banner__button cookie-banner__button--primary"
+      >
+        Принять все
+      </button>
+
+      <button
+        type="button"
+        id="cookie-accept-necessary"
+        class="cookie-banner__button cookie-banner__button--secondary"
+      >
+        Только необходимые
+      </button>
+
+      <button
+        type="button"
+        id="cookie-open-settings"
+        class="cookie-banner__button cookie-banner__button--ghost"
+      >
+        Настроить
+      </button>
+    </div>
+
+    <div id="cookie-settings" class="cookie-settings" hidden>
+      <label class="cookie-settings__item">
+        <input
+          type="checkbox"
+          checked
+          disabled
+        >
+        Необходимые cookie — всегда включены
+      </label>
+
+      <label class="cookie-settings__item">
+        <input
+          type="checkbox"
+          id="cookie-analytics"
+        >
+        Аналитические cookie
+      </label>
+
+      <button
+        type="button"
+        id="cookie-save-settings"
+        class="cookie-banner__button cookie-banner__button--primary cookie-settings__save"
+      >
+        Сохранить настройки
+      </button>
+    </div>
+
+    <p class="cookie-banner__links">
+      <a href="{% url 'legal:document_detail' slug='cookie-policy' %}">
+        Политика использования cookie
+      </a>
+    </p>
+  </div>
+</div>

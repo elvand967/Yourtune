@@ -87,3 +87,4 @@ def slugify_seo(text, stop_langs=("ru", "en"), max_length=255, allow_unicode=Fal
 
     slug = slugify(text, allow_unicode=allow_unicode)
     return slug[:max_length]
+

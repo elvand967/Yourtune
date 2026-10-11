@@ -1,0 +1,76 @@
+{# apps/legal/templates/legal/document_list.html #}
+{# ============================================== #}
+{# Список публичных юридических документов YourTune #}
+{# ============================================== #}
+
+
+{% extends "legal/base_document.html" %}
+
+{% block title %}
+  Документы YourTune
+{% endblock %}
+
+{% block meta_description %}
+  Актуальные юридические документы, политики и правила сервиса YourTune.
+{% endblock %}
+
+
+{% load static %}
+{% load icons %}
+
+{% block extra_head %}
+  <link
+    rel="stylesheet"
+    href="{% static 'legal/css/legal.css' %}"
+  >
+{% endblock %}
+
+{% block content %}
+  <div class="legal-page">
+    <section class="legal-page__header">
+      <div class="container">
+        <h1 class="legal-page__title">
+          Документы YourTune
+        </h1>
+
+        <p class="legal-page__lead">
+          Актуальные юридические документы и политики сервиса.
+        </p>
+      </div>
+    </section>
+
+    <section class="legal-page__content">
+      <div class="container">
+        {% if documents %}
+          <ul class="legal-document-list">
+            {% for document in documents %}
+              <li class="legal-document-list__item">
+                <a
+                  class="legal-document-list__link"
+                  href="{{ document.get_absolute_url }}"
+                >
+                  <span class="legal-document-list__title">
+                    {{ document.title }}
+                  </span>
+
+                  <span
+                    class="legal-document-list__arrow"
+                    aria-hidden="true"
+                  >
+                    {% icon 'chevrons-right' width='20' height='20' %}
+                  </span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="legal-document-list__empty">
+            <p class="legal-page__lead">
+              Документы пока не опубликованы.
+            </p>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+  </div>
+{% endblock %}

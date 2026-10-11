@@ -4,21 +4,19 @@
 from django.urls import path
 from apps.legal import views
 
-
 app_name = "legal"
-
 
 urlpatterns = [
     path(
-        "policy/",
-        views.PolicyDetailView.as_view(),
-        name="policy",
+        "documents/",
+        views.LegalDocumentListView.as_view(),
+        name="document_list",
     ),
 
     path(
-        "rules/",
-        views.TermsDetailView.as_view(),
-        name="rules",
+        "documents/<slug:slug>/",
+        views.LegalDocumentDetailView.as_view(),
+        name="document_detail",
     ),
 
     path(

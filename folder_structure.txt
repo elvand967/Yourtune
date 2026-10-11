@@ -17,11 +17,14 @@
         │   ├── core
         │   │   ├── __init__.py
         │   │   ├── apps.py
+        │   │   ├── signals.py
         │   │   ├── tests.py
         │   │   ├── urls.py
         │   │   ├── __pycache__ [содержимое скрыто]
         │   │   ├── admin
         │   │   │   ├── __init__.py
+        │   │   │   ├── cookie_consent.py
+        │   │   │   ├── seo.py
         │   │   │   └── __pycache__ [содержимое скрыто]
         │   │   ├── management
         │   │   │   ├── __init__.py
@@ -36,6 +39,7 @@
         │   │   ├── models
         │   │   │   ├── __init__.py
         │   │   │   ├── abstract.py
+        │   │   │   ├── cookie_consent.py
         │   │   │   ├── seo.py
         │   │   │   └── __pycache__ [содержимое скрыто]
         │   │   ├── static
@@ -54,6 +58,7 @@
         │   │   │       │       ├── register.ico
         │   │   │       │       └── settings.ico
         │   │   │       ├── js
+        │   │   │       │   ├── cookie-consent.js
         │   │   │       │   ├── fast_nav.js
         │   │   │       │   ├── footer_animations.js
         │   │   │       │   └── theme-switcher.js
@@ -71,6 +76,7 @@
         │   │   │           ├── components
         │   │   │           │   ├── _buttons.scss
         │   │   │           │   ├── _cards.scss
+        │   │   │           │   ├── _cookie-banner.scss
         │   │   │           │   ├── _dropdown.scss
         │   │   │           │   ├── _empty-state.scss
         │   │   │           │   ├── _fast-scroll.scss
@@ -102,6 +108,7 @@
         │   │   │   └── core
         │   │   │       ├── base.html
         │   │   │       ├── includes
+        │   │   │       │   ├── cookie_banner.html
         │   │   │       │   ├── fast_scroll_nav.html
         │   │   │       │   └── main_menu.html
         │   │   │       └── partials
@@ -123,7 +130,59 @@
         │   │   │   ├── stop_words.json
         │   │   │   └── __pycache__ [содержимое скрыто]
         │   │   └── views
-        │   │       └── __init__.py
+        │   │       ├── __init__.py
+        │   │       ├── cookie_consent.py
+        │   │       └── __pycache__ [содержимое скрыто]
+        │   ├── legal
+        │   │   ├── __init__.py
+        │   │   ├── apps.py
+        │   │   ├── urls.py
+        │   │   ├── __pycache__ [содержимое скрыто]
+        │   │   ├── admin
+        │   │   │   ├── __init__.py
+        │   │   │   ├── consents.py
+        │   │   │   ├── documents.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── forms
+        │   │   │   ├── __init__.py
+        │   │   │   ├── consent.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── migrations [содержимое скрыто]
+        │   │   ├── mixins
+        │   │   │   ├── __init__.py
+        │   │   │   ├── consent.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── models
+        │   │   │   ├── __init__.py
+        │   │   │   ├── consents.py
+        │   │   │   ├── documents.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── services
+        │   │   │   ├── __init__.py
+        │   │   │   ├── documents.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── static
+        │   │   │   └── legal
+        │   │   │       ├── css
+        │   │   │       │   └── legal.css
+        │   │   │       └── scss
+        │   │   │           ├── legal.scss
+        │   │   │           └── components
+        │   │   │               └── _accept.scss
+        │   │   ├── templates
+        │   │   │   └── legal
+        │   │   │       ├── accept.html
+        │   │   │       ├── base_document.html
+        │   │   │       ├── document_detail.html
+        │   │   │       └── document_list.html
+        │   │   ├── tests
+        │   │   │   ├── test_documents.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   └── views
+        │   │       ├── __init__.py
+        │   │       ├── consent.py
+        │   │       ├── documents.py
+        │   │       └── __pycache__ [содержимое скрыто]
         │   ├── main
         │   │   ├── __init__.py
         │   │   ├── apps.py
@@ -181,8 +240,6 @@
         │   │       ├── blog.py
         │   │       ├── faq.py
         │   │       ├── home.py
-        │   │       ├── policy.py
-        │   │       ├── rules.py
         │   │       └── __pycache__ [содержимое скрыто]
         │   └── users
         │       ├── __init__.py
@@ -245,7 +302,6 @@
         │       │       ├── auth
         │       │       │   ├── email_login.html
         │       │       │   ├── signup.html
-        │       │       │   ├── social_signup.html
         │       │       │   └── unified_login.html
         │       │       ├── integrations
         │       │       │   ├── api_tokens.html
@@ -306,6 +362,12 @@
         │       ├── prod.py
         │       └── __pycache__ [содержимое скрыто]
         ├── logs
+        │   ├── scss_compile
+        │   │   ├── scss_compile_20261011_114201.log
+        │   │   ├── scss_compile_20261011_114820.log
+        │   │   └── scss_compile_20261011_120111.log
+        │   └── scss_errors
+        │       └── core_scss_error_20261011_114201.log
         ├── media [содержимое скрыто]
         ├── static
         │   ├── css
@@ -315,11 +377,13 @@
         │   ├── images
         │   └── js
         └── templates
-            └── account
-                ├── email_confirm.html
-                ├── login.html
-                ├── password_reset.html
-                ├── password_reset_done.html
-                ├── password_reset_from_key.html
-                ├── password_reset_from_key_done.html
-                └── verification_sent.html
+            ├── account
+            │   ├── email_confirm.html
+            │   ├── login.html
+            │   ├── password_reset.html
+            │   ├── password_reset_done.html
+            │   ├── password_reset_from_key.html
+            │   ├── password_reset_from_key_done.html
+            │   └── verification_sent.html
+            └── socialaccount
+                └── signup.html

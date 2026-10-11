@@ -1,6 +1,6 @@
 
 # ../apps/core/models/__init__.py
-'''
+"""
 Импортируйте сюда все абстрактные модели, которые собираетесь использовать снаружи/
 Это позволит в коде (например, в других приложениях) писать:
 'from apps.core.models import UUIDModel'
@@ -12,7 +12,20 @@ yourtune/apps/core/models/other_models.py,
 
 from .abstract import UUIDModel, NamedSlugModel
 from .other_models import SomeOtherModel
-'''
+"""
+
+
 from .abstract import UUIDModel, NamedSlugModel
 from .seo import StopWord, SEOReplacement
+from .cookie_consent import CookieConsent
+
+# from .notification_history import NotificationHistory
+
+__all__ = (
+    "UUIDModel",
+    "NamedSlugModel",
+    "StopWord",
+    "SEOReplacement",
+    "CookieConsent",
+)
 # from .notification_history import NotificationHistory

@@ -1,8 +1,11 @@
+
 # apps/legal/views/documents.py
+# ================================
 
 from django.http import Http404
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import ListView
 
 from apps.legal.models import LegalDocument
 from apps.legal.services import LegalDocumentService
@@ -10,20 +13,28 @@ from apps.legal.services import LegalDocumentService
 
 class LegalDocumentDetailView(View):
     """
-    Публичная страница юридического документа.
+    Публичная страница активного юридического документа.
 
-    Отображает актуальную опубликованную версию документа.
+    Отображает актуальную опубликованную версию документа
+    по его slug.
     """
 
-    template_name = "legal/base_document.html"
-    document_type = None
-    fallback_title = ""
-    fallback_description = ""
+    template_name = "legal/document_detail.html"
 
     def get(self, request, *args, **kwargs):
-        document = LegalDocumentService.get_document_by_type(
-            self.document_type,
+        slug = kwargs.get("slug")
+
+        document = (
+            LegalDocument.objects
+            .filter(
+                slug=slug,
+                is_active=True,
+            )
+            .first()
         )
+
+        if not document:
+            raise Http404("Документ не найден.")
 
         version = LegalDocumentService.get_published_version(
             document,
@@ -35,11 +46,8 @@ class LegalDocumentDetailView(View):
         context = {
             "document": document,
             "version": version,
-            "title": version.title or self.fallback_title,
-            "description": (
-                document.description
-                or self.fallback_description
-            ),
+            "title": version.title or document.title,
+            "description": document.description,
             "content": version.content,
             "published_at": version.published_at,
         }
@@ -51,27 +59,20 @@ class LegalDocumentDetailView(View):
         )
 
 
-class PolicyDetailView(LegalDocumentDetailView):
+class LegalDocumentListView(ListView):
     """
-    Публичная страница политики конфиденциальности.
-    """
-
-    document_type = LegalDocument.DocumentType.PRIVACY_POLICY
-    template_name = "legal/policy.html"
-    fallback_title = "Политика конфиденциальности"
-    fallback_description = (
-        "Политика конфиденциальности платформы YourTune."
-    )
-
-
-class TermsDetailView(LegalDocumentDetailView):
-    """
-    Публичная страница правил использования сервиса.
+    Список активных юридических документов YourTune.
     """
 
-    document_type = LegalDocument.DocumentType.TERMS_OF_USE
-    template_name = "legal/rules.html"
-    fallback_title = "Правила использования сервиса"
-    fallback_description = (
-        "Правила использования платформы YourTune."
-    )
+    template_name = "legal/document_list.html"
+    context_object_name = "documents"
+
+    def get_queryset(self):
+        return (
+            LegalDocument.objects
+            .filter(is_active=True)
+            .order_by(
+                "menu_order",
+                "title",
+            )
+        )

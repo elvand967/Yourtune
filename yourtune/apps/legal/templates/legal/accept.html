@@ -42,27 +42,15 @@
                   </span>
                 {% endif %}
 
-                {% if document.document_type == 'privacy_policy' %}
-                  <a
-                    class="legal-accept__link"
-                    href="{% url 'legal:policy' %}"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Открыть полный текст
-                    <span class="legal-accept__link-arrow">&raquo;</span>
-                  </a>
-                {% else %}
-                  <a
-                    class="legal-accept__link"
-                    href="{% url 'legal:rules' %}"
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Открыть полный текст
-                    <span class="legal-accept__link-arrow">&raquo;</span>
-                  </a>
-                {% endif %}
+                <a
+                  class="legal-accept__link"
+                  href="{{ document.get_absolute_url }}"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Открыть полный текст
+                  <span class="legal-accept__link-arrow">&raquo;</span>
+                </a>
               </div>
             {% endfor %}
           </div>

@@ -1,14 +1,14 @@
 # apps/legal/admin/documents.py
+# ===============================
 
 from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
 
 from apps.legal.models import LegalDocument, LegalDocumentVersion
 
 
 class LegalDocumentVersionInline(admin.TabularInline):
     """
-    Версии документа внутри карточки юридического документа.
+    Версии документа на странице юридического документа.
     """
 
     model = LegalDocumentVersion
@@ -18,7 +18,6 @@ class LegalDocumentVersionInline(admin.TabularInline):
         "title",
         "is_published",
         "published_at",
-        "summary",
     )
     readonly_fields = (
         "created_at",
@@ -30,17 +29,16 @@ class LegalDocumentVersionInline(admin.TabularInline):
 @admin.register(LegalDocument)
 class LegalDocumentAdmin(admin.ModelAdmin):
     """
-    Управление юридическими документами.
+    Админка юридических документов.
     """
 
     list_display = (
         "title",
         "document_type",
         "slug",
-        "current_version",
-        "is_required",
         "is_active",
-        "updated_at",
+        "is_required",
+        "current_version",
     )
 
     list_filter = (
@@ -55,31 +53,33 @@ class LegalDocumentAdmin(admin.ModelAdmin):
         "description",
     )
 
-    prepopulated_fields = {
-        "slug": ("title",),
-    }
-
     readonly_fields = (
         "created_at",
         "updated_at",
     )
 
-    inlines = (LegalDocumentVersionInline,)
+    prepopulated_fields = {
+        "slug": ("title",),
+    }
+
+    inlines = [
+        LegalDocumentVersionInline,
+    ]
 
     fieldsets = (
         (
-            _("Основное"),
+            "Основное",
             {
                 "fields": (
-                    "document_type",
                     "title",
                     "slug",
+                    "document_type",
                     "description",
                 )
             },
         ),
         (
-            _("Статус"),
+            "Статус",
             {
                 "fields": (
                     "is_active",
@@ -89,34 +89,22 @@ class LegalDocumentAdmin(admin.ModelAdmin):
             },
         ),
         (
-            _("Служебное"),
+            "Служебное",
             {
                 "fields": (
                     "created_at",
                     "updated_at",
-                )
+                ),
+                "classes": ("collapse",),
             },
         ),
-    )
-
-    @admin.action(description=_("Сделать выбранные документы активными"))
-    def make_active(self, request, queryset):
-        queryset.update(is_active=True)
-
-    @admin.action(description=_("Сделать выбранные документы неактивными"))
-    def make_inactive(self, request, queryset):
-        queryset.update(is_active=False)
-
-    actions = (
-        "make_active",
-        "make_inactive",
     )
 
 
 @admin.register(LegalDocumentVersion)
 class LegalDocumentVersionAdmin(admin.ModelAdmin):
     """
-    Управление конкретными редакциями документов.
+    Админка версий юридических документов.
     """
 
     list_display = (
@@ -125,12 +113,11 @@ class LegalDocumentVersionAdmin(admin.ModelAdmin):
         "title",
         "is_published",
         "published_at",
-        "created_at",
     )
 
     list_filter = (
-        "document",
         "is_published",
+        "document",
     )
 
     search_fields = (
@@ -147,7 +134,7 @@ class LegalDocumentVersionAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (
-            _("Документ и версия"),
+            "Версия",
             {
                 "fields": (
                     "document",
@@ -157,7 +144,7 @@ class LegalDocumentVersionAdmin(admin.ModelAdmin):
             },
         ),
         (
-            _("Содержание"),
+            "Содержание",
             {
                 "fields": (
                     "content",
@@ -166,7 +153,7 @@ class LegalDocumentVersionAdmin(admin.ModelAdmin):
             },
         ),
         (
-            _("Публикация"),
+            "Публикация",
             {
                 "fields": (
                     "is_published",
@@ -175,21 +162,13 @@ class LegalDocumentVersionAdmin(admin.ModelAdmin):
             },
         ),
         (
-            _("Служебное"),
+            "Служебное",
             {
                 "fields": (
                     "created_at",
                     "updated_at",
-                )
+                ),
+                "classes": ("collapse",),
             },
         ),
-    )
-
-    @admin.action(description=_("Опубликовать выбранные версии"))
-    def publish_versions(self, request, queryset):
-        for version in queryset:
-            version.publish()
-
-    actions = (
-        "publish_versions",
     )

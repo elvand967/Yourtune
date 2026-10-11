@@ -4,6 +4,7 @@
 from django import template
 from django.urls import reverse, NoReverseMatch
 from django.contrib.auth import get_user_model
+from apps.legal.models import LegalDocument
 
 register = template.Library()
 
@@ -25,6 +26,25 @@ def main_menu(context):
     request = context.get("request")
     user = request.user if request else None
 
+    active_documents = (
+        LegalDocument.objects
+        .filter(is_active=True)
+        .order_by("menu_order")
+    )
+
+    document_children = [
+        {
+            "title": (
+                    document.menu_title
+                    or document.title
+            ),
+            "url": document.get_absolute_url(),
+            "url_name": None,
+            "icon": "📄",
+        }
+        for document in active_documents
+    ]
+
     menu_items = [
         {
             "title": "Главная",
@@ -43,14 +63,10 @@ def main_menu(context):
                     "icon": "ℹ️",
                 },
                 {
-                    "title": "Политика",
-                    "url_name": "legal:policy",
-                    "icon": "🛡️",
-                },
-                {
-                    "title": "Правила",
-                    "url_name": "legal:rules",
-                    "icon": "📜",
+                    "title": "Документы",
+                    "url_name": "legal:document_list",
+                    "icon": "📄",
+                    "children": document_children,
                 },
             ],
         },
@@ -198,7 +214,13 @@ def _validate_children(children):
     validated_children = []
 
     for child in children:
-        if _is_valid_url(child):
-            validated_children.append(child)
+        if not _is_valid_url(child):
+            continue
+
+        child["children"] = _validate_children(
+            child.get("children", []),
+        )
+
+        validated_children.append(child)
 
     return validated_children

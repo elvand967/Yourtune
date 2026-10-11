@@ -1,16 +1,27 @@
 
 # apps/legal/views/__init__.py
 
-from apps.legal.views.documents import (
-    LegalDocumentDetailView,
-    PolicyDetailView,
-    TermsDetailView,
-)
-from apps.legal.views.consent import RequiredConsentView
+"""
+Пакет views приложения legal.
 
-__all__ = [
-    "LegalDocumentDetailView",
-    "PolicyDetailView",
-    "TermsDetailView",
+Публичные view-классы импортируются здесь,
+чтобы использовать понятные импорты в urls.py:
+
+from apps.legal import views
+
+views.LegalDocumentListView.as_view()
+views.LegalDocumentDetailView.as_view()
+views.RequiredConsentView.as_view()
+"""
+
+from .consent import RequiredConsentView
+from .documents import (
+    LegalDocumentDetailView,
+    LegalDocumentListView,
+)
+
+__all__ = (
     "RequiredConsentView",
-]
+    "LegalDocumentDetailView",
+    "LegalDocumentListView",
+)

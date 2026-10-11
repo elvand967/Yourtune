@@ -62,6 +62,12 @@ pip freeze > requirements.txt
 pip install -r requirements.txt
 =========================
 
+Тесты для пакета yourtune/apps/legal
+(.venv) D:\PythonProject\Yourtune\yourtune>python manage.py test apps.legal.tests.test_documents
+код тестов в файле yourtune/apps/legal/tests/test_documents.py
+=========================
+
+
 `python manage.py makemigrations`
 Запускай после изменения моделей: добавил поле, поменял constraint, удалил модель, изменил `Meta`. Команда готовит файл миграции, но саму БД ещё не меняет.
 

@@ -1,0 +1,25 @@
+// apps/legal/static/legal/scss/components/_base.scss
+
+.legal-page {
+  padding: 48px 0 64px;
+}
+
+.legal-page__header {
+  margin-bottom: 40px;
+}
+
+.legal-page__title {
+  margin: 0 0 12px;
+
+  color: var(--yt-text, #111827);
+}
+
+.legal-page__lead {
+  margin: 0;
+
+  color: var(--yt-text-muted, #6b7280);
+}
+
+.legal-page__content {
+  width: 100%;
+}

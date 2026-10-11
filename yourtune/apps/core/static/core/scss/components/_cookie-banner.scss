@@ -1,0 +1,161 @@
+// =========================================================
+// apps/core/static/core/scss/components/_cookie-banner.scss
+// =========================================================
+// Cookie-баннер YourTune.
+//
+// Глобальный компонент: подключается в base.html и поддерживает
+// light, dark и cream темы через CSS-переменные --yt-*.
+// =========================================================
+
+.cookie-banner {
+  position: fixed;
+  inset: auto 1rem 1rem 1rem;
+  z-index: 1000;
+
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.25rem;
+
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-line);
+  border-radius: 16px;
+  box-shadow: var(--yt-shadow-lg);
+
+  color: var(--yt-text);
+
+  @include theme-transition;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  &__text {
+    margin: 0;
+
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 0.5rem 1rem;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    font-size: 0.9375rem;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    @include theme-transition;
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+  }
+
+  &__button--primary {
+    background: var(--yt-accent);
+    color: #fff;
+
+    &:hover {
+      filter: brightness(1.08);
+    }
+  }
+
+  &__button--secondary {
+    background: var(--yt-surface-2);
+    border-color: var(--yt-line);
+    color: var(--yt-text);
+
+    &:hover {
+      background: var(--yt-chip);
+    }
+  }
+
+  &__button--ghost {
+    min-height: 42px;
+    padding: 0.5rem 0.375rem;
+
+    background: transparent;
+    color: var(--yt-text-muted);
+
+    &:hover,
+    &:focus-visible {
+      color: var(--yt-accent);
+    }
+  }
+
+  &__links {
+    margin: 0;
+
+    font-size: 0.8125rem;
+    text-align: center;
+
+    a {
+      color: var(--yt-text-muted);
+      text-decoration: underline;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--yt-accent);
+      }
+    }
+  }
+}
+
+.cookie-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  padding-top: 0.875rem;
+
+  border-top: 1px solid var(--yt-line);
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    font-size: 0.9375rem;
+  }
+
+  &__save {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .cookie-banner {
+    inset: auto 0.75rem 0.75rem 0.75rem;
+    padding: 1rem;
+  }
+
+  .cookie-banner__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cookie-banner__button {
+    width: 100%;
+  }
+
+  .cookie-banner__button--ghost {
+    justify-content: center;
+  }
+}

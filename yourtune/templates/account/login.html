@@ -61,23 +61,23 @@
               </button>
             </form>
 
-{# Yandex OAuth2 (Встроенный провайдер) #}
-{# Обертка в изолированную POST-форму принудительно заставляет allauth 65.x #}
-{# пропустить промежуточную страницу и сразу перенаправить пользователя в Яндекс ID! #}
-<form method="post" action="{% provider_login_url 'yandex' process='login' %}">
-  {% csrf_token %}
-  <button type="submit" class="button button--secondary" style="
-    width: 100%;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    box-sizing: border-box;
-  ">
-    {% icon 'yandex' width='20' height='20' %}
-    <span style="margin-left: 12px;">Продолжить с Yandex</span>
-  </button>
-</form>
+            {# Yandex OAuth2 (Встроенный провайдер) #}
+            {# Обертка в изолированную POST-форму принудительно заставляет allauth 65.x #}
+            {# пропустить промежуточную страницу и сразу перенаправить пользователя в Яндекс ID! #}
+            <form method="post" action="{% provider_login_url 'yandex' process='login' %}">
+              {% csrf_token %}
+              <button type="submit" class="button button--secondary" style="
+                width: 100%;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                box-sizing: border-box;
+              ">
+                {% icon 'yandex' width='20' height='20' %}
+                <span style="margin-left: 12px;">Продолжить с Yandex</span>
+              </button>
+            </form>
 
           </div>
         </div>

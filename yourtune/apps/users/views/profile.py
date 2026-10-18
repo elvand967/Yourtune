@@ -1,15 +1,25 @@
-# yourtune/apps/users/views/profile.py
-# ====================================
+# apps/users/views/profile.py
+# ==========================================================
+# Представления профиля пользователя.
+#
+# ProfileDetailView — просмотр профиля.
+# ProfileUpdateView — редактирование данных без аватарки.
+# UploadAvatarView  — отдельная загрузка аватарки.
+# ResetAvatarView   — сброс аватарки.
+# ==========================================================
 
 import logging
 
-from django.contrib import messages
 from django.db import transaction
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 
 from apps.legal.mixins import ConsentRequiredMixin
-from apps.users.forms.profile import ProfileForm
+from apps.notifications.categories import Category
+from apps.notifications.services import Notify
+from apps.users.forms.profile import AvatarUploadForm, ProfileForm
 from apps.users.models import Profile
 
 
@@ -19,20 +29,14 @@ logger = logging.getLogger(__name__)
 class ProfileViewMixin(ConsentRequiredMixin):
     """
     Общая логика представлений профиля.
-
-    Наследует ConsentRequiredMixin, поэтому:
-    - пользователь должен быть авторизован;
-    - пользователь должен принять актуальные
-      обязательные юридические документы.
     """
 
     profile_model = Profile
 
     def get_profile(self, user):
         """
-        Возвращает профиль пользователя.
-
-        Если профиль отсутствует, он создаётся автоматически.
+        Возвращает профиль пользователя,
+        при необходимости создавая его.
         """
         profile, created = self.profile_model.objects.get_or_create(
             user=user,
@@ -48,8 +52,8 @@ class ProfileViewMixin(ConsentRequiredMixin):
     @staticmethod
     def schedule_avatar_generation(profile_id):
         """
-        Запланировать генерацию аватарки после успешного
-        завершения транзакции базы данных.
+        Создаёт аватарку после фиксации транзакции,
+        если у нового профиля ещё нет файла.
         """
         transaction.on_commit(
             lambda: generate_missing_avatar(profile_id),
@@ -70,8 +74,7 @@ class ProfileViewMixin(ConsentRequiredMixin):
 
 class ProfileDetailView(ProfileViewMixin, View):
     """
-    Отображает подробную информацию о профиле
-    текущего авторизованного пользователя.
+    Отображает подробную информацию о профиле.
     """
 
     template_name = "users/profile/detail.html"
@@ -95,28 +98,14 @@ class ProfileDetailView(ProfileViewMixin, View):
 
 class ProfileUpdateView(ProfileViewMixin, View):
     """
-    Отображает и обрабатывает форму редактирования профиля.
+    Редактирует данные пользователя и профиля.
 
-    Изменяемые данные:
-
-    - имя;
-    - отчество;
-    - фамилия;
-    - Email;
-    - пол;
-    - дата рождения;
-    - предпочтение голоса;
-    - описание;
-    - город;
-    - сайт;
-    - язык;
-    - часовой пояс;
-    - публичность профиля;
-    - уровень приватности.
+    Не обрабатывает загрузку аватарки:
+    для этого используется UploadAvatarView.
     """
 
     template_name = "users/profile/edit.html"
-    success_url = "users:profile_detail"
+    success_url = reverse_lazy("users:profile_detail")
 
     def get_form(self, request, profile):
         """
@@ -172,9 +161,12 @@ class ProfileUpdateView(ProfileViewMixin, View):
                     exc,
                 )
 
-                messages.error(
+                Notify.error(
                     request,
-                    str(exc),
+                    title=_("Не удалось сохранить профиль"),
+                    message=str(exc),
+                    persist=False,
+                    category=Category.ACCOUNT,
                 )
 
             except Exception:
@@ -183,25 +175,39 @@ class ProfileUpdateView(ProfileViewMixin, View):
                     request.user.pk,
                 )
 
-                messages.error(
+                Notify.error(
                     request,
-                    "Не удалось сохранить профиль. "
-                    "Попробуйте ещё раз.",
+                    title=_("Не удалось сохранить профиль"),
+                    message=_(
+                        "Произошла непредвиденная ошибка. "
+                        "Попробуйте ещё раз."
+                    ),
+                    persist=False,
+                    category=Category.ACCOUNT,
                 )
 
             else:
-                messages.success(
+                Notify.success(
                     request,
-                    "Профиль успешно обновлён.",
+                    title=_("Профиль обновлён"),
+                    message=_("Изменения успешно сохранены."),
+                    persist=False,
+                    category=Category.ACCOUNT,
                 )
 
                 return redirect(
                     self.success_url,
                 )
+
         else:
-            messages.error(
+            Notify.error(
                 request,
-                "Исправьте ошибки в форме.",
+                title=_("Проверьте форму"),
+                message=_(
+                    "Исправьте выделенные ошибки и попробуйте снова."
+                ),
+                persist=False,
+                category=Category.ACCOUNT,
             )
 
         context = self.get_profile_context(
@@ -227,19 +233,33 @@ class UploadAvatarView(ProfileViewMixin, View):
             request.user,
         )
 
-        uploaded_file = request.FILES.get(
-            "avatar",
+        form = AvatarUploadForm(
+            data=request.POST,
+            files=request.FILES,
         )
 
-        if not uploaded_file:
-            messages.error(
+        if not form.is_valid():
+            errors = form.errors.get("avatar")
+
+            message = (
+                errors[0]
+                if errors
+                else _("Выберите корректное изображение.")
+            )
+
+            Notify.error(
                 request,
-                "Выберите изображение для загрузки.",
+                title=_("Не удалось загрузить аватарку"),
+                message=message,
+                persist=False,
+                category=Category.ACCOUNT,
             )
 
             return redirect(
                 "users:profile_edit",
             )
+
+        uploaded_file = form.cleaned_data["avatar"]
 
         try:
             with transaction.atomic():
@@ -254,9 +274,12 @@ class UploadAvatarView(ProfileViewMixin, View):
                 exc,
             )
 
-            messages.error(
+            Notify.error(
                 request,
-                str(exc),
+                title=_("Не удалось загрузить аватарку"),
+                message=str(exc),
+                persist=False,
+                category=Category.ACCOUNT,
             )
 
         except Exception:
@@ -265,15 +288,24 @@ class UploadAvatarView(ProfileViewMixin, View):
                 request.user.pk,
             )
 
-            messages.error(
+            Notify.error(
                 request,
-                "Не удалось загрузить аватарку.",
+                title=_("Не удалось загрузить аватарку"),
+                message=_(
+                    "Произошла непредвиденная ошибка. "
+                    "Попробуйте ещё раз."
+                ),
+                persist=False,
+                category=Category.ACCOUNT,
             )
 
         else:
-            messages.success(
+            Notify.success(
                 request,
-                "Аватарка успешно обновлена.",
+                title=_("Аватарка обновлена"),
+                message=_("Новое изображение профиля сохранено."),
+                persist=False,
+                category=Category.ACCOUNT,
             )
 
         return redirect(
@@ -283,8 +315,8 @@ class UploadAvatarView(ProfileViewMixin, View):
 
 class ResetAvatarView(ProfileViewMixin, View):
     """
-    Сбрасывает текущую аватарку на автоматически
-    сгенерированную.
+    Сбрасывает текущую аватарку
+    на автоматически сгенерированную.
     """
 
     def post(self, request):
@@ -302,15 +334,24 @@ class ResetAvatarView(ProfileViewMixin, View):
                 request.user.pk,
             )
 
-            messages.error(
+            Notify.error(
                 request,
-                "Не удалось сбросить аватарку.",
+                title=_("Не удалось сбросить аватарку"),
+                message=_(
+                    "Произошла непредвиденная ошибка. "
+                    "Попробуйте ещё раз."
+                ),
+                persist=False,
+                category=Category.ACCOUNT,
             )
 
         else:
-            messages.success(
+            Notify.success(
                 request,
-                "Аватарка сброшена на стандартную.",
+                title=_("Аватарка сброшена"),
+                message=_("Установлена стандартная аватарка."),
+                persist=False,
+                category=Category.ACCOUNT,
             )
 
         return redirect(
@@ -320,8 +361,8 @@ class ResetAvatarView(ProfileViewMixin, View):
 
 def generate_missing_avatar(profile_id):
     """
-    Создаёт стандартную аватарку профиля,
-    если аватарка отсутствует.
+    Создаёт стандартную аватарку,
+    если у профиля она отсутствует.
     """
     try:
         profile = Profile.objects.select_related(

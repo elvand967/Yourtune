@@ -5,6 +5,10 @@
 //
 // Гостю показывается информационное уведомление.
 // Авторизованному пользователю — баннер с настройками cookie.
+//
+// Анимация:
+// - .cookie-banner.is-visible — плавное появление снизу;
+// - .cookie-banner.is-hidden — плавное скрытие вниз.
 // =========================================================
 
 const BANNER = document.getElementById("cookie-banner");
@@ -17,9 +21,15 @@ const STORAGE_KEY = "yourtune_cookie_consent";
 const GUEST_NOTICE_KEY = "yourtune_cookie_guest_notice";
 const POLICY_VERSION = "1.0";
 const CONSENT_API_URL = "/core/api/cookie-consent/";
+const BANNER_ANIMATION_DURATION = 350;
 
-const IS_AUTHENTICATED = document.body.dataset.isAuthenticated === "true";
+const IS_AUTHENTICATED =
+  document.body.dataset.isAuthenticated === "true";
 
+
+// =========================================================
+// Вспомогательные функции
+// =========================================================
 
 function getCookie(name) {
   const cookies = document.cookie.split("; ");
@@ -56,6 +66,79 @@ function getConsent() {
   }
 }
 
+
+// =========================================================
+// Управление видимостью баннера
+// =========================================================
+
+function showBanner() {
+  if (!BANNER) {
+    return;
+  }
+
+  BANNER.hidden = false;
+  BANNER.classList.remove("is-hidden");
+  BANNER.classList.add("is-visible");
+}
+
+
+function hideBanner() {
+  if (!BANNER) {
+    return;
+  }
+
+  BANNER.classList.remove("is-visible");
+  BANNER.classList.add("is-hidden");
+
+  // Скрываем баннер из доступности после завершения анимации.
+  setTimeout(() => {
+    if (BANNER.classList.contains("is-hidden")) {
+      BANNER.hidden = true;
+    }
+  }, BANNER_ANIMATION_DURATION);
+}
+
+
+function hideBannerImmediately() {
+  if (!BANNER) {
+    return;
+  }
+
+  BANNER.hidden = true;
+  BANNER.classList.remove("is-visible");
+  BANNER.classList.add("is-hidden");
+}
+
+
+function showGuestNotice() {
+  if (!GUEST_NOTICE || !USER_CONSENT || !SETTINGS) {
+    return;
+  }
+
+  GUEST_NOTICE.hidden = false;
+  USER_CONSENT.hidden = true;
+  SETTINGS.hidden = true;
+
+  showBanner();
+}
+
+
+function showUserConsent() {
+  if (!GUEST_NOTICE || !USER_CONSENT || !SETTINGS) {
+    return;
+  }
+
+  GUEST_NOTICE.hidden = true;
+  USER_CONSENT.hidden = false;
+  SETTINGS.hidden = true;
+
+  showBanner();
+}
+
+
+// =========================================================
+// Сохранение согласия
+// =========================================================
 
 function saveConsent(consent) {
   const consentData = {
@@ -107,29 +190,9 @@ function sendConsentToServer(consent) {
 }
 
 
-function hideBanner() {
-  BANNER.hidden = true;
-  GUEST_NOTICE.hidden = true;
-  USER_CONSENT.hidden = true;
-  SETTINGS.hidden = true;
-}
-
-
-function showGuestNotice() {
-  BANNER.hidden = false;
-  GUEST_NOTICE.hidden = false;
-  USER_CONSENT.hidden = true;
-  SETTINGS.hidden = true;
-}
-
-
-function showUserConsent() {
-  BANNER.hidden = false;
-  GUEST_NOTICE.hidden = true;
-  USER_CONSENT.hidden = false;
-  SETTINGS.hidden = true;
-}
-
+// =========================================================
+// Применение согласия
+// =========================================================
 
 function applyConsent(consent) {
   const analyticsAllowed = Boolean(consent.analytics);
@@ -179,12 +242,21 @@ function initAnalytics() {
 }
 
 
+// =========================================================
+// Инициализация
+// =========================================================
+
 document.addEventListener("DOMContentLoaded", () => {
+  if (!BANNER || !GUEST_NOTICE || !USER_CONSENT) {
+    return;
+  }
+
   const savedConsent = getConsent();
 
   if (IS_AUTHENTICATED) {
     if (savedConsent) {
       applyConsent(savedConsent);
+      hideBannerImmediately();
     } else {
       showUserConsent();
     }
@@ -195,48 +267,69 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!guestNoticeClosed) {
       showGuestNotice();
+    } else {
+      hideBannerImmediately();
     }
   }
 
-  document
-    .getElementById("cookie-accept-all")
-    .addEventListener("click", () => {
+  const acceptAllButton = document.getElementById(
+    "cookie-accept-all"
+  );
+
+  const acceptNecessaryButton = document.getElementById(
+    "cookie-accept-necessary"
+  );
+
+  const openSettingsButton = document.getElementById(
+    "cookie-open-settings"
+  );
+
+  const saveSettingsButton = document.getElementById(
+    "cookie-save-settings"
+  );
+
+  const closeGuestNoticeButton = document.getElementById(
+    "cookie-guest-close"
+  );
+
+  if (acceptAllButton) {
+    acceptAllButton.addEventListener("click", () => {
       saveConsent({
         analytics: true,
         marketing: true,
-        source: "settings"
+        source: "banner"
       });
     });
+  }
 
-  document
-    .getElementById("cookie-accept-necessary")
-    .addEventListener("click", () => {
+  if (acceptNecessaryButton) {
+    acceptNecessaryButton.addEventListener("click", () => {
       saveConsent({
         analytics: false,
         marketing: false,
-        source: "settings"
+        source: "banner"
       });
     });
+  }
 
-  document
-    .getElementById("cookie-open-settings")
-    .addEventListener("click", () => {
+  if (openSettingsButton && SETTINGS) {
+    openSettingsButton.addEventListener("click", () => {
       SETTINGS.hidden = !SETTINGS.hidden;
     });
+  }
 
-  document
-    .getElementById("cookie-save-settings")
-    .addEventListener("click", () => {
+  if (saveSettingsButton && ANALYTICS_CHECKBOX) {
+    saveSettingsButton.addEventListener("click", () => {
       saveConsent({
         analytics: ANALYTICS_CHECKBOX.checked,
         marketing: false,
         source: "settings"
       });
     });
+  }
 
-  document
-    .getElementById("cookie-guest-close")
-    .addEventListener("click", () => {
+  if (closeGuestNoticeButton) {
+    closeGuestNoticeButton.addEventListener("click", () => {
       sessionStorage.setItem(
         GUEST_NOTICE_KEY,
         "closed"
@@ -244,4 +337,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
       hideBanner();
     });
+  }
 });

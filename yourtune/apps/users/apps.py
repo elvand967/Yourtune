@@ -11,5 +11,7 @@ class UsersConfig(AppConfig):
     verbose_name_plural = 'Пользователи'
 
     def ready(self):
-        # Подключаем сигналы. ОБЯЗАТЕЛЬНО для работы по генерированию авто-аватарок/аватарок
+        # Подключаем все сигналы.
+        # ОБЯЗАТЕЛЬНО для работы по генерированию авто-аватарок/аватарок;
+        # уведомлений (notifications)
         from apps.users import signals  # noqa: F401

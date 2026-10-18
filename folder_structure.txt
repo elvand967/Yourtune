@@ -81,7 +81,8 @@
         │   │   │           │   ├── _empty-state.scss
         │   │   │           │   ├── _fast-scroll.scss
         │   │   │           │   ├── _modal.scss
-        │   │   │           │   └── _theme-switcher.scss
+        │   │   │           │   ├── _theme-switcher.scss
+        │   │   │           │   └── _toast.scss
         │   │   │           └── layout
         │   │   │               ├── _alerts.scss
         │   │   │               ├── _breadcrumbs.scss
@@ -168,7 +169,9 @@
         │   │   │       └── scss
         │   │   │           ├── legal.scss
         │   │   │           └── components
-        │   │   │               └── _accept.scss
+        │   │   │               ├── _accept.scss
+        │   │   │               ├── _base.scss
+        │   │   │               └── _document-list.scss
         │   │   ├── templates
         │   │   │   └── legal
         │   │   │       ├── accept.html
@@ -240,6 +243,47 @@
         │   │       ├── blog.py
         │   │       ├── faq.py
         │   │       ├── home.py
+        │   │       └── __pycache__ [содержимое скрыто]
+        │   ├── notifications
+        │   │   ├── __init__.py
+        │   │   ├── apps.py
+        │   │   ├── categories.py
+        │   │   ├── context_processors.py
+        │   │   ├── urls.py
+        │   │   ├── __pycache__ [содержимое скрыто]
+        │   │   ├── admin
+        │   │   │   ├── __init__.py
+        │   │   │   ├── notification.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── migrations [содержимое скрыто]
+        │   │   ├── models
+        │   │   │   ├── __init__.py
+        │   │   │   ├── notification.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── services
+        │   │   │   ├── __init__.py
+        │   │   │   ├── notify.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── static
+        │   │   │   └── notifications
+        │   │   │       ├── css
+        │   │   │       │   └── notifications.css
+        │   │   │       ├── js
+        │   │   │       │   └── toast.js
+        │   │   │       └── scss
+        │   │   │           └── notifications.scss
+        │   │   ├── templates
+        │   │   │   └── notifications
+        │   │   │       └── _toasts.html
+        │   │   ├── tests
+        │   │   │   ├── __init__.py
+        │   │   │   ├── test_notifications.py
+        │   │   │   ├── test_notify.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   └── views
+        │   │       ├── __init__.py
+        │   │       ├── _utils.py
+        │   │       ├── center.py
         │   │       └── __pycache__ [содержимое скрыто]
         │   └── users
         │       ├── __init__.py
@@ -340,6 +384,7 @@
         │           ├── integrations.py
         │           ├── playlists.py
         │           ├── profile.py
+        │           ├── profile_old.py
         │           ├── security.py
         │           ├── settings.py
         │           ├── __pycache__ [содержимое скрыто]
@@ -365,9 +410,25 @@
         │   ├── scss_compile
         │   │   ├── scss_compile_20261011_114201.log
         │   │   ├── scss_compile_20261011_114820.log
-        │   │   └── scss_compile_20261011_120111.log
+        │   │   ├── scss_compile_20261011_120111.log
+        │   │   ├── scss_compile_20261011_211928.log
+        │   │   ├── scss_compile_20261011_212758.log
+        │   │   ├── scss_compile_20261011_214515.log
+        │   │   ├── scss_compile_20261012_174904.log
+        │   │   ├── scss_compile_20261012_175110.log
+        │   │   ├── scss_compile_20261013_053750.log
+        │   │   ├── scss_compile_20261016_054802.log
+        │   │   ├── scss_compile_20261016_055457.log
+        │   │   ├── scss_compile_20261016_055825.log
+        │   │   ├── scss_compile_20261016_060209.log
+        │   │   ├── scss_compile_20261016_211433.log
+        │   │   ├── scss_compile_20261016_211759.log
+        │   │   └── scss_compile_20261016_212143.log
         │   └── scss_errors
-        │       └── core_scss_error_20261011_114201.log
+        │       ├── core_scss_error_20261011_114201.log
+        │       ├── core_scss_error_20261016_055457.log
+        │       ├── core_scss_error_20261016_055825.log
+        │       └── core_scss_error_20261016_211433.log
         ├── media [содержимое скрыто]
         ├── static
         │   ├── css

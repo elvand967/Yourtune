@@ -1,3 +1,4 @@
+
 # yourtune/config/urls.py
 # Корневая URL-конфигурация проекта YourTune
 
@@ -14,6 +15,11 @@ urlpatterns = [
         "users/",
         include("apps.users.urls", namespace="users")
     ),
+
+    # Уведомления.
+    path(
+        "notifications/",
+        include("apps.notifications.urls")),
 
     # Юридические документы: правила, конфиденциальность, cookie и т. д.
     path(

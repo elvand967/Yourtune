@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     "apps.users.apps.UsersConfig",  # Пользователи, профили, адаптеры, формы
     'apps.main.apps.MainConfig',    # Главная страница, статические разделы
     'apps.legal.apps.LegalConfig',  # Юридические документы
+    'apps.notifications.apps.NotificationsConfig',  # Уведомления
 ]
 
 # =========================================================
@@ -308,6 +309,12 @@ TEMPLATES = [
 
                 # Кастомный процессор: site_name, site_domain и т.д.
                 "apps.core.utils.context_processors.site_defaults",
+
+                # Уведомления: notifications_unread_count для колокольчика в шапке.
+                # Ленивый (SimpleLazyObject): запрос к БД выполняется только если
+                # переменная реально используется в шаблоне, и не более одного раза.
+                # Для анонимных пользователей всегда 0 (без запроса к БД).
+                "apps.notifications.context_processors.notifications",
             ],
         },
     },
@@ -365,6 +372,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@yourtune.local'
+
+# =========================================================
+# Toast-движок (система всплывающих уведомлений)
+# =========================================================
+from django.contrib.messages import constants as messages
+
+MESSAGE_TAGS = {
+    messages.DEBUG: "debug",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "error",
+}
+
 
 
 # =========================================================

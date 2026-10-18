@@ -1,0 +1,47 @@
+{# templates/notifications/_toasts.html #}
+{% load i18n %}
+
+<div
+    class="toast-stack"
+    data-toast-root
+    aria-live="polite"
+    aria-atomic="false"
+>
+    {% for message in messages %}
+        {% if "toast" in message.tags %}
+            <div
+                class="toast toast--{{ message.level_tag }}"
+                data-toast
+                data-toast-level="{{ message.level_tag }}"
+                role="status"
+            >
+                <div class="toast__icon" aria-hidden="true">
+                    {% if message.level_tag == "success" %}
+                        ✓
+                    {% elif message.level_tag == "warning" %}
+                        !
+                    {% elif message.level_tag == "error" %}
+                        ✕
+                    {% else %}
+                        i
+                    {% endif %}
+                </div>
+
+                <div class="toast__body">
+                    {{ message }}
+                </div>
+
+                <button
+                    type="button"
+                    class="toast__close"
+                    data-toast-close
+                    aria-label="{% translate 'Закрыть уведомление' %}"
+                >
+                    ×
+                </button>
+
+                <div class="toast__progress" aria-hidden="true"></div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

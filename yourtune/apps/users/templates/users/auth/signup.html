@@ -2,7 +2,7 @@
 {# ================================================ #}
 {# Регистрация нового пользователя YourTune #}
 {# ================================================== #}
-<!-- SIGNUP TEMPLATE: users/auth/signup.html -->
+
 {% extends "core/base.html" %}
 {% load static %}
 {% load socialaccount %}
@@ -120,7 +120,7 @@
               >
                 Я прочитал(а) и принимаю
                 <a
-                  href="{% url 'legal:policy' %}"
+                  href="{% url 'legal:document_detail' slug='politika-konfidencialnosti-servisa-yourtune' %}"
                   target="_blank"
                   rel="noopener"
                   class="legal-accept__document-link"
@@ -145,7 +145,7 @@
               >
                 Я прочитал(а) и принимаю
                 <a
-                  href="{% url 'legal:rules' %}"
+                  href="{% url 'legal:document_detail' slug='pravila-polzovaniya-servisom-yourtune' %}"
                   target="_blank"
                   rel="noopener"
                   class="legal-accept__document-link"
@@ -176,61 +176,64 @@
         {# Альтернативная регистрация через провайдеров #}
         {# Разделитель #}
         {# ================================================== #}
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-          <div style="flex: 1; height: 1px; background: var(--yt-line);"></div>
-          <span style="color: var(--yt-text-muted); font-size: 0.875rem;">или зарегистрироваться через</span>
-          <div style="flex: 1; height: 1px; background: var(--yt-line);"></div>
+        <div class="signup-divider">
+          <span class="signup-divider__line"></span>
+
+          <span class="signup-divider__text">
+            или зарегистрироваться через
+          </span>
+
+          <span class="signup-divider__line"></span>
         </div>
 
         {# ================================================== #}
         {# Кнопки социальных провайдеров #}
         {# ================================================== #}
-        <div style="margin-bottom: 24px;">
-          <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div class="signup-social">
+          {# Google OAuth2 #}
+          <form
+            method="post"
+            action="{% provider_login_url 'google' process='login' %}"
+          >
+            {% csrf_token %}
 
-            {# Google OAuth2 #}
-            <form method="post" action="{% provider_login_url 'google' process='login' %}">
-              {% csrf_token %}
+            <button
+              type="submit"
+              class="button button--secondary signup-social__button"
+            >
+              {% icon 'google' width='20' height='20' %}
 
-              <button
-                type="submit"
-                class="button button--secondary"
-                style="width: 100%; justify-content: center;"
-              >
-                {% icon 'google' width='20' height='20' %}
-                <span style="margin-left: 12px;">Продолжить с Google</span>
-              </button>
-            </form>
+              <span class="signup-social__button-text">
+                Продолжить с Google
+              </span>
+            </button>
+          </form>
 
-            {# Yandex OAuth2 #}
-            <form method="post" action="{% provider_login_url 'yandex' process='login' %}">
-              {% csrf_token %}
+          {# Yandex OAuth2 #}
+          <form
+            method="post"
+            action="{% provider_login_url 'yandex' process='login' %}"
+          >
+            {% csrf_token %}
 
-              <button
-                type="submit"
-                class="button button--secondary"
-                style="
-                  width: 100%;
-                  justify-content: center;
-                  display: flex;
-                  align-items: center;
-                  cursor: pointer;
-                  box-sizing: border-box;
-                "
-              >
-                {% icon 'yandex' width='20' height='20' %}
-                <span style="margin-left: 12px;">Продолжить с Yandex</span>
-              </button>
-            </form>
+            <button
+              type="submit"
+              class="button button--secondary signup-social__button"
+            >
+              {% icon 'yandex' width='20' height='20' %}
 
-          </div>
+              <span class="signup-social__button-text">
+                Продолжить с Yandex
+              </span>
+            </button>
+          </form>
         </div>
 
         <p class="signup-social__hint">
           После выбора Google или Yandex необходимо
           принять
           <a
-            href="{% url 'legal:policy' %}"
+            href="{% url 'legal:document_detail' slug='politika-konfidencialnosti-servisa-yourtune' %}"
             target="_blank"
             rel="noopener"
             class="legal-accept__document-link"
@@ -239,7 +242,7 @@
           </a>
           и
           <a
-            href="{% url 'legal:rules' %}"
+            href="{% url 'legal:document_detail' slug='pravila-polzovaniya-servisom-yourtune' %}"
             target="_blank"
             rel="noopener"
             class="legal-accept__document-link"
@@ -252,11 +255,12 @@
         {# Ссылка для существующих пользователей #}
         {# ================================================== #}
         <div class="signup-footer">
-          <p style="margin: 0;">
+          <p class="signup-footer__text">
             Уже есть аккаунт?
+
             <a
               href="{% url 'users:login' %}"
-              style="color: var(--yt-accent); font-weight: 500;"
+              class="signup-footer__link"
             >
               Войти
             </a>

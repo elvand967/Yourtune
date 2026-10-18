@@ -1,6 +1,20 @@
 {# apps/core/templates/core/includes/cookie_banner.html #}
+{# ====================================================== #}
+{# Cookie-баннер YourTune.                                 #}
+{#                                                         #}
+{# Гостю показывается краткое информационное уведомление.  #}
+{# Авторизованному пользователю — настройки необязательных #}
+{# cookie и возможность сохранить выбор.                   #}
+{# ====================================================== #}
 
-<div id="cookie-banner" class="cookie-banner" hidden>
+{% load static %}
+{% load icons %}
+
+<div
+  id="cookie-banner"
+  class="cookie-banner is-hidden"
+  hidden
+>
   {# ============================================ #}
   {# Информационный баннер для гостя #}
   {# ============================================ #}
@@ -9,19 +23,38 @@
     class="cookie-banner__guest"
     hidden
   >
-    <p class="cookie-banner__text">
-      YourTune использует необходимые cookie для работы сервиса
-      и обеспечения безопасности.
-    </p>
+    <div class="cookie-banner__content">
+      <div class="cookie-banner__header">
+        <h2 class="cookie-banner__title">
+          Использование cookie
+        </h2>
 
-    <button
-      type="button"
-      id="cookie-guest-close"
-      class="cookie-banner__close"
-      aria-label="Закрыть уведомление"
-    >
-      ✕
-    </button>
+        <button
+          type="button"
+          id="cookie-guest-close"
+          class="cookie-banner__close"
+          aria-label="Закрыть уведомление"
+        >
+          {% icon 'x' width='22' height='22' %}
+        </button>
+      </div>
+
+      <p class="cookie-banner__text">
+        Наш сайт использует файлы cookie для обеспечения удобства пользователей сайта,
+        его улучшения, сбора статистики и предоставления персонализированных рекомендаций.
+        <br>
+        Вы можете настроить параметры использования файлов cookie или изменить свое согласие в более позднее время.
+        <br>
+        Для получения дополнительной информации о целях, сроках и порядке использования файлов cookie
+        вы можете ознакомиться с нашей
+        <a
+          href="{% url 'legal:document_detail' slug='politika-ispolzovaniya-cookie-servisa-yourtune' %}"
+          class="cookie-banner__link"
+        >
+          Политикой обработки файлов cookie
+        </a>.
+      </p>
+    </div>
   </div>
 
   {# ============================================ #}
@@ -32,68 +65,86 @@
     class="cookie-banner__user"
     hidden
   >
-    <p class="cookie-banner__text">
-      Настройте использование необязательных cookie в YourTune.
-      Необходимые cookie всегда включены для работы сервиса.
-    </p>
+    <div class="cookie-banner__content">
+      <div class="cookie-banner__header">
+        <h2 class="cookie-banner__title">
+          Настройки cookie
+        </h2>
+      </div>
 
-    <div class="cookie-banner__actions">
-      <button
-        type="button"
-        id="cookie-accept-all"
-        class="cookie-banner__button cookie-banner__button--primary"
-      >
-        Принять все
-      </button>
+      <p class="cookie-banner__text">
+        Настройте использование необязательных cookie в YourTune.
+        Необходимые cookie всегда включены для работы сервиса.
+      </p>
 
-      <button
-        type="button"
-        id="cookie-accept-necessary"
-        class="cookie-banner__button cookie-banner__button--secondary"
-      >
-        Только необходимые
-      </button>
-
-      <button
-        type="button"
-        id="cookie-open-settings"
-        class="cookie-banner__button cookie-banner__button--ghost"
-      >
-        Настроить
-      </button>
-    </div>
-
-    <div id="cookie-settings" class="cookie-settings" hidden>
-      <label class="cookie-settings__item">
-        <input
-          type="checkbox"
-          checked
-          disabled
+      <div class="cookie-banner__actions">
+        <button
+          type="button"
+          id="cookie-accept-all"
+          class="cookie-banner__button cookie-banner__button--primary"
         >
-        Необходимые cookie — всегда включены
-      </label>
+          Принять все
+        </button>
 
-      <label class="cookie-settings__item">
-        <input
-          type="checkbox"
-          id="cookie-analytics"
+        <button
+          type="button"
+          id="cookie-accept-necessary"
+          class="cookie-banner__button cookie-banner__button--secondary"
         >
-        Аналитические cookie
-      </label>
+          Только необходимые
+        </button>
 
-      <button
-        type="button"
-        id="cookie-save-settings"
-        class="cookie-banner__button cookie-banner__button--primary cookie-settings__save"
+        <button
+          type="button"
+          id="cookie-open-settings"
+          class="cookie-banner__button cookie-banner__button--ghost"
+        >
+          Настроить
+        </button>
+      </div>
+
+      <div
+        id="cookie-settings"
+        class="cookie-settings"
+        hidden
       >
-        Сохранить настройки
-      </button>
-    </div>
+        <label class="cookie-settings__item">
+          <input
+            type="checkbox"
+            checked
+            disabled
+          >
 
-    <p class="cookie-banner__links">
-      <a href="{% url 'legal:document_detail' slug='cookie-policy' %}">
-        Политика использования cookie
-      </a>
-    </p>
+          <span>
+            Необходимые cookie — всегда включены
+          </span>
+        </label>
+
+        <label class="cookie-settings__item">
+          <input
+            type="checkbox"
+            id="cookie-analytics"
+          >
+
+          <span>
+            Аналитические cookie
+          </span>
+        </label>
+
+        <button
+          type="button"
+          id="cookie-save-settings"
+          class="cookie-banner__button cookie-banner__button--primary cookie-settings__save"
+        >
+          Сохранить настройки
+        </button>
+      </div>
+
+      <p class="cookie-banner__links">
+        <a href="{% url 'legal:document_detail' slug='cookie-policy' %}">
+          Политика использования cookie
+        </a>
+      </p>
+    </div>
   </div>
 </div>

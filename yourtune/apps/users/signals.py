@@ -107,3 +107,42 @@ def delete_profile_avatar_file(
             "Ошибка удаления аватарки профиля %s.",
             instance.pk,
         )
+#----------------------------------
+# allauth: регистрация и вход
+#----------------------------------
+# apps/users/signals.py
+
+from django.dispatch import receiver
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
+
+from allauth.account.signals import user_logged_in, user_signed_up
+
+from apps.notifications.categories import Category
+from apps.notifications.services import Notify
+
+
+@receiver(user_signed_up)
+def notify_user_signed_up(request, user, **kwargs):
+    Notify.success(
+        request,
+        title=_("Добро пожаловать в YourTune"),
+        message=_(
+            "Аккаунт успешно создан. "
+            "Заполните профиль, чтобы персонализировать сервис."
+        ),
+        user=user,
+        url=reverse("users:profile_detail"),
+        category=Category.ACCOUNT,
+        persist=True,
+    )
+
+
+@receiver(user_logged_in)
+def notify_user_logged_in(request, user, **kwargs):
+    Notify.success(
+        request,
+        title=_("Вы вошли в аккаунт"),
+        persist=False,
+        category=Category.ACCOUNT,
+    )

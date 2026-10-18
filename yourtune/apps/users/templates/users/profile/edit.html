@@ -54,7 +54,7 @@
           <div style="position: relative;">
             {% if profile.avatar %}
               <img
-                src="{{ profile.avatar.url }}"
+                src="{{ profile.avatar_url }}"
                 alt="{{ user.get_full_name|default:user.email }}"
                 width="128"
                 height="128"

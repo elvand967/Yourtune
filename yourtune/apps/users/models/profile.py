@@ -1,5 +1,16 @@
 # apps/users/models/profile.py
-# ============================
+# ==========================================================
+# Профиль пользователя YourTune.
+#
+# Модель хранит дополнительные данные пользователя,
+# включая аватарку и настройки приватности.
+#
+# Аватарка:
+# - сохраняется под стабильным именем на основе Email;
+# - перезаписывается через OverwriteStorage;
+# - всегда преобразуется в JPEG 128×128;
+# - получает версионированный URL для обхода кэша браузера.
+# ==========================================================
 
 from django.conf import settings
 from django.core.files.storage import default_storage
@@ -21,6 +32,12 @@ avatar_storage = OverwriteStorage()
 
 
 class Profile(UUIDModel):
+    """
+    Дополнительные данные пользователя.
+
+    Связана с CustomUser отношением OneToOne.
+    """
+
     class Gender(models.TextChoices):
         FEMALE = "female", _("Женский")
         MALE = "male", _("Мужской")
@@ -137,11 +154,44 @@ class Profile(UUIDModel):
     def avatar_path(self):
         """
         Возвращает относительный путь текущей аватарки.
+
+        Пример:
+        avatars/2026/user_example.com.jpg
         """
         if not self.avatar:
             return ""
 
         return self.avatar.name
+
+    @property
+    def avatar_version(self):
+        """
+        Возвращает версию аватарки для URL.
+
+        Версия основана на updated_at профиля.
+        После загрузки, сброса или синхронизации аватарки
+        значение изменяется, поэтому браузер запрашивает
+        изображение заново, а не показывает копию из кэша.
+        """
+        if not self.avatar:
+            return ""
+
+        return str(
+            int(self.updated_at.timestamp()),
+        )
+
+    @property
+    def avatar_url(self):
+        """
+        Возвращает URL аватарки с параметром версии.
+
+        Пример:
+        /media/avatars/2026/user_example.com.jpg?v=1760000000
+        """
+        if not self.avatar:
+            return ""
+
+        return f"{self.avatar.url}?v={self.avatar_version}"
 
     def _save_avatar_content(self, content):
         """

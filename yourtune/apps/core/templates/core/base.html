@@ -7,6 +7,8 @@
 {% load static %}
 {% load footer_menu %}
 
+{% load i18n %}
+
 <!DOCTYPE html>
 <html lang="{% block html_lang %}ru{% endblock %}" data-theme="dark">
 <head>
@@ -74,10 +76,14 @@
   {# Cookie-баннер #}
   {% include "core/includes/cookie_banner.html" %}
 
+  {# Toast-движок #}
+  {% include "notifications/_toasts.html" %}
+
   <script src="{% static 'core/js/footer_animations.js' %}" defer></script>
   <script src="{% static 'core/js/theme-switcher.js' %}" defer></script>
   <script src="{% static 'core/js/fast_nav.js' %}" defer></script>
   <script src="{% static 'core/js/cookie-consent.js' %}" defer></script>
+  <script src="{% static 'notifications/js/toast.js' %}" defer></script>
 
   {% block extra_js %}{% endblock %}
 </body>

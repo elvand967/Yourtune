@@ -24,17 +24,20 @@
 {% block twitter_description %}{{ description }}{% endblock %}
 
 {% block extra_head %}
-  <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+  <link
+    rel="stylesheet"
+    href="{% static 'legal/css/legal.css' %}"
+  >
 {% endblock %}
 
 {% block content %}
-  <div class="legal-document-page">
-    <section class="legal-document-page__header">
+  <div class="legal-page">
+    <section class="legal-page__header">
       <div class="container">
-        <h3 class="legal-document-page__title">{{ title }}</h3>
+        <h1 class="legal-page__title">{{ title }}</h1>
 
         {% if description %}
-          <p class="legal-document-page__lead">{{ description }}</p>
+          <p class="legal-page__lead">{{ description }}</p>
         {% endif %}
 
         {% if published_at %}

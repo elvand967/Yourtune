@@ -5,6 +5,11 @@
 //
 // Глобальный компонент: подключается в base.html и поддерживает
 // light, dark и cream темы через CSS-переменные --yt-*.
+//
+// Анимация:
+// - .cookie-banner — базовое скрытое состояние;
+// - .cookie-banner.is-visible — плавное появление снизу;
+// - .cookie-banner.is-hidden — плавное скрытие вниз.
 // =========================================================
 
 .cookie-banner {
@@ -16,14 +21,44 @@
   margin: 0 auto;
   padding: 1.25rem;
 
-  background: var(--yt-surface);
-  border: 1px solid var(--yt-line);
+  background: var(--yt-banner-bg);
+  border: 1px solid var(--yt-banner-line);
   border-radius: 16px;
   box-shadow: var(--yt-shadow-lg);
 
-  color: var(--yt-text);
+  color: var(--yt-banner-text);
+
+  opacity: 0;
+  transform: translateY(28px);
+  visibility: hidden;
+
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease,
+    visibility 0.32s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 
   @include theme-transition;
+
+  // Плавное появление баннера снизу.
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  // Плавное скрытие баннера вниз.
+  &.is-hidden {
+    opacity: 0;
+    transform: translateY(28px);
+    visibility: hidden;
+  }
+
+  // =======================================================
+  // Внутренняя композиция
+  // =======================================================
 
   &__content {
     display: flex;
@@ -31,12 +66,114 @@
     gap: 0.875rem;
   }
 
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  &__title {
+    margin: 0;
+
+    color: var(--yt-banner-text);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
   &__text {
     margin: 0;
 
+    color: var(--yt-text-muted);
     font-size: 0.9375rem;
     line-height: 1.55;
   }
+
+  // =======================================================
+  // Встроенная ссылка на юридический документ
+  // =======================================================
+
+  &__link {
+    display: inline;
+
+    color: var(--yt-banner-accent);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+
+    transition:
+      color 0.2s ease,
+      text-decoration-color 0.2s ease,
+      text-decoration-thickness 0.2s ease,
+      background-color 0.2s ease,
+      border-radius 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--yt-banner-accent-hover, var(--yt-banner-accent));
+      text-decoration-color: currentColor;
+      text-decoration-thickness: 2px;
+      background: var(--yt-chip);
+      border-radius: 4px;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--yt-banner-accent);
+      outline-offset: 3px;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  // =======================================================
+  // Кнопка закрытия информационного баннера гостя
+  // =======================================================
+
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    color: var(--yt-text-muted);
+
+    cursor: pointer;
+
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      background: var(--yt-chip);
+      border-color: var(--yt-banner-line);
+      color: var(--yt-banner-text);
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+    }
+
+    svg {
+      display: block;
+    }
+  }
+
+  // =======================================================
+  // Действия пользователя
+  // =======================================================
 
   &__actions {
     display: flex;
@@ -61,16 +198,28 @@
 
     cursor: pointer;
 
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      filter 0.2s ease,
+      transform 0.2s ease;
+
     @include theme-transition;
 
     &:focus-visible {
       @include focus-ring;
     }
+
+    &:active {
+      transform: translateY(1px);
+    }
   }
 
   &__button--primary {
-    background: var(--yt-accent);
-    color: #fff;
+    background: var(--yt-banner-accent);
+    border-color: var(--yt-banner-accent);
+    color: #ffffff;
 
     &:hover {
       filter: brightness(1.08);
@@ -78,9 +227,9 @@
   }
 
   &__button--secondary {
-    background: var(--yt-surface-2);
-    border-color: var(--yt-line);
-    color: var(--yt-text);
+    background: transparent;
+    border-color: var(--yt-banner-line);
+    color: var(--yt-banner-text);
 
     &:hover {
       background: var(--yt-chip);
@@ -92,31 +241,45 @@
     padding: 0.5rem 0.375rem;
 
     background: transparent;
+    border-color: transparent;
     color: var(--yt-text-muted);
 
     &:hover,
     &:focus-visible {
-      color: var(--yt-accent);
+      color: var(--yt-banner-accent);
     }
   }
+
+  // =======================================================
+  // Ссылки
+  // =======================================================
 
   &__links {
     margin: 0;
 
+    color: var(--yt-text-muted);
     font-size: 0.8125rem;
     text-align: center;
 
     a {
-      color: var(--yt-text-muted);
+      color: var(--yt-banner-accent);
       text-decoration: underline;
+      text-underline-offset: 3px;
+
+      transition: color 0.2s ease;
 
       &:hover,
       &:focus-visible {
-        color: var(--yt-accent);
+        color: var(--yt-banner-accent);
+        text-decoration: none;
       }
     }
   }
 }
+
+// =========================================================
+// Расширенные настройки cookie
+// =========================================================
 
 .cookie-settings {
   display: flex;
@@ -125,13 +288,14 @@
 
   padding-top: 0.875rem;
 
-  border-top: 1px solid var(--yt-line);
+  border-top: 1px solid var(--yt-banner-line);
 
   &__item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 
+    color: var(--yt-banner-text);
     font-size: 0.9375rem;
   }
 
@@ -139,6 +303,10 @@
     align-self: flex-start;
   }
 }
+
+// =========================================================
+// Адаптивность
+// =========================================================
 
 @media (max-width: 575.98px) {
   .cookie-banner {
@@ -157,5 +325,33 @@
 
   .cookie-banner__button--ghost {
     justify-content: center;
+  }
+}
+
+// =========================================================
+// Accessibility
+// =========================================================
+
+@include prefers-reduced-motion {
+  .cookie-banner {
+    transform: none;
+
+    transition:
+      opacity 0.01ms linear,
+      visibility 0.01ms linear;
+  }
+
+  .cookie-banner.is-visible,
+  .cookie-banner.is-hidden {
+    transform: none;
+  }
+
+  .cookie-banner__button,
+  .cookie-banner__button--primary,
+  .cookie-banner__button--secondary,
+  .cookie-banner__button--ghost,
+  .cookie-banner__close,
+  .cookie-banner__link {
+    transition: none;
   }
 }

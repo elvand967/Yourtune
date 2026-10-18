@@ -34,7 +34,7 @@ python manage.py generate_folder_structure --mode gui
 
 🎉 Компиляция SCSS → CSS
 -Обычный запуск
-(.venv) D:\PythonProject\Yourtune\yourtune>python manage.py compile_scss
+(.venv) D:\PythonProject\Yourtune\yourtune>   python manage.py compile_scss
 -Подробный запуск
 python manage.py compile_scss --verbose
 -Только core
